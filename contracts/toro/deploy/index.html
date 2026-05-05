@@ -265,15 +265,53 @@
       try {
         const key = $('blockfrostKey').value.trim();
         if (!key) throw new Error('Blockfrost API key required.');
-        const network = $('network').value.toLowerCase();
-        lucid = await Lucid.new(new Lucid.Blockfrost(`https://cardano-${network}.blockfrost.io/api/v0`, key), $('network').value);
-        // Re-select wallet
+        const network = $('network').value;
+        const networkLower = network.toLowerCase();
+
+        // Re-initialize Lucid with Blockfrost provider
+        lucid = await Lucid.new(
+          new Lucid.Blockfrost(`https://cardano-${networkLower}.blockfrost.io/api/v0`, key),
+          network
+        );
         const api = await window.cardano.lace?.enable() || await window.cardano.eternl?.enable();
         lucid.selectWallet(api);
 
-        $('deployStatus').textContent = 'Building reference script transactions...';
-        // NOTE: Full reference script posting would go here. For now, we show the computed addresses.
-        $('deployStatus').textContent = 'Reference script deployment is a 3-step process. The addresses above are ready to use — post reference scripts manually or extend this page.';
+        const walletAddr = await lucid.wallet.address();
+        const factoryPkh = addrToPkh($('factoryAddr').value.trim());
+        const stationAPkh = addrToPkh($('stationAAddr').value.trim());
+        const stationBPkh = addrToPkh($('stationBAddr').value.trim());
+        const mergerPkh = addrToPkh($('mergerAddr').value.trim());
+        const vaultPkh = addrToPkh($('vaultAddr').value.trim());
+
+        // Re-apply parameters to get scripts
+        const factoryCbor = getValidatorCbor('toro_batch_record_factory.toro_batch_record_factory.mint');
+        const factoryScript = lucid.utils.applyParamsToScript(factoryCbor, [Buffer.from(factoryPkh, 'hex')]);
+
+        const stationCbor = getValidatorCbor('toro_station_signer.toro_station_signer.spend');
+        const stationAScript = lucid.utils.applyParamsToScript(stationCbor, [Buffer.from(stationAPkh, 'hex'), Buffer.from(mergerPkh, 'hex')]);
+        const stationBScript = lucid.utils.applyParamsToScript(stationCbor, [Buffer.from(stationBPkh, 'hex'), Buffer.from(mergerPkh, 'hex')]);
+
+        const mergerCbor = getValidatorCbor('toro_public_record_deployer.toro_public_record_deployer.spend');
+        const mergerScript = lucid.utils.applyParamsToScript(mergerCbor, [Buffer.from(mergerPkh, 'hex'), Buffer.from(vaultPkh, 'hex')]);
+
+        $('deployStatus').textContent = 'Building reference script transaction...';
+
+        // Build one tx with 3 reference script outputs
+        const tx = await lucid
+          .newTx()
+          .payToAddress(walletAddr, { lovelace: 5000000n }, { scriptRef: { type: 'PlutusV3', script: factoryScript } })
+          .payToAddress(walletAddr, { lovelace: 5000000n }, { scriptRef: { type: 'PlutusV3', script: stationAScript } })
+          .payToAddress(walletAddr, { lovelace: 5000000n }, { scriptRef: { type: 'PlutusV3', script: stationBScript } })
+          .payToAddress(walletAddr, { lovelace: 5000000n }, { scriptRef: { type: 'PlutusV3', script: mergerScript } })
+          .complete();
+
+        $('deployStatus').textContent = 'Awaiting wallet signature...';
+        const signedTx = await tx.sign().complete();
+
+        $('deployStatus').textContent = 'Submitting to chain...';
+        const txHash = await signedTx.submit();
+
+        $('deployStatus').innerHTML = `Reference scripts posted! <a href="https://${networkLower}.cexplorer.io/tx/${txHash}" target="_blank" style="color:var(--accent)">View on explorer →</a>`;
         $('deployStatus').className = 'status ok';
       } catch (e) {
         $('deployStatus').textContent = e.message;
