@@ -4,3 +4,16 @@ artifacts/
 build/
 # Aiken's default documentation export
 docs/
+
+# Node.js (not used for deployment)
+node_modules/
+package.json
+package-lock.json
+
+# Generated keys — NEVER commit private keys
+*.skey
+*.addr
+*.vkey
+
+# Deployment output
+deploy-out/
