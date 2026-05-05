@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { Lucid, fromText } from 'lucid-cardano';
+import { Lucid, Blockfrost } from 'lucid-cardano';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -92,7 +92,7 @@ async function main() {
 
   console.log('\nInitializing Lucid...');
   const lucid = await Lucid.new(
-    new Lucid.Blockfrost(
+    new Blockfrost(
       `https://cardano-${network.toLowerCase()}.blockfrost.io/api/v0`,
       blockfrostKey
     ),
