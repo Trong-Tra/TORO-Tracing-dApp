@@ -296,13 +296,13 @@
 
         $('deployStatus').textContent = 'Building reference script transaction...';
 
-        // Build one tx with 3 reference script outputs
+        // Build one tx with 4 reference script outputs (2 ADA each to stay within faucet limits)
         const tx = await lucid
           .newTx()
-          .payToAddress(walletAddr, { lovelace: 5000000n }, { scriptRef: { type: 'PlutusV3', script: factoryScript } })
-          .payToAddress(walletAddr, { lovelace: 5000000n }, { scriptRef: { type: 'PlutusV3', script: stationAScript } })
-          .payToAddress(walletAddr, { lovelace: 5000000n }, { scriptRef: { type: 'PlutusV3', script: stationBScript } })
-          .payToAddress(walletAddr, { lovelace: 5000000n }, { scriptRef: { type: 'PlutusV3', script: mergerScript } })
+          .payToAddress(walletAddr, { lovelace: 2000000n }, { scriptRef: { type: 'PlutusV3', script: factoryScript } })
+          .payToAddress(walletAddr, { lovelace: 2000000n }, { scriptRef: { type: 'PlutusV3', script: stationAScript } })
+          .payToAddress(walletAddr, { lovelace: 2000000n }, { scriptRef: { type: 'PlutusV3', script: stationBScript } })
+          .payToAddress(walletAddr, { lovelace: 2000000n }, { scriptRef: { type: 'PlutusV3', script: mergerScript } })
           .complete();
 
         $('deployStatus').textContent = 'Awaiting wallet signature...';
