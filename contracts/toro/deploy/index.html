@@ -118,8 +118,8 @@
     let lucid = null;
     let blueprint = null;
 
-    // Load blueprint
-    const bpRes = await fetch('../plutus.json');
+    // Load blueprint (works whether served from deploy/ or parent dir)
+    const bpRes = await fetch('./plutus.json');
     blueprint = await bpRes.json();
 
     const $ = id => document.getElementById(id);

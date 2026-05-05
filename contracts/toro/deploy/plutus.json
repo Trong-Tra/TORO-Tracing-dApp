@@ -1,0 +1,263 @@
+{
+  "preamble": {
+    "title": "toro/toro",
+    "description": "Aiken contracts for TORO",
+    "version": "0.0.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.21+unknown"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "toro_batch_record_factory.toro_batch_record_factory.mint",
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/toro~1types~1FactoryAction"
+        }
+      },
+      "parameters": [
+        {
+          "title": "authorized_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        }
+      ],
+      "compiledCode": "59017d010100229800aba2aba1aab9faab9eaab9dab9a9bae002488888896600264653001300800198041804800cc0200092225980099b8748000c020dd500144c96600266e1d20003009375400913232598009807801456600264660020026eb0c03cc040c040c040c040c040c040c040c040c034dd5002912cc00400629422b30013371e6eb8c04000402e29462660040046022002806100f44cdc3cc004dd59807180798079807980798061baa00499b8a48904000643b000375c601c60186ea801a29000244466446600200200464646600200200a44b3001001801c4c8c96600266e4402c0062b30013371e0160031375660280050054049133004004301700340486eb8c048004c0500050130a5eb7bdb1808966002003003899192cc004cdc8803000c56600266e3c01800626eb4c04c00a00a808a266008008602c0068088dd718088009809800a0242400514a080522c8068dd7180680098051baa0048b2010375c601660126ea800a2c8038601000260086ea802229344d9590021",
+      "hash": "dc7028de5c06a4cf4184afe7febed8e88199dd94de4fa985ef97a3bf"
+    },
+    {
+      "title": "toro_batch_record_factory.toro_batch_record_factory.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "parameters": [
+        {
+          "title": "authorized_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        }
+      ],
+      "compiledCode": "59017d010100229800aba2aba1aab9faab9eaab9dab9a9bae002488888896600264653001300800198041804800cc0200092225980099b8748000c020dd500144c96600266e1d20003009375400913232598009807801456600264660020026eb0c03cc040c040c040c040c040c040c040c040c034dd5002912cc00400629422b30013371e6eb8c04000402e29462660040046022002806100f44cdc3cc004dd59807180798079807980798061baa00499b8a48904000643b000375c601c60186ea801a29000244466446600200200464646600200200a44b3001001801c4c8c96600266e4402c0062b30013371e0160031375660280050054049133004004301700340486eb8c048004c0500050130a5eb7bdb1808966002003003899192cc004cdc8803000c56600266e3c01800626eb4c04c00a00a808a266008008602c0068088dd718088009809800a0242400514a080522c8068dd7180680098051baa0048b2010375c601660126ea800a2c8038601000260086ea802229344d9590021",
+      "hash": "dc7028de5c06a4cf4184afe7febed8e88199dd94de4fa985ef97a3bf"
+    },
+    {
+      "title": "toro_public_record_deployer.toro_public_record_deployer.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/toro~1types~1TraceDatum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/toro~1types~1MergerAction"
+        }
+      },
+      "parameters": [
+        {
+          "title": "merger_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        },
+        {
+          "title": "_vault_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        }
+      ],
+      "compiledCode": "58ec0101002229800aba2aba1aab9faab9eaab9dab9a9bae0039bae0024888888896600264646644b30013370e900118041baa001899192cc004cdc3a400060146ea801226464b300130100028acc004cdc3a400060186ea8c03cc0400122b300132330010013758602060226022602260226022602260226022601c6ea8c040024896600200314a115980099b8f375c602200201914a3133002002301200140348082266e212000375a601e601a6ea801a294100b45900b45900e1bad300e001300b3754009164024601800260126ea80062c8038c024004c024c028004c024004c014dd5004c52689b2b200601",
+      "hash": "69ad6438559bb495e02ef4b6c6ea409f226a547981fd7b915e1b8317"
+    },
+    {
+      "title": "toro_public_record_deployer.toro_public_record_deployer.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "parameters": [
+        {
+          "title": "merger_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        },
+        {
+          "title": "_vault_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        }
+      ],
+      "compiledCode": "58ec0101002229800aba2aba1aab9faab9eaab9dab9a9bae0039bae0024888888896600264646644b30013370e900118041baa001899192cc004cdc3a400060146ea801226464b300130100028acc004cdc3a400060186ea8c03cc0400122b300132330010013758602060226022602260226022602260226022601c6ea8c040024896600200314a115980099b8f375c602200201914a3133002002301200140348082266e212000375a601e601a6ea801a294100b45900b45900e1bad300e001300b3754009164024601800260126ea80062c8038c024004c024c028004c024004c014dd5004c52689b2b200601",
+      "hash": "69ad6438559bb495e02ef4b6c6ea409f226a547981fd7b915e1b8317"
+    },
+    {
+      "title": "toro_station_signer.toro_station_signer.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/toro~1types~1TraceDatum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/toro~1types~1StationAction"
+        }
+      },
+      "parameters": [
+        {
+          "title": "station_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        },
+        {
+          "title": "_merger_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        }
+      ],
+      "compiledCode": "5901590101002229800aba2aba1aab9faab9eaab9dab9a9bae0039bae0024888888896600264653001300900198049805000cc0240092225980099b8748008c024dd500144c8cc8a60022b30013001300c37540051332259800980198071baa0088acc004cc004dd6180118079baa00600c899b88375a60226024602460246024601e6ea8c044c03cdd50021bad30113012300f375401114a0806a2660026eb0c008c03cdd5003006201a23010301130113011301130113011301130110012232330010010032259800800c528456600266e3cdd71809800801c528c4cc008008c05000500f20248b201698061baa0069807801a444b300130040028991919912cc004c05c00e00f1640546eb4c050004dd7180a001180a00098081baa0098acc004cdc3a400400515980098081baa009801c5901145900e201c180698070009b8748000c028dd50014590080c024004c014dd5004c52689b2b20061",
+      "hash": "6e163aba0a97609abac78ff5ee1a9169fd838fc2270a06ad9d272079"
+    },
+    {
+      "title": "toro_station_signer.toro_station_signer.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "parameters": [
+        {
+          "title": "station_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        },
+        {
+          "title": "_merger_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        }
+      ],
+      "compiledCode": "5901590101002229800aba2aba1aab9faab9eaab9dab9a9bae0039bae0024888888896600264653001300900198049805000cc0240092225980099b8748008c024dd500144c8cc8a60022b30013001300c37540051332259800980198071baa0088acc004cc004dd6180118079baa00600c899b88375a60226024602460246024601e6ea8c044c03cdd50021bad30113012300f375401114a0806a2660026eb0c008c03cdd5003006201a23010301130113011301130113011301130110012232330010010032259800800c528456600266e3cdd71809800801c528c4cc008008c05000500f20248b201698061baa0069807801a444b300130040028991919912cc004c05c00e00f1640546eb4c050004dd7180a001180a00098081baa0098acc004cdc3a400400515980098081baa009801c5901145900e201c180698070009b8748000c028dd50014590080c024004c014dd5004c52689b2b20061",
+      "hash": "6e163aba0a97609abac78ff5ee1a9169fd838fc2270a06ad9d272079"
+    }
+  ],
+  "definitions": {
+    "ByteArray": {
+      "dataType": "bytes"
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "toro/types/FactoryAction": {
+      "title": "FactoryAction",
+      "description": "Factory minting redeemer.",
+      "anyOf": [
+        {
+          "title": "CreateBatch",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "batch_id",
+              "$ref": "#/definitions/ByteArray"
+            }
+          ]
+        }
+      ]
+    },
+    "toro/types/MergerAction": {
+      "title": "MergerAction",
+      "description": "Merger spending redeemer.",
+      "anyOf": [
+        {
+          "title": "Finalize",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "can_count",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "toro/types/StationAction": {
+      "title": "StationAction",
+      "description": "Station spending redeemer.",
+      "anyOf": [
+        {
+          "title": "UpdateTrace",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "new_stage",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "new_timestamp",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        },
+        {
+          "title": "HandoverToMerger",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "toro/types/TraceDatum": {
+      "title": "TraceDatum",
+      "description": "Datum stored with the CIP-68 reference token at each station.",
+      "anyOf": [
+        {
+          "title": "TraceDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "batch_id",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "product_name",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "stage",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "station_id",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "timestamp",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "signer_pkh",
+              "description": "TODO: upgrade to List<ByteArray> + min_signers for m-of-n multisig.",
+              "$ref": "#/definitions/ByteArray"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
