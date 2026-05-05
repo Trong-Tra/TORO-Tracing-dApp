@@ -87,6 +87,10 @@ async function main() {
     console.log(`Loaded key from ${keyInput}`);
   } else {
     privateKey = keyInput.trim();
+    // Strip CBOR tag 5820 if present (cardano-cli .skey format)
+    if (privateKey.startsWith('5820')) {
+      privateKey = privateKey.slice(4);
+    }
     console.log('Using pasted private key.');
   }
 
@@ -163,6 +167,7 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error('\n❌ Error:', err.message);
+  console.error('\n❌ Error:', err?.message || err);
+  if (err?.stack) console.error(err.stack);
   process.exit(1);
 });
