@@ -74,24 +74,31 @@ async function main() {
     process.exit(1);
   }
 
-  const keyInput = await askHidden('Path to .skey file OR paste private key (CBOR hex): ');
-  if (!keyInput) {
-    console.error('Private key required.');
-    process.exit(1);
-  }
-
   let privateKey;
-  if (fs.existsSync(keyInput)) {
-    const skey = JSON.parse(fs.readFileSync(keyInput, 'utf8'));
+  const defaultSkey = './payment.skey';
+
+  if (fs.existsSync(defaultSkey)) {
+    const skey = JSON.parse(fs.readFileSync(defaultSkey, 'utf8'));
     privateKey = skey.cborHex;
-    console.log(`Loaded key from ${keyInput}`);
+    console.log(`Auto-loaded key from ${defaultSkey}`);
   } else {
-    privateKey = keyInput.trim();
-    // Strip CBOR tag 5820 if present (cardano-cli .skey format)
-    if (privateKey.startsWith('5820')) {
-      privateKey = privateKey.slice(4);
+    const keyInput = await askHidden('Path to .skey file OR paste private key (CBOR hex): ');
+    if (!keyInput) {
+      console.error('Private key required.');
+      process.exit(1);
     }
-    console.log('Using pasted private key.');
+    if (fs.existsSync(keyInput)) {
+      const skey = JSON.parse(fs.readFileSync(keyInput, 'utf8'));
+      privateKey = skey.cborHex;
+      console.log(`Loaded key from ${keyInput}`);
+    } else {
+      privateKey = keyInput.trim();
+      // Strip CBOR tag 5820 if present (cardano-cli .skey format)
+      if (privateKey.startsWith('5820')) {
+        privateKey = privateKey.slice(4);
+      }
+      console.log('Using pasted private key.');
+    }
   }
 
   console.log('\nInitializing Lucid...');
