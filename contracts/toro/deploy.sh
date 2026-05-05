@@ -12,15 +12,25 @@ echo ""
 
 # ── Inputs ──────────────────────────────────────
 if [ -z "$1" ]; then
-  read -rp "Enter your wallet PKH (56 hex chars): " PKH
+  read -rp "Enter your wallet address or PKH: " INPUT
 else
-  PKH="$1"
+  INPUT="$1"
 fi
 
-PKH="$(echo "$PKH" | tr -d '[:space:]')"
+INPUT="$(echo "$INPUT" | tr -d '[:space:]')"
 
-if [ "${#PKH}" -ne 56 ]; then
-  echo "Error: PKH must be exactly 56 hex characters (28 bytes)."
+# Detect if input is an address (starts with addr) or a PKH (56 hex chars)
+if [[ "$INPUT" == addr* ]]; then
+  echo "Deriving PKH from address..."
+  PKH="$(node "$(dirname "$0")/get-pkh.mjs" "$INPUT" 2>/dev/null)"
+  if [ -z "$PKH" ] || [ "${#PKH}" -ne 56 ]; then
+    echo "Error: Could not derive PKH from address. Make sure it's a valid Cardano address."
+    exit 1
+  fi
+elif [ "${#INPUT}" -eq 56 ]; then
+  PKH="$INPUT"
+else
+  echo "Error: Input must be a Cardano address (starts with 'addr') or a 56-char PKH."
   exit 1
 fi
 
