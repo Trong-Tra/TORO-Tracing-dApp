@@ -113,7 +113,7 @@
   </div>
 
   <script type="module">
-    import { Lucid, C } from 'https://esm.sh/lucid-cardano@0.10.7';
+    import { Lucid } from 'https://esm.sh/lucid-cardano@0.10.7';
 
     let lucid = null;
     let blueprint = null;
@@ -131,16 +131,8 @@
 
     function addrToPkh(addrBech32) {
       try {
-        const address = C.Address.from_bech32(addrBech32);
-        const base = address.as_base();
-        if (base) {
-          return Buffer.from(base.payment_cred().to_keyhash().to_bytes()).toString('hex');
-        }
-        const enterprise = address.as_enterprise();
-        if (enterprise) {
-          return Buffer.from(enterprise.payment_cred().to_keyhash().to_bytes()).toString('hex');
-        }
-        return null;
+        const details = lucid.utils.getAddressDetails(addrBech32);
+        return details.paymentCredential?.hash || null;
       } catch { return null; }
     }
 
