@@ -62,27 +62,27 @@
     <div class="card">
       <h2>2. Role Assignment <span class="badge badge-factory">Factory</span> <span class="badge badge-station">Station</span> <span class="badge badge-merger">Merger</span></h2>
       <p style="font-size:0.8rem;color:var(--muted);margin-top:-0.5rem;margin-bottom:0.75rem">
-        Paste addresses for each role. Use the same wallet for all roles during testing, or assign different wallets for each station.
+        Paste the <strong>signer wallet addresses</strong> for each role. The deploy page will compute the script addresses from these. Use the same wallet for all roles during testing, or assign different wallets for each station.
       </p>
       <div class="grid-2">
         <div class="field">
-          <label>Factory Operator Address</label>
+          <label>Factory Signer Wallet Address</label>
           <input id="factoryAddr" type="text" placeholder="addr_test1..." />
         </div>
         <div class="field">
-          <label>Station A Address</label>
+          <label>Station A Signer Wallet Address</label>
           <input id="stationAAddr" type="text" placeholder="addr_test1..." />
         </div>
         <div class="field">
-          <label>Station B Address</label>
+          <label>Station B Signer Wallet Address</label>
           <input id="stationBAddr" type="text" placeholder="addr_test1..." />
         </div>
         <div class="field">
-          <label>Merger Address</label>
+          <label>Merger Signer Wallet Address</label>
           <input id="mergerAddr" type="text" placeholder="addr_test1..." />
         </div>
         <div class="field">
-          <label>Vault Address (ADA recycling)</label>
+          <label>Vault Wallet Address (ADA recycling)</label>
           <input id="vaultAddr" type="text" placeholder="addr_test1..." />
         </div>
       </div>
@@ -94,7 +94,7 @@
     </div>
 
     <div class="card" id="resultsCard" style="display:none">
-      <h2>3. Computed Addresses</h2>
+      <h2>3. Computed Script Addresses</h2>
       <div id="results"></div>
     </div>
 
