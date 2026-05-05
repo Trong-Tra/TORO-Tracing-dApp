@@ -1,13 +1,13 @@
-name = "toro/supply-chain"
+name = "toro/toro"
 version = "0.0.0"
 compiler = "v1.1.21"
 plutus = "v3"
 license = "Apache-2.0"
-description = "Aiken contracts for project 'toro/supply-chain'"
+description = "Aiken contracts for TORO"
 
 [repository]
 user = "toro"
-project = "supply-chain"
+project = "toro"
 platform = "github"
 
 [[dependencies]]

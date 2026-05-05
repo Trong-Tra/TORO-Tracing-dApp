@@ -1,7 +1,7 @@
 {
   "preamble": {
-    "title": "toro/supply-chain",
-    "description": "Aiken contracts for project 'toro/supply-chain'",
+    "title": "toro/toro",
+    "description": "Aiken contracts for TORO",
     "version": "0.0.0",
     "plutusVersion": "v3",
     "compiler": {
