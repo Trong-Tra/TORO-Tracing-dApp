@@ -37,22 +37,12 @@ export default function LandingPage() {
 
   const stats = [
     {
-      label: "Cans Traced On-Chain",
+      label: "Traceable Products",
       value: "5,440",
-      sub: "Batch MOTN3042",
-      icon: <TrendingUp className="w-4 h-4 text-green" />,
     },
     {
-      label: "Supply Chain Stages",
-      value: "9",
-      sub: "Fully Verified",
-      icon: <ShieldCheck className="w-4 h-4 text-ocean" />,
-    },
-    {
-      label: "ADA Locked in Script",
+      label: "Total ADA Locked",
       value: "2.05",
-      sub: "In Trace Contract",
-      icon: <Fish className="w-4 h-4 text-gold" />,
     },
   ];
 
@@ -78,12 +68,13 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-full">
       {/* ─── HERO SECTION ─── */}
       <section
-        className="relative min-h-screen flex flex-col justify-center"
+        className="relative flex flex-col justify-center pb-0"
         style={{
           backgroundImage: "url(/Dark_bg.png)",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
+          minHeight: "100vh",
         }}
       >
         {/* Subtle gradient overlay for text readability */}
@@ -100,7 +91,7 @@ export default function LandingPage() {
         </div>
 
         {/* Hero content */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pt-36 pb-14 flex-1 flex items-center">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pt-36 pb-32 flex-1 flex items-center">
           <div className="flex flex-col lg:flex-row items-center lg:items-center gap-10 lg:gap-12 w-full lg:justify-between">
             {/* LEFT: Text */}
             <div className="flex-1 lg:max-w-2xl">
@@ -272,43 +263,51 @@ export default function LandingPage() {
             </motion.div>
           </div>
         </div>
-
-        {/* ─── STATS BAR ─── */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-10 pb-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl px-6 md:px-8 py-4 flex flex-wrap items-center justify-between gap-4"
-          >
-            {stats.map((stat, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center">
-                  {stat.icon}
-                </div>
-                <div>
-                  <p className="text-[10px] text-white/40 uppercase tracking-wider">{stat.label}</p>
-                  <p className="text-lg font-bold text-white leading-tight">{stat.value}</p>
-                  <p className="text-[10px] text-white/30">{stat.sub}</p>
-                </div>
-              </div>
-            ))}
-
-            <div className="hidden md:block w-px h-10 bg-white/10" />
-            <a
-              href="https://preview.cardanoscan.io/tokenPolicy/def68337867cb4f1f95b6b811fedbfcdd7780d10a95cc072077088ea"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-1.5 text-xs text-white/30 hover:text-ocean transition-colors no-underline"
-            >
-              <ExternalLink className="w-3 h-3" />
-              <span className="font-mono">Policy</span>
-            </a>
-          </motion.div>
-        </div>
       </section>
 
-      {/* ─── HOW IT WORKS ─── */}
+      {/* ─── STATS BAR ─── */}
+      <div className="relative px-6 md:px-10 -mt-40 pb-8 z-20">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="max-w-7xl mx-auto bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden"
+        >
+          <div className="flex items-center justify-between px-6 md:px-8 py-5 md:py-6">
+            {/* Stats - Left side */}
+            <div className="flex items-center gap-10 md:gap-20 flex-nowrap">
+              {stats.map((stat, i) => (
+                <div key={i} className="flex flex-col items-start flex-shrink-0">
+                  <p className="text-xs md:text-sm text-white/40 uppercase tracking-wider font-medium whitespace-nowrap">{stat.label}</p>
+                  <p className="text-3xl md:text-4xl font-bold text-white whitespace-nowrap">{stat.value}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div className="h-16 w-px bg-white/40 mx-4 md:mx-8 flex-shrink-0" />
+
+            {/* Partnership - Right side */}
+            <div className="flex-1 flex items-center gap-4 md:gap-6 px-4 md:px-8">
+              <p className="text-base md:text-lg text-white/60 uppercase tracking-wider font-semibold whitespace-nowrap">Partners</p>
+              
+              {/* Scrolling partners */}
+              <div className="flex-1 overflow-hidden">
+                <div className="flex gap-3 md:gap-4 animate-scroll">
+                  {[...Array(12)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-gold/30 to-orange/20 border border-gold/30 flex items-center justify-center"
+                    >
+                      <Fish className="w-6 h-6 md:w-8 md:h-8 text-gold" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
       <section className="relative px-6 md:px-10 py-20 bg-[#0a1628]">
         <div className="max-w-6xl mx-auto">
           <motion.div

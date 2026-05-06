@@ -10,6 +10,7 @@
   --color-green: #00bf63;
   --color-surface: #0f1e36;
   --color-surface-light: #162744;
+  --animate-scroll: scroll 20s linear infinite;
 }
 
 html, body {
@@ -35,6 +36,11 @@ html, body {
 }
 
 @keyframes wave-slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
