@@ -146,7 +146,7 @@ export default function LandingPage() {
                   onClick={handleTraceClick}
                   className="px-6 py-3 rounded-xl bg-ocean text-white font-semibold hover:bg-ocean/80 transition-all shadow-lg shadow-ocean/25 text-sm"
                 >
-                  Explore Trace →
+                  Start Tracing →
                 </button>
                 <a
                   href="https://preview.cardanoscan.io/tokenPolicy/def68337867cb4f1f95b6b811fedbfcdd7780d10a95cc072077088ea"
@@ -423,7 +423,7 @@ export default function LandingPage() {
             onClick={handleTraceClick}
             className="px-8 py-3.5 rounded-xl bg-ocean text-white font-semibold hover:bg-ocean/80 transition-colors shadow-lg shadow-ocean/20"
           >
-            Explore Trace →
+            Start Tracing →
           </button>
         </motion.div>
       </section>

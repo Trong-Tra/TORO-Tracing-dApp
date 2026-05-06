@@ -48,14 +48,34 @@ export default function Navbar() {
             Home
           </Link>
           <Link
-            href="/trace"
+            href="/docs"
             className={`transition-colors no-underline font-medium ${
-              pathname === "/trace"
+              pathname === "/docs"
                 ? "text-white"
                 : "text-white/50 hover:text-white"
             }`}
           >
-            Trace
+            Docs
+          </Link>
+          <Link
+            href="/about"
+            className={`transition-colors no-underline font-medium ${
+              pathname === "/about"
+                ? "text-white"
+                : "text-white/50 hover:text-white"
+            }`}
+          >
+            About
+          </Link>
+          <Link
+            href="/team"
+            className={`transition-colors no-underline font-medium ${
+              pathname === "/team"
+                ? "text-white"
+                : "text-white/50 hover:text-white"
+            }`}
+          >
+            Team
           </Link>
         </div>
 
@@ -73,7 +93,7 @@ export default function Navbar() {
             href="/trace"
             className="px-5 py-2 rounded-lg bg-ocean text-white font-medium text-sm hover:bg-ocean/80 transition-colors no-underline"
           >
-            Explore Trace
+            Start Tracing
           </Link>
         </div>
       </div>
