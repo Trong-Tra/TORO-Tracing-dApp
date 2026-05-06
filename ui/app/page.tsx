@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { QrCode, Fish, Factory, ShieldCheck, ExternalLink, TrendingUp } from "lucide-react";
+import { QrCode, Fish, Factory, ExternalLink } from "lucide-react";
 import Can3D from "@/components/Can3D";
 
 export default function LandingPage() {
@@ -308,124 +308,68 @@ export default function LandingPage() {
           </div>
         </motion.div>
       </div>
-      <section className="relative px-6 md:px-10 py-20 bg-[#0a1628]">
-        <div className="max-w-6xl mx-auto">
+
+      {/* ─── WHY TORO ─── */}
+      <section className="relative px-6 md:px-10 py-24 bg-gradient-to-br from-[#0a1628] via-[#0c1f3a] to-[#0a1628] overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-ocean/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-14"
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">How It Works</h2>
-            <p className="text-white/40 max-w-md mx-auto">
-              Complete supply chain transparency from catch to can
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Why Toro</h2>
+            <p className="text-white/40 max-w-2xl mx-auto text-lg">
+              Building trust through transparency and cryptographic proof
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {features.map((f, i) => (
-              <motion.div
-                key={f.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="p-8 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:border-white/[0.12] transition-all group"
-              >
-                <div className="w-14 h-14 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
-                  {f.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{f.title}</h3>
-                <p className="text-sm text-white/40 leading-relaxed">{f.desc}</p>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0 * 0.15 }}
+              className="group relative"
+            >
+              {/* Glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-ocean/20 to-ocean/0 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
+              
+              {/* Card */}
+              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-ocean/30 hover:border-ocean/60 transition-all duration-300 backdrop-blur-sm h-full">
+                <h3 className="text-2xl font-bold text-white mb-4">Immutable Origin</h3>
+                <p className="text-base text-white/60 leading-relaxed">
+                  Wild catch or farm-raised, every tuna batch is minted as a traceable UTxO on Cardano from day one. Not a database entry. Not a PDF. A cryptographic proof that survives forever, even if the company disappears.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
+              className="group relative"
+            >
+              {/* Glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-gold/20 to-gold/0 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
+              
+              {/* Card */}
+              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-gold/30 hover:border-gold/60 transition-all duration-300 backdrop-blur-sm h-full">
+                <h3 className="text-2xl font-bold text-white mb-4">Zero-Trust Verification</h3>
+                <p className="text-base text-white/60 leading-relaxed">
+                  No central server to hack. No admin panel to fake. Every datum, location, weight, certificate hash, lives on-chain. Reconstruct the full supply chain from any Cardano explorer using just the batch ID. We can't alter history even if we wanted to.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
-      </section>
-
-      {/* ─── TECH HIGHLIGHTS ─── */}
-      <section className="relative px-6 md:px-10 py-20 bg-gradient-to-b from-[#0a1628] to-[#0c1f3a]">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-14"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Built on Cardano</h2>
-            <p className="text-white/40">Enterprise-grade blockchain infrastructure</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              {
-                icon: <ShieldCheck className="w-6 h-6 text-green" />,
-                title: "CIP-68 Standard",
-                desc: "Reference and user token pairs ensure each product has a unique, traceable on-chain identity.",
-              },
-              {
-                icon: <Fish className="w-6 h-6 text-ocean" />,
-                title: "Immutable Trace",
-                desc: "Every stage — hatchery, growout, catch, processing — is written as typed inline datums.",
-              },
-              {
-                icon: <QrCode className="w-6 h-6 text-gold" />,
-                title: "Consumer Friendly",
-                desc: "No wallet needed. Scan a QR code to instantly verify origin and journey.",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-6 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-start gap-4 hover:border-white/[0.1] transition-colors"
-              >
-                <div className="w-10 h-10 rounded-lg bg-white/[0.04] flex items-center justify-center shrink-0">
-                  {item.icon}
-                </div>
-                <div>
-                  <h3 className="text-base font-semibold text-white mb-1">{item.title}</h3>
-                  <p className="text-sm text-white/35 leading-relaxed">{item.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── CTA ─── */}
-      <section
-        className="px-6 md:px-10 py-20 relative"
-        style={{
-          backgroundImage: "url(/Default_bg.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="absolute inset-0 bg-[#0a1628]/70" />
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="relative z-10 max-w-2xl mx-auto text-center p-10 rounded-3xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-sm"
-        >
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-            Ready to see the full trace?
-          </h2>
-          <p className="text-white/40 mb-8 max-w-md mx-auto">
-            Explore the complete journey of batch MOTN3042 — from hatchery and
-            catch to 5,440 cans, all verified on-chain.
-          </p>
-          <button
-            onClick={handleTraceClick}
-            className="px-8 py-3.5 rounded-xl bg-ocean text-white font-semibold hover:bg-ocean/80 transition-colors shadow-lg shadow-ocean/20"
-          >
-            Start Tracing →
-          </button>
-        </motion.div>
       </section>
     </div>
   );
