@@ -1,41 +1,119 @@
-//// CIP-68-based supply chain types for tuna tracing.
+// TORO — Traceable Supply Chain Datum Types
+//
+// Two independent trace chains converge at final product:
+//   Station A (Farm):   Hatchery → Nursery → Growout → HarvestTransport → FarmProcessing
+//   Station B (Catch):  CatchIce → PortLanding → TransportPlant → CatchProcessing
+//   Final:              Product merge of both chains
 
-/// CIP-68 reference token prefix (4 bytes).
-pub const ref_prefix = #"000643b0"
+// ---------------------------------------------------------------------------
+// Station A — Farm
+// ---------------------------------------------------------------------------
 
-/// CIP-68 user token prefix (4 bytes).
-pub const usr_prefix = #"000de140"
-
-/// Datum stored with the CIP-68 reference token at each station.
-pub type TraceDatum {
-  batch_id: ByteArray,
-  product_name: ByteArray,
-  stage: ByteArray,
-  station_id: ByteArray,
-  timestamp: Int,
-  /// TODO: upgrade to List<ByteArray> + min_signers for m-of-n multisig.
-  signer_pkh: ByteArray,
+pub type HatcheryDatum {
+    batch_id: ByteArray,
+    egg_weight_kg: Int,
+    hatchery_location: ByteArray,
+    spawn_date: ByteArray,
+    supplier_profile_hash: ByteArray,
 }
 
-/// Datum for the final canned product public UTxO.
+pub type NurseryDatum {
+    prev_tx: ByteArray,
+    fry_weight_kg: Int,
+    survival_rate_pct: Int,
+    pond_id: ByteArray,
+    feed_type_hash: ByteArray,
+}
+
+pub type GrowoutDatum {
+    prev_tx: ByteArray,
+    fish_weight_kg: Int,
+    density_per_m3: Int,
+    harvest_date: ByteArray,
+    antibiotic_free_cert_hash: ByteArray,
+}
+
+pub type HarvestTransportDatum {
+    prev_tx: ByteArray,
+    shipped_weight_kg: Int,
+    ice_temp_c: Int,
+    truck_id: ByteArray,
+    arrival_time: ByteArray,
+}
+
+pub type FarmProcessingDatum {
+    prev_tx: ByteArray,
+    input_weight_kg: Int,
+    output_cans: Int,
+    wastage_kg: Int,
+    supervisor_id: ByteArray,
+}
+
+// ---------------------------------------------------------------------------
+// Station B — Catch
+// ---------------------------------------------------------------------------
+
+pub type CatchIceDatum {
+    batch_id: ByteArray,
+    catch_weight_kg: Int,
+    catch_location_latlon_hash: ByteArray,
+    fishing_method: ByteArray,
+    vessel_id: ByteArray,
+    catch_date: ByteArray,
+}
+
+pub type PortLandingDatum {
+    prev_tx: ByteArray,
+    landed_weight_kg: Int,
+    port_name: ByteArray,
+    cold_storage_temp: Int,
+    quality_cert_hash: ByteArray,
+}
+
+pub type TransportPlantDatum {
+    prev_tx: ByteArray,
+    shipped_weight_kg: Int,
+    container_id: ByteArray,
+    transit_time_hours: Int,
+    storage_condition_hash: ByteArray,
+}
+
+pub type CatchProcessingDatum {
+    prev_tx: ByteArray,
+    input_weight_kg: Int,
+    output_cans: Int,
+    wastage_kg: Int,
+    supervisor_id: ByteArray,
+}
+
+// ---------------------------------------------------------------------------
+// Final Product
+// ---------------------------------------------------------------------------
+
 pub type FinalProductDatum {
-  batch_ids: List<ByteArray>,
-  can_count: Int,
-  timestamp: Int,
+    prev_tx_a: ByteArray,
+    prev_tx_b: ByteArray,
+    total_cans: Int,
+    farm_cans: Int,
+    catch_cans: Int,
+    batch_label: ByteArray,
+    packaging_date: ByteArray,
+    distribution_center: ByteArray,
 }
 
-/// Factory minting redeemer.
-pub type FactoryAction {
-  CreateBatch { batch_id: ByteArray }
-}
+// ---------------------------------------------------------------------------
+// Unified trace datum — union of all stage types
+// ---------------------------------------------------------------------------
 
-/// Station spending redeemer.
-pub type StationAction {
-  UpdateTrace { new_stage: ByteArray, new_timestamp: Int }
-  HandoverToMerger
-}
-
-/// Merger spending redeemer.
-pub type MergerAction {
-  Finalize { can_count: Int }
+pub type TraceDatum {
+    Hatchery { batch_id: ByteArray, egg_weight_kg: Int, hatchery_location: ByteArray, spawn_date: ByteArray, supplier_profile_hash: ByteArray }
+    Nursery { prev_tx: ByteArray, fry_weight_kg: Int, survival_rate_pct: Int, pond_id: ByteArray, feed_type_hash: ByteArray }
+    Growout { prev_tx: ByteArray, fish_weight_kg: Int, density_per_m3: Int, harvest_date: ByteArray, antibiotic_free_cert_hash: ByteArray }
+    HarvestTransport { prev_tx: ByteArray, shipped_weight_kg: Int, ice_temp_c: Int, truck_id: ByteArray, arrival_time: ByteArray }
+    FarmProcessing { prev_tx: ByteArray, input_weight_kg: Int, output_cans: Int, wastage_kg: Int, supervisor_id: ByteArray }
+    CatchIce { batch_id: ByteArray, catch_weight_kg: Int, catch_location_latlon_hash: ByteArray, fishing_method: ByteArray, vessel_id: ByteArray, catch_date: ByteArray }
+    PortLanding { prev_tx: ByteArray, landed_weight_kg: Int, port_name: ByteArray, cold_storage_temp: Int, quality_cert_hash: ByteArray }
+    TransportPlant { prev_tx: ByteArray, shipped_weight_kg: Int, container_id: ByteArray, transit_time_hours: Int, storage_condition_hash: ByteArray }
+    CatchProcessing { prev_tx: ByteArray, input_weight_kg: Int, output_cans: Int, wastage_kg: Int, supervisor_id: ByteArray }
+    FinalProduct { prev_tx_a: ByteArray, prev_tx_b: ByteArray, total_cans: Int, farm_cans: Int, catch_cans: Int, batch_label: ByteArray, packaging_date: ByteArray, distribution_center: ByteArray }
 }

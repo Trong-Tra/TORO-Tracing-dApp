@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "@lucid-evolution/lucid": "^0.4.30"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "mock": "tsx scripts/mock-flow.ts",
+    "deploy": "tsx scripts/deploy-testnet.ts",
+    "query": "tsx scripts/query-datums.ts",
+    "build:ts": "tsc --noEmit",
+    "check": "tsc --noEmit"
+  }
+}

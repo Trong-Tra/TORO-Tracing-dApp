@@ -1,16 +1,39 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { QrCode, Fish, Factory, ShieldCheck, ExternalLink, TrendingUp } from "lucide-react";
 import Can3D from "@/components/Can3D";
 
 export default function LandingPage() {
   const router = useRouter();
+  const [canHovered, setCanHovered] = useState(false);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showAnnotation = useCallback(() => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    setCanHovered(true);
+  }, []);
+
+  const hideAnnotation = useCallback(() => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setCanHovered(false);
+    }, 500);
+  }, []);
 
   const handleTraceClick = () => {
     router.push("/trace?batch=MOTN3042");
   };
+
+  // ── Annotation offset — tweak these two values to reposition
+  // the entire annotation (lines + dots + text) as a unit.
+  // Negative AX = move left, negative AY = move up.
+  const AX = -80;
+  const AY = -100;
 
   const stats = [
     {
@@ -55,7 +78,7 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-full">
       {/* ─── HERO SECTION ─── */}
       <section
-        className="relative min-h-screen flex flex-col justify-center overflow-hidden"
+        className="relative min-h-screen flex flex-col justify-center"
         style={{
           backgroundImage: "url(/Dark_bg.png)",
           backgroundSize: "cover",
@@ -77,7 +100,7 @@ export default function LandingPage() {
         </div>
 
         {/* Hero content */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pt-36 pb-8 flex-1 flex items-center">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pt-36 pb-14 flex-1 flex items-center">
           <div className="flex flex-col lg:flex-row items-center lg:items-center gap-10 lg:gap-12 w-full lg:justify-between">
             {/* LEFT: Text */}
             <div className="flex-1 lg:max-w-2xl">
@@ -151,10 +174,101 @@ export default function LandingPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="flex-shrink-0 w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[460px] h-[360px] sm:h-[420px] lg:h-[500px] relative"
+              className="flex-shrink-0 w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[460px] h-[420px] sm:h-[480px] lg:h-[560px] relative"
             >
               <div className="absolute inset-0 bg-ocean/10 blur-3xl rounded-full scale-75" />
-              <Can3D onCanClick={handleTraceClick} />
+              <Can3D onHoverChange={(h) => (h ? showAnnotation() : hideAnnotation())} />
+
+              {/* ── 2D Annotation overlay ── */}
+              {canHovered && (
+                <svg
+                  className="absolute inset-0 w-full h-full pointer-events-none"
+                  viewBox="0 0 460 500"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  {/* Line 1 — diagonal upward */}
+                  <motion.path
+                    d={`M ${300 + AX} ${240 + AY} L ${360 + AX} ${150 + AY}`}
+                    stroke="#3e96cc"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                  />
+                  {/* Line 2 — horizontal right */}
+                  <motion.path
+                    d={`M ${360 + AX} ${150 + AY} L ${440 + AX} ${150 + AY}`}
+                    stroke="#3e96cc"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.4, ease: "easeOut", delay: 0.35 }}
+                  />
+                  {/* Start dot */}
+                  {/* <motion.circle
+                    cx={300 + AX}
+                    cy={240 + AY}
+                    r="4"
+                    fill="#3e96cc"
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2, delay: 0.1 }}
+                  /> */}
+                  {/* Junction dot */}
+                  <motion.circle
+                    cx={360 + AX}
+                    cy={150 + AY}
+                    r="4"
+                    fill="#3e96cc"
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2, delay: 0.4 }}
+                  />
+                  {/* End dot */}
+                  <motion.circle
+                    cx={440 + AX}
+                    cy={150 + AY}
+                    r="4"
+                    fill="#3e96cc"
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2, delay: 0.7 }}
+                  />
+                </svg>
+              )}
+
+              {/* Clickable text label */}
+              {canHovered && (
+                <motion.div
+                  className="absolute pointer-events-auto cursor-pointer"
+                  style={{
+                    top: "8%",
+                    left: "63%",
+                  }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: 0.65, ease: "easeOut" }}
+                  onClick={handleTraceClick}
+                  onMouseEnter={showAnnotation}
+                  onMouseLeave={hideAnnotation}
+                >
+                  <span
+                    className="text-white text-[13px] font-medium whitespace-nowrap"
+                    style={{
+                      textDecoration: "underline",
+                      textUnderlineOffset: "3px",
+                      textDecorationColor: "#3e96cc",
+                      textDecorationThickness: "1.5px",
+                    }}
+                  >
+                    Learn about this can of tuna →
+                  </span>
+                </motion.div>
+              )}
             </motion.div>
           </div>
         </div>

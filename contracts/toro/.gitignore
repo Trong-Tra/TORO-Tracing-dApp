@@ -1,19 +1,19 @@
-# Aiken compilation artifacts
-artifacts/
-# Aiken's project working directory
+# Aiken build artifacts
 build/
-# Aiken's default documentation export
+artifacts/
 docs/
 
-# Node.js (not used for deployment)
+# Node.js dependencies (keep package.json & lock for the mock script)
 node_modules/
-package.json
-package-lock.json
 
-# Generated keys — NEVER commit private keys
+# Generated keys — NEVER commit these
 *.skey
 *.addr
 *.vkey
 
-# Deployment output
+# Deployment output / temp files
 deploy-out/
+deploy-manifest.json
+
+# env
+.env

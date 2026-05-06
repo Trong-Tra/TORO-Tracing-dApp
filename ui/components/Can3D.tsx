@@ -1,20 +1,14 @@
 "use client";
 
-import { useRef, useMemo, useState, useEffect, useCallback } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
 import * as THREE from "three";
 
-const CAN_RADIUS = 1.6;
-const CAN_HEIGHT = 1.3;
-const RIM_TUBE = 0.05;
-const LABEL_HEIGHT = 0.95;
-
-/* ─── Texture dimensions ───
- * Cylinder surface aspect ratio = circumference / height
- *   = (2π × 1.6) / 0.95 ≈ 10.58 : 1
- * 4096 × 384 → 10.67 : 1  (within 1% of target, no stretching)
- */
+const CAN_RADIUS = 1.1;
+const CAN_HEIGHT = 0.9;
+const RIM_TUBE = 0.04;
+const LABEL_HEIGHT = 0.65;
 const TEX_W = 4096;
 const TEX_H = 384;
 
@@ -30,7 +24,6 @@ function drawQR(
   const left = cx - size / 2;
   const top = cy - size / 2;
 
-  // Finder patterns (3 corners)
   const finder = (fx: number, fy: number) => {
     ctx.fillStyle = "#000";
     ctx.fillRect(left + fx * cs, top + fy * cs, 7 * cs, 7 * cs);
@@ -40,7 +33,6 @@ function drawQR(
   finder(cells - 7, 0);
   finder(0, cells - 7);
 
-  // Timing patterns
   for (let i = 7; i < cells - 7; i++) {
     if (i % 2 === 0) {
       ctx.fillStyle = "#000";
@@ -49,7 +41,6 @@ function drawQR(
     }
   }
 
-  // Data modules
   for (let r = 0; r < cells; r++) {
     for (let c = 0; c < cells; c++) {
       if (
@@ -77,13 +68,11 @@ function composeLabelTexture(tunaImg: HTMLImageElement): THREE.CanvasTexture {
   const ctx = canvas.getContext("2d")!;
   ctx.clearRect(0, 0, TEX_W, TEX_H);
 
-  // TUNA → QR → TUNA → QR
-  const tunaTargetH = TEX_H * 0.884; // +30%
+  const tunaTargetH = TEX_H * 0.884;
   const tunaScale = tunaTargetH / tunaImg.height;
   const tunaW = tunaImg.width * tunaScale;
   const tunaH = tunaImg.height * tunaScale;
-
-  const qrSize = TEX_H * 0.78; // +30%
+  const qrSize = TEX_H * 0.78;
 
   const centres = [512, 1536, 2560, 3584];
   centres.forEach((cx, i) => {
@@ -107,9 +96,7 @@ function createPlaceholderTexture(): THREE.CanvasTexture {
   const canvas = document.createElement("canvas");
   canvas.width = TEX_W;
   canvas.height = TEX_H;
-  const ctx = canvas.getContext("2d")!;
-  ctx.clearRect(0, 0, TEX_W, TEX_H);
-
+  canvas.getContext("2d")!.clearRect(0, 0, TEX_W, TEX_H);
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.anisotropy = 16;
@@ -119,9 +106,12 @@ function createPlaceholderTexture(): THREE.CanvasTexture {
   return tex;
 }
 
-/* ─── 3D Can Model ─── */
-
-function CanModel({ onClick }: { onClick: () => void }) {
+/* ─── 3D Can ─── */
+function CanModel({
+  onHoverChange,
+}: {
+  onHoverChange?: (hovered: boolean) => void;
+}) {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const [labelTex, setLabelTex] = useState<THREE.CanvasTexture>(() =>
@@ -130,16 +120,12 @@ function CanModel({ onClick }: { onClick: () => void }) {
   const [pinTex, setPinTex] = useState<THREE.Texture | null>(null);
 
   useEffect(() => {
-    // Load tuna image
     const tunaImg = new Image();
     tunaImg.crossOrigin = "anonymous";
     tunaImg.src = "/tuna_on_can.png";
-    tunaImg.onload = () => {
-      setLabelTex(composeLabelTexture(tunaImg));
-    };
+    tunaImg.onload = () => setLabelTex(composeLabelTexture(tunaImg));
     tunaImg.onerror = () => console.error("Failed to load /tuna_on_can.png");
 
-    // Load pin image
     const pinImg = new Image();
     pinImg.crossOrigin = "anonymous";
     pinImg.src = "/pin_on_tuna_can.png";
@@ -153,30 +139,29 @@ function CanModel({ onClick }: { onClick: () => void }) {
   }, []);
 
   useFrame((state) => {
-    if (groupRef.current) {
+    if (!groupRef.current) return;
+
+    // Only spin when not hovered
+    if (!hovered) {
       groupRef.current.rotation.y += 0.003;
-      groupRef.current.position.y =
-        Math.sin(state.clock.elapsedTime * 0.8) * 0.06;
-      const targetScale = hovered ? 1.04 : 1;
-      groupRef.current.scale.setScalar(
-        THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale, 0.1)
-      );
     }
+
+    // Gentle float animation (kept regardless of hover)
+    const floatY = Math.sin(state.clock.elapsedTime * 0.8) * 0.06;
+    groupRef.current.position.y = floatY;
   });
 
-  const handlePointerOver = useCallback(() => {
+  const handlePointerOver = () => {
     setHovered(true);
-    document.body.style.cursor = "pointer";
-  }, []);
+    onHoverChange?.(true);
+    document.body.style.cursor = "grab";
+  };
 
-  const handlePointerOut = useCallback(() => {
+  const handlePointerOut = () => {
     setHovered(false);
+    onHoverChange?.(false);
     document.body.style.cursor = "auto";
-  }, []);
-
-  const handleClick = useCallback(() => {
-    onClick();
-  }, [onClick]);
+  };
 
   const silverMat = useMemo(
     () =>
@@ -191,17 +176,14 @@ function CanModel({ onClick }: { onClick: () => void }) {
   return (
     <group
       ref={groupRef}
-      onClick={handleClick}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
-      {/* Silver body */}
       <mesh position={[0, 0, 0]}>
         <cylinderGeometry args={[CAN_RADIUS, CAN_RADIUS, CAN_HEIGHT, 64]} />
         <meshStandardMaterial color="#d0d0d0" metalness={0.7} roughness={0.3} />
       </mesh>
 
-      {/* Print layer */}
       <mesh position={[0, 0, 0]}>
         <cylinderGeometry
           args={[
@@ -224,7 +206,6 @@ function CanModel({ onClick }: { onClick: () => void }) {
         />
       </mesh>
 
-      {/* Top rim */}
       <mesh
         position={[0, CAN_HEIGHT / 2, 0]}
         rotation={[Math.PI / 2, 0, 0]}
@@ -233,7 +214,6 @@ function CanModel({ onClick }: { onClick: () => void }) {
         <primitive object={silverMat} attach="material" />
       </mesh>
 
-      {/* Bottom rim */}
       <mesh
         position={[0, -CAN_HEIGHT / 2, 0]}
         rotation={[Math.PI / 2, 0, 0]}
@@ -242,7 +222,6 @@ function CanModel({ onClick }: { onClick: () => void }) {
         <primitive object={silverMat} attach="material" />
       </mesh>
 
-      {/* Top lid */}
       <mesh
         position={[0, CAN_HEIGHT / 2 - 0.02, 0]}
         rotation={[Math.PI / 2, 0, 0]}
@@ -251,7 +230,6 @@ function CanModel({ onClick }: { onClick: () => void }) {
         <meshStandardMaterial color="#b8b8b8" metalness={0.9} roughness={0.2} />
       </mesh>
 
-      {/* Bottom lid */}
       <mesh
         position={[0, -CAN_HEIGHT / 2, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
@@ -260,13 +238,12 @@ function CanModel({ onClick }: { onClick: () => void }) {
         <primitive object={silverMat} attach="material" />
       </mesh>
 
-      {/* Pin / pull-tab on top surface, shifted toward rim */}
       {pinTex && (
         <mesh
           position={[0, CAN_HEIGHT / 2 + 0.015, 0.55]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <planeGeometry args={[0.8, 1.2]} />
+          <planeGeometry args={[0.6, 0.8]} />
           <meshStandardMaterial
             map={pinTex}
             transparent
@@ -282,24 +259,24 @@ function CanModel({ onClick }: { onClick: () => void }) {
   );
 }
 
-/* ─── Scene ─── */
-
-function Scene({ onCanClick }: { onCanClick: () => void }) {
+function Scene({ onHoverChange }: { onHoverChange?: (hovered: boolean) => void }) {
   return (
     <>
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 5]} intensity={1.2} color="#ffffff" />
       <directionalLight position={[-3, -2, -3]} intensity={0.4} color="#3e96cc" />
       <pointLight position={[0, 3, 0]} intensity={0.6} color="#ffc354" />
-      <CanModel onClick={onCanClick} />
+      <CanModel onHoverChange={onHoverChange} />
       <Environment preset="city" />
     </>
   );
 }
 
-/* ─── Exported Component ─── */
-
-export default function Can3D({ onCanClick }: { onCanClick: () => void }) {
+export default function Can3D({
+  onHoverChange,
+}: {
+  onHoverChange?: (hovered: boolean) => void;
+}) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -316,8 +293,9 @@ export default function Can3D({ onCanClick }: { onCanClick: () => void }) {
 
   return (
     <div className="w-full h-full">
-      <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-        <Scene onCanClick={onCanClick} />
+      {/* fov lowered from 45 → 32: acts like zooming out, can fits without cropping */}
+      <Canvas camera={{ position: [0, 0.4, 5.5], fov: 36 }}>
+        <Scene onHoverChange={onHoverChange} />
         <OrbitControls
           enableZoom={false}
           enablePan={false}
