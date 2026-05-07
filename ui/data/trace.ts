@@ -7,6 +7,7 @@ export type TraceStage = {
   tx: string;
   details: Record<string, string | number>;
   icon: string;
+  cardanoLinks?: Array<{ name: string; url: string }>;
 };
 
 export type TraceChain = {
@@ -14,6 +15,7 @@ export type TraceChain = {
   subtitle: string;
   color: string;
   stages: TraceStage[];
+  cardanoLinks?: Array<{ name: string; url: string }>;
 };
 
 export const TRACE_DATA: { farm: TraceChain; catch: TraceChain; final: TraceStage } = {
@@ -79,6 +81,12 @@ export const TRACE_DATA: { farm: TraceChain; catch: TraceChain; final: TraceStag
         icon: "factory",
       },
     ],
+    cardanoLinks: [
+      {
+        name: "Farm Tx",
+        url: "https://preview.cardanoscan.io/transaction/96d4aebc8cfa993291f6d394f03a36f86d7f8b45c7f13f2dfa2a60ee26b661c2",
+      },
+    ],
   },
   catch: {
     label: "Catch Source",
@@ -131,6 +139,12 @@ export const TRACE_DATA: { farm: TraceChain; catch: TraceChain; final: TraceStag
         icon: "factory",
       },
     ],
+    cardanoLinks: [
+      {
+        name: "Catch Tx",
+        url: "https://preview.cardanoscan.io/transaction/3dbc9f59dbeff29c37e49b47f88e395dbf9d1cd1984751dbcd3c74d48f6fa7d0",
+      },
+    ],
   },
   final: {
     stage: "Final Product",
@@ -144,6 +158,16 @@ export const TRACE_DATA: { farm: TraceChain; catch: TraceChain; final: TraceStag
       "Distribution": "Bangkok Distribution Center",
     },
     icon: "package",
+    cardanoLinks: [
+      {
+        name: "Token Policy",
+        url: `https://preview.cardanoscan.io/tokenPolicy/${POLICY_ID}`,
+      },
+      {
+        name: "Final Tx",
+        url: `https://preview.cardanoscan.io/transaction/eca789f0602d513ca78c1154d406ac96404d4e224d084e778a80fa2769d0065b`,
+      },
+    ],
   },
 };
 
