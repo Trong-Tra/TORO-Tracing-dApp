@@ -118,22 +118,6 @@ export default function TracePage() {
               )}
             </div>
           </motion.div>
-
-          {/* Available Products Info */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-white/40 text-sm"
-          >
-            {filteredProducts.length > 0 ? (
-              <p>{filteredProducts.length} product(s) found</p>
-            ) : searchQuery ? (
-              <p>No products match your search</p>
-            ) : (
-              <p>Type a batch ID to explore</p>
-            )}
-          </motion.div>
         </div>
       </section>
 
