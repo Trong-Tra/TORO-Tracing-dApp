@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .next
+
+# DS file 
+*.DS_Store
