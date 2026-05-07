@@ -47,36 +47,24 @@ export default function Navbar() {
           >
             Home
           </Link>
-          <Link
-            href="/docs"
-            className={`transition-colors no-underline font-medium ${
-              pathname === "/docs"
-                ? "text-white"
-                : "text-white/50 hover:text-white"
-            }`}
+          <a
+            href="/#docs"
+            className="transition-colors no-underline font-medium text-white/50 hover:text-white"
           >
             Docs
-          </Link>
-          <Link
-            href="/about"
-            className={`transition-colors no-underline font-medium ${
-              pathname === "/about"
-                ? "text-white"
-                : "text-white/50 hover:text-white"
-            }`}
+          </a>
+          <a
+            href="/#about"
+            className="transition-colors no-underline font-medium text-white/50 hover:text-white"
           >
             About
-          </Link>
-          <Link
-            href="/team"
-            className={`transition-colors no-underline font-medium ${
-              pathname === "/team"
-                ? "text-white"
-                : "text-white/50 hover:text-white"
-            }`}
+          </a>
+          <a
+            href="/#team"
+            className="transition-colors no-underline font-medium text-white/50 hover:text-white"
           >
             Team
-          </Link>
+          </a>
         </div>
 
         {/* Right CTAs */}

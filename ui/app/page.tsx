@@ -310,7 +310,7 @@ export default function LandingPage() {
       </div>
 
       {/* ─── WHY TORO ─── */}
-      <section className="relative px-6 md:px-10 py-24 bg-gradient-to-br from-[#0a1628] via-[#0c1f3a] to-[#0a1628] overflow-hidden">
+      <section id="about" className="relative px-6 md:px-10 py-24 bg-gradient-to-br from-[#0a1628] via-[#0c1f3a] to-[#0a1628] overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-96 h-96 bg-ocean/5 rounded-full blur-3xl" />
@@ -368,6 +368,61 @@ export default function LandingPage() {
                 </p>
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── HOW TORO WORK ─── */}
+      <section className="relative px-6 md:px-10 py-12 bg-[#0a1628]">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="w-full rounded-2xl overflow-hidden"
+          >
+            <img 
+              src="/HowTORO.png" 
+              alt="How TORO Works" 
+              className="w-full h-auto object-cover"
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ─── TEAM ─── */}
+      <section id="team" className="relative px-6 md:px-10 py-20 bg-[#0a1628]">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Team</h2>
+            <p className="text-white/40 max-w-2xl mx-auto text-lg">
+              Building the future of seafood traceability
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            {[...Array(4)].map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="flex flex-col items-center gap-4"
+              >
+                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-ocean/30 to-gold/20 border border-white/10 flex items-center justify-center group hover:border-white/30 transition-all duration-300">
+                  <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-white/5 border border-white/5" />
+                </div>
+                <div className="text-center h-12">
+                  <p className="text-white/40 text-sm">Member {i + 1}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
