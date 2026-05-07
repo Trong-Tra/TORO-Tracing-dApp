@@ -129,10 +129,11 @@ export default function LandingPage() {
                 transition={{ duration: 0.8, delay: 0.1 }}
                 className="text-4xl sm:text-5xl lg:text-[3.4rem] xl:text-6xl font-bold text-white leading-[1.1] mb-4"
               >
-                Trustless Oceanic
+                <span className="text-ocean">T</span>rustless 
+                <span className="text-ocean">O</span>ceanic
                 <br />
-                Record of{" "}
-                <span className="text-ocean">Origin</span>
+                <span className="text-ocean">R</span>ecord of{" "}
+                <span className="text-ocean">O</span>rigin
               </motion.h1>
 
               <motion.p
@@ -141,7 +142,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="text-base text-white/40 mb-5 font-mono tracking-wide"
               >
-                T.O.R.O. — Traceability Platform for Seafood Supply Chains
+                Traceability Platform for Seafood Supply Chains
               </motion.p>
 
               <motion.p

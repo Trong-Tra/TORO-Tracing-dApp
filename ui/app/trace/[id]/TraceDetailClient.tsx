@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import TunaSchoolImages from "@/components/TunaSchoolImages";
 import { TRACE_DATA } from "@/data/trace";
 
@@ -287,22 +287,34 @@ export default function TraceDetailClient() {
                           }}
                         />
 
-                        {/* Stage circle */}
-                        <motion.button
-                          onClick={() => handleStageToggle(idx)}
-                          whileHover={{ scale: 1.06 }}
-                          className={[
-                            "w-28 h-28 rounded-full border-2 bg-white/5 backdrop-blur",
-                            "flex items-center justify-center cursor-pointer",
-                            "transition-all duration-200 text-xs font-semibold",
-                            "text-white text-center leading-tight px-3",
-                            selectedStage === idx
-                              ? "border-ocean bg-ocean/15"
-                              : "border-white/30 hover:border-ocean/60 hover:bg-white/10",
-                          ].join(" ")}
-                        >
-                          {stage.stage}
-                        </motion.button>
+                        {/* Stage circle + external link */}
+                        <div className="flex items-center gap-3">
+                          <motion.button
+                            onClick={() => handleStageToggle(idx)}
+                            whileHover={{ scale: 1.06 }}
+                            className={[
+                              "w-28 h-28 rounded-full border-2 bg-white/5 backdrop-blur",
+                              "flex items-center justify-center cursor-pointer",
+                              "transition-all duration-200 text-xs font-semibold",
+                              "text-white text-center leading-tight px-3",
+                              selectedStage === idx
+                                ? "border-ocean bg-ocean/15"
+                                : "border-white/30 hover:border-ocean/60 hover:bg-white/10",
+                            ].join(" ")}
+                          >
+                            {stage.stage}
+                          </motion.button>
+                          <a
+                            href={`https://preview.cardanoscan.io/transaction/${stage.tx}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-ocean/50 hover:text-ocean transition-colors"
+                            title="View transaction on Cardanoscan"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                        </div>
 
                         {/* Expandable detail panel */}
                         <AnimatePresence>
@@ -330,22 +342,29 @@ export default function TraceDetailClient() {
                                     </div>
                                   ))}
                                 </div>
-                                {stage.cardanoLinks && stage.cardanoLinks.length > 0 && (
-                                  <div className="mt-4 pt-4 border-t border-white/[0.06] flex flex-wrap gap-2">
-                                    {stage.cardanoLinks.map((link) => (
-                                      <a
-                                        key={link.name}
-                                        href={link.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-ocean/10 border border-ocean/30 text-ocean hover:bg-ocean/20 transition-all text-xs font-medium"
-                                      >
-                                        {link.name}
-                                        <ArrowLeft className="w-3 h-3 rotate-180" />
-                                      </a>
-                                    ))}
-                                  </div>
-                                )}
+                                <div className="mt-4 pt-4 border-t border-white/[0.06] flex flex-wrap gap-2">
+                                  <a
+                                    href={`https://preview.cardanoscan.io/transaction/${stage.tx}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-ocean/10 border border-ocean/30 text-ocean hover:bg-ocean/20 transition-all text-xs font-medium"
+                                  >
+                                    View on Cardanoscan
+                                    <ExternalLink className="w-3 h-3" />
+                                  </a>
+                                  {stage.cardanoLinks?.map((link) => (
+                                    <a
+                                      key={link.name}
+                                      href={link.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-ocean/10 border border-ocean/30 text-ocean hover:bg-ocean/20 transition-all text-xs font-medium"
+                                    >
+                                      {link.name}
+                                      <ExternalLink className="w-3 h-3" />
+                                    </a>
+                                  ))}
+                                </div>
                               </div>
                             </motion.div>
                           )}
