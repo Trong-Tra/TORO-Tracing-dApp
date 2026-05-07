@@ -36,9 +36,9 @@ export default function TracePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0a1628]">
+    <div className="flex flex-col min-h-screen bg-[#0a1628] pt-20">
       {/* Hero Section */}
-      <section className="relative px-6 md:px-10 py-20 md:py-32 bg-gradient-to-b from-[#0c1f3a] to-[#0a1628]">
+      <section className="relative px-6 md:px-10 py-12 md:py-16 bg-gradient-to-b from-[#0c1f3a] to-[#0a1628]">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-20 right-0 w-96 h-96 bg-ocean/5 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
@@ -63,7 +63,7 @@ export default function TracePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative mb-8"
+            className="relative mb-4"
           >
             <div
               className={`relative max-w-2xl mx-auto transition-all duration-300 ${
@@ -122,7 +122,7 @@ export default function TracePage() {
       </section>
 
       {/* Featured Products */}
-      <section className="px-6 md:px-10 py-20">
+      <section className="px-6 md:px-10 py-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -46,6 +46,24 @@ export default function LandingPage() {
     },
   ];
 
+  const partners = [
+    "/partner/Blockyouth.png",
+    "/partner/Cardano.png",
+    "/partner/Ezai.png",
+    "/partner/HIEC.png",
+    "/partner/Hub.png",
+    "/partner/NIIC.png",
+    "/partner/NJEC.png",
+    "/partner/NTT.png",
+    "/partner/NetCorp.png",
+    "/partner/Teen Innovation.png",
+    "/partner/UISC.png",
+    "/partner/UniLab.png",
+    "/partner/Vcioncheck.png",
+    "/partner/bitget.png",
+    "/partner/ihub.png",
+  ];
+
   const features = [
     {
       icon: <Fish className="w-8 h-8 text-ocean" />,
@@ -293,13 +311,21 @@ export default function LandingPage() {
               
               {/* Scrolling partners */}
               <div className="flex-1 overflow-hidden">
-                <div className="flex gap-3 md:gap-4 animate-scroll">
-                  {[...Array(12)].map((_, i) => (
+                <div
+                  className="flex gap-6 md:gap-8 animate-scroll"
+                  style={{ animationDuration: "40s" }}
+                >
+                  {[...partners, ...partners].map((logo, i) => (
                     <div
-                      key={i}
-                      className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-gold/30 to-orange/20 border border-gold/30 flex items-center justify-center"
+                      key={`partner-${i}`}
+                      className="flex-shrink-0 h-8 md:h-10 flex items-center justify-center px-1"
                     >
-                      <Fish className="w-6 h-6 md:w-8 md:h-8 text-gold" />
+                      <img
+                        src={logo}
+                        alt=""
+                        draggable={false}
+                        className="h-full w-auto max-w-[120px] object-contain opacity-60 hover:opacity-100 transition-opacity duration-300"
+                      />
                     </div>
                   ))}
                 </div>
