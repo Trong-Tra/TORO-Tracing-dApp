@@ -51,7 +51,7 @@ export default function TracePage() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-              Trace Explorer
+              TORO Product Explorer
             </h1>
             <p className="text-lg md:text-xl text-white/50 mb-12">
               Know Your Product Origin
