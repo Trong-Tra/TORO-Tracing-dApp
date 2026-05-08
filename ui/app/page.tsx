@@ -65,10 +65,10 @@ export default function LandingPage() {
   ];
 
   const team = [
-    { name: "Blockchain", image: "/team-mascot/Blockchain.png", role: "Smart Contracts & On-chain Logic" },
-    { name: "BA", image: "/team-mascot/BA.png", role: "Business Analysis & Strategy" },
-    { name: "Graph", image: "/team-mascot/Graph.png", role: "Data Architecture & Indexing" },
-    { name: "Web-app", image: "/team-mascot/Web-app.png", role: "Frontend & User Experience" },
+    { name: "Tron", image: "/team-mascot/Blockchain.png", twitter: "https://x.com/Trx_Tra" },
+    { name: "Chau", image: "/team-mascot/BA.png", twitter: "https://x.com/ChowThanks" },
+    { name: "Hoang", image: "/team-mascot/Graph.png", twitter: "" },
+    { name: "Duy", image: "/team-mascot/Web-app.png", twitter: "" },
   ];
 
   return (
@@ -460,22 +460,23 @@ export default function LandingPage() {
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2">
                     <h3 className="text-white font-bold text-lg">{member.name}</h3>
-                    <a 
-                      href="#" 
-                      className="text-white/40 hover:text-white transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <svg 
-                        viewBox="0 0 512 512" 
-                        className="w-4 h-4" 
-                        fill="currentColor"
+                    {member.twitter && (
+                      <a 
+                        href={member.twitter} 
+                        className="text-white/40 hover:text-white transition-colors"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
-                      </svg>
-                    </a>
+                        <svg 
+                          viewBox="0 0 512 512" 
+                          className="w-4 h-4" 
+                          fill="currentColor"
+                        >
+                          <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+                        </svg>
+                      </a>
+                    )}
                   </div>
-                  <p className="text-white/40 text-xs md:text-sm mt-1">{member.role}</p>
                 </div>
               </motion.div>
             ))}
