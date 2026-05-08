@@ -118,7 +118,8 @@ export default function LandingPage() {
                 transition={{ duration: 0.8, delay: 0.1 }}
                 className="text-4xl sm:text-5xl lg:text-[3.4rem] xl:text-6xl font-bold text-white leading-[1.1] mb-4"
               >
-                <span className="text-ocean">T</span>rustless 
+                <span className="text-ocean">T</span>rustless
+                <br />
                 <span className="text-ocean">O</span>ceanic
                 <br />
                 <span className="text-ocean">R</span>ecord of{" "}
