@@ -64,22 +64,11 @@ export default function LandingPage() {
     "/partner/ihub.png",
   ];
 
-  const features = [
-    {
-      icon: <Fish className="w-8 h-8 text-ocean" />,
-      title: "Catch",
-      desc: "Wild-caught or farm-raised, every batch starts with verified origin data on Cardano.",
-    },
-    {
-      icon: <Factory className="w-8 h-8 text-gold" />,
-      title: "Process",
-      desc: "From ice to can — each stage is recorded immutably using CIP-68 standard.",
-    },
-    {
-      icon: <QrCode className="w-8 h-8 text-green" />,
-      title: "Verify",
-      desc: "Scan the QR code on any TORO can to see the full chain of custody instantly.",
-    },
+  const team = [
+    { name: "Blockchain", image: "/team-mascot/Blockchain.png", role: "Smart Contracts & On-chain Logic" },
+    { name: "BA", image: "/team-mascot/BA.png", role: "Business Analysis & Strategy" },
+    { name: "Graph", image: "/team-mascot/Graph.png", role: "Data Architecture & Indexing" },
+    { name: "Web-app", image: "/team-mascot/Web-app.png", role: "Frontend & User Experience" },
   ];
 
   return (
@@ -394,14 +383,23 @@ export default function LandingPage() {
                   No central server to hack. No admin panel to fake. Every datum, location, weight, certificate hash, lives on-chain. Reconstruct the full supply chain from any Cardano explorer using just the batch ID. We can't alter history even if we wanted to.
                 </p>
               </div>
+              
+              {/* Mascot */}
+              <div className="absolute -bottom-20 -right-20 w-32 h-32 md:w-40 md:h-40 pointer-events-none">
+                <img 
+                  src="/TORO-mascot-about-section.png" 
+                  alt="TORO Mascot" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* ─── HOW TORO WORK ─── */}
-      <section className="relative px-6 md:px-10 py-12 bg-[#0a1628]">
-        <div className="max-w-6xl mx-auto">
+      <section className="relative px-6 md:px-10 py-24 bg-[#0a1628] overflow-visible">
+        <div className="max-w-6xl mx-auto relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -414,6 +412,15 @@ export default function LandingPage() {
               className="w-full h-auto object-cover"
             />
           </motion.div>
+          
+          {/* Mascot */}
+          <div className="absolute -bottom-24 -right-24 w-40 h-40 md:w-48 md:h-48 pointer-events-none">
+            <img 
+              src="/TORO-mascot-howto-section.png" 
+              alt="TORO Mascot" 
+              className="w-full h-full object-contain"
+            />
+          </div>
         </div>
       </section>
 
@@ -432,8 +439,8 @@ export default function LandingPage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            {[...Array(4)].map((_, i) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+            {team.map((member, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
@@ -442,11 +449,33 @@ export default function LandingPage() {
                 transition={{ delay: i * 0.1 }}
                 className="flex flex-col items-center gap-4"
               >
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-ocean/30 to-gold/20 border border-white/10 flex items-center justify-center group hover:border-white/30 transition-all duration-300">
-                  <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-white/5 border border-white/5" />
+                <div className="relative w-32 h-32 md:w-44 md:h-44 rounded-full bg-gradient-to-br from-ocean/30 to-gold/20 border border-white/10 flex items-center justify-center group hover:border-white/30 transition-all duration-300 overflow-hidden">
+                  <div className="absolute inset-0 bg-white/5 backdrop-blur-sm" />
+                  <img 
+                    src={member.image} 
+                    alt={member.name}
+                    className="relative z-10 w-full h-full object-cover scale-125 group-hover:scale-140 transition-transform duration-500"
+                  />
                 </div>
-                <div className="text-center h-12">
-                  <p className="text-white/40 text-sm">Member {i + 1}</p>
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <h3 className="text-white font-bold text-lg">{member.name}</h3>
+                    <a 
+                      href="#" 
+                      className="text-white/40 hover:text-white transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <svg 
+                        viewBox="0 0 512 512" 
+                        className="w-4 h-4" 
+                        fill="currentColor"
+                      >
+                        <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+                      </svg>
+                    </a>
+                  </div>
+                  <p className="text-white/40 text-xs md:text-sm mt-1">{member.role}</p>
                 </div>
               </motion.div>
             ))}
