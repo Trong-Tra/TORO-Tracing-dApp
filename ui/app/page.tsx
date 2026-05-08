@@ -26,7 +26,7 @@ export default function LandingPage() {
   }, []);
 
   const handleTraceClick = () => {
-    router.push("/trace?batch=MOTN3042");
+    router.push("/trace/MOTN3042");
   };
 
   // ── Annotation offset — tweak these two values to reposition
@@ -346,7 +346,7 @@ export default function LandingPage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -371,6 +371,25 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.15 }}
+              className="group relative"
+            >
+              {/* Glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-gold/20 to-gold/0 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
+              
+              {/* Card */}
+              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-gold/30 hover:border-gold/60 transition-all duration-300 backdrop-blur-sm h-full">
+                <h3 className="text-2xl font-bold text-white mb-4">Cardano Deflationary Engine</h3>
+                <p className="text-base text-white/60 leading-relaxed">
+                  TORO doesn't just use Cardano. Every final product UTxO permanently locks ADA in an immutable script, removing supply from circulation forever. Every trace transaction pays fees, validates blocks, and keeps the network alive. We turned tuna cans into a deflationary engine for ADA.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
               className="group relative"
             >
               {/* Glow effect */}
