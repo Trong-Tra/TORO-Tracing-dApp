@@ -4,6 +4,7 @@ import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
 import * as THREE from "three";
+import QRCode from "qrcode";
 
 const CAN_RADIUS = 1.1;
 const CAN_HEIGHT = 0.9;
@@ -12,56 +13,25 @@ const LABEL_HEIGHT = 0.65;
 const TEX_W = 4096;
 const TEX_H = 384;
 
-/* ─── QR code painter ─── */
-function drawQR(
-  ctx: CanvasRenderingContext2D,
-  cx: number,
-  cy: number,
-  size: number
-) {
-  const cells = 21;
-  const cs = size / cells;
-  const left = cx - size / 2;
-  const top = cy - size / 2;
-
-  const finder = (fx: number, fy: number) => {
-    ctx.fillStyle = "#000";
-    ctx.fillRect(left + fx * cs, top + fy * cs, 7 * cs, 7 * cs);
-    ctx.fillRect(left + (fx + 2) * cs, top + (fy + 2) * cs, 3 * cs, 3 * cs);
-  };
-  finder(0, 0);
-  finder(cells - 7, 0);
-  finder(0, cells - 7);
-
-  for (let i = 7; i < cells - 7; i++) {
-    if (i % 2 === 0) {
-      ctx.fillStyle = "#000";
-      ctx.fillRect(left + i * cs, top + 6 * cs, cs, cs);
-      ctx.fillRect(left + 6 * cs, top + i * cs, cs, cs);
-    }
-  }
-
-  for (let r = 0; r < cells; r++) {
-    for (let c = 0; c < cells; c++) {
-      if (
-        (r < 7 && c < 7) ||
-        (r < 7 && c >= cells - 7) ||
-        (r >= cells - 7 && c < 7)
-      )
-        continue;
-      if (r === 6 || c === 6) continue;
-
-      const v = Math.sin(r * 3.7 + c * 2.3) * Math.cos(r * 1.1 - c * 4.1);
-      if (v > 0.12) {
-        ctx.fillStyle = "#000";
-        ctx.fillRect(left + c * cs, top + r * cs, cs, cs);
-      }
-    }
-  }
+/* ─── Generate real QR code ─── */
+async function generateQRCanvas(url: string): Promise<HTMLCanvasElement> {
+  const qrCanvas = document.createElement("canvas");
+  await QRCode.toCanvas(qrCanvas, url, {
+    width: 384,
+    margin: 0,
+    color: {
+      dark: "#000000",
+      light: "#d0d0d0", // Match the metallic can color
+    },
+  });
+  return qrCanvas;
 }
 
 /* ─── Compose repeating label ─── */
-function composeLabelTexture(tunaImg: HTMLImageElement): THREE.CanvasTexture {
+async function composeLabelTexture(
+  tunaImg: HTMLImageElement,
+  qrCanvas: HTMLCanvasElement
+): Promise<THREE.CanvasTexture> {
   const canvas = document.createElement("canvas");
   canvas.width = TEX_W;
   canvas.height = TEX_H;
@@ -79,7 +49,14 @@ function composeLabelTexture(tunaImg: HTMLImageElement): THREE.CanvasTexture {
     if (i % 2 === 0) {
       ctx.drawImage(tunaImg, cx - tunaW / 2, TEX_H / 2 - tunaH / 2, tunaW, tunaH);
     } else {
-      drawQR(ctx, cx, TEX_H / 2, qrSize);
+      // Draw the real QR code
+      ctx.drawImage(
+        qrCanvas,
+        cx - qrSize / 2,
+        TEX_H / 2 - qrSize / 2,
+        qrSize,
+        qrSize
+      );
     }
   });
 
@@ -120,11 +97,27 @@ function CanModel({
   const [pinTex, setPinTex] = useState<THREE.Texture | null>(null);
 
   useEffect(() => {
-    const tunaImg = new Image();
-    tunaImg.crossOrigin = "anonymous";
-    tunaImg.src = "/tuna_on_can.png";
-    tunaImg.onload = () => setLabelTex(composeLabelTexture(tunaImg));
-    tunaImg.onerror = () => console.error("Failed to load /tuna_on_can.png");
+    const loadAssets = async () => {
+      try {
+        // Generate QR code from URL
+        const qrCanvas = await generateQRCanvas(
+          "https://toro-dapp.vercel.app/trace/MOTN3042"
+        );
+
+        // Load tuna image
+        const tunaImg = new Image();
+        tunaImg.crossOrigin = "anonymous";
+        tunaImg.src = "/tuna_on_can.png";
+        
+        tunaImg.onload = async () => {
+          const tex = await composeLabelTexture(tunaImg, qrCanvas);
+          setLabelTex(tex);
+        };
+        tunaImg.onerror = () => console.error("Failed to load /tuna_on_can.png");
+      } catch (err) {
+        console.error("Failed to generate QR code:", err);
+      }
+    };
 
     const pinImg = new Image();
     pinImg.crossOrigin = "anonymous";
@@ -136,6 +129,8 @@ function CanModel({
       setPinTex(tex);
     };
     pinImg.onerror = () => console.error("Failed to load /pin_on_tuna_can.png");
+
+    loadAssets();
   }, []);
 
   useFrame((state) => {
