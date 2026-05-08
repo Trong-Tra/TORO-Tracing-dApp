@@ -68,7 +68,7 @@ export default function LandingPage() {
     { name: "Tron", image: "/team-mascot/Blockchain.png", twitter: "https://x.com/Trx_Tra" },
     { name: "Chau", image: "/team-mascot/BA.png", twitter: "https://x.com/ChowThanks" },
     { name: "Hoang", image: "/team-mascot/Graph.png", twitter: "" },
-    { name: "Duy", image: "/team-mascot/Web-app.png", twitter: "" },
+    { name: "Duy", image: "/team-mascot/Web-app.png", twitter: "https://x.com/DanDuy4" },
   ];
 
   return (
@@ -141,7 +141,7 @@ export default function LandingPage() {
                 className="text-base text-white/50 max-w-md mb-7 leading-relaxed"
               >
                 The next generation traceability platform. From ocean to shelf,
-                every tuna can is immutably verified on Cardano using CIP-68 standards.
+                every product is immutably verified on Cardano using CIP-68 standards.
               </motion.p>
 
               <motion.div
@@ -479,7 +479,7 @@ export default function LandingPage() {
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2">
                     <h3 className="text-white font-bold text-lg">{member.name}</h3>
-                    {member.twitter && (
+                    {member.twitter ? (
                       <a 
                         href={member.twitter} 
                         className="text-white/40 hover:text-white transition-colors"
@@ -494,6 +494,16 @@ export default function LandingPage() {
                           <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
                         </svg>
                       </a>
+                    ) : (
+                      <span className="text-white/20">
+                        <svg 
+                          viewBox="0 0 512 512" 
+                          className="w-4 h-4" 
+                          fill="currentColor"
+                        >
+                          <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+                        </svg>
+                      </span>
                     )}
                   </div>
                 </div>
