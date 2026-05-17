@@ -65,6 +65,16 @@ export default function Navbar() {
           >
             Team
           </a>
+          <Link
+            href="/trustgraph"
+            className={`transition-colors no-underline font-medium ${
+              pathname === "/trustgraph"
+                ? "text-white"
+                : "text-white/50 hover:text-white"
+            }`}
+          >
+            Whitepaper
+          </Link>
         </div>
 
         {/* Right CTAs */}
