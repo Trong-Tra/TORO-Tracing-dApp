@@ -12,40 +12,48 @@
 TORO uses a **two-layer on-chain architecture** for the investor demo:
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph OffChain["Off-Chain Layer (Lucid + Blockfrost)"]
+        direction TB
         DW[Deployer Wallet<br/>Lace / Eternl]
         LS[Lucid TSX Scripts<br/>mock-flow.ts / deploy-testnet.ts]
         BF[Blockfrost RPC Gateway]
+
+        DW -->|signs| LS
+        LS -->|submit / query| BF
     end
 
     subgraph OnChain["On-Chain Layer (Cardano)"]
+        direction TB
+
         subgraph Contracts["Smart Contracts"]
+            direction TB
             MP[Minting Policy<br/>PlutusV3]
             TS[Trace Script<br/>PlutusV2 always-true]
+            MP -->|mints CIP-68 pairs| TS
         end
 
         subgraph UTxOChain["UTxO Trace Chain"]
-            H[Hatchery]
-            N[Nursery]
-            G[Growout]
-            HV[Harvest]
-            P[Process]
-            F[Final Product]
+            direction LR
+            H[Stage 1<br/>Hatchery]
+            N[Stage 2<br/>Nursery]
+            G[Stage 3<br/>Growout]
+            HV[Stage 4<br/>Harvest]
+            P[Stage 5<br/>Process]
+            F[Stage N<br/>Final]
+
+            H -->|spend + create| N
+            N -->|spend + create| G
+            G -->|spend + create| HV
+            HV -->|spend + create| P
+            P -->|spend + create| F
         end
     end
 
-    DW -->|signs| LS
-    LS -->|submit / query| BF
+    OffChain --> OnChain
     BF -->|tx submission| MP
     BF -->|UTxO queries| TS
-    MP -->|mints CIP-68 pairs| TS
     TS -->|holds ref token + datum| H
-    H -->|spend + create| N
-    N -->|spend + create| G
-    G -->|spend + create| HV
-    HV -->|spend + create| P
-    P -->|spend + create| F
 ```
 
 **Key principle:** The blockchain is an **immutable audit log**, not a compute layer. All business logic (fraud detection, graph analytics, risk scoring) lives off-chain. The chain only stores **who did what, when, with cryptographic proof**.
