@@ -1,4 +1,7 @@
+// NOTE: Cardano/Aiken development is paused. This package is kept for reference only.
+// Active development has moved to EVM/Solidity in the ../evm/ directory.
 {
+  "_comment": "Cardano scripts paused. See ../evm/ for active EVM development.",
   "dependencies": {
     "@lucid-evolution/lucid": "^0.4.30"
   },

@@ -1,3 +1,6 @@
+// NOTE: Cardano/Aiken development is paused. This validator is kept for reference only.
+// Active development has moved to EVM/Solidity in the ../evm/ directory.
+
 use cardano/transaction.{Transaction}
 use cardano/assets.{PolicyId}
 

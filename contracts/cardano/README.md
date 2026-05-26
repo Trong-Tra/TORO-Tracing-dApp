@@ -1,5 +1,7 @@
 # TORO — Tuna Supply Chain Tracer
 
+> ⚠️ **CARDANO DEVELOPMENT PAUSED**: We currently will not be running further development on Cardano. All new smart contract work is being moved to EVM/Solidity. See `../evm/` for the active Foundry-based EVM codebase.
+
 Minimal Aiken smart contract for tracing tuna from catch to can on Cardano.
 Uses a **minting policy + always-true script** architecture for the investor demo.
 
