@@ -26,7 +26,7 @@ export default function LandingPage() {
   }, []);
 
   const handleTraceClick = () => {
-    router.push("/trace/MOTN3042");
+    router.push("/trace");
   };
 
   // ── Annotation offset — tweak these two values to reposition
@@ -41,8 +41,8 @@ export default function LandingPage() {
       value: "5,440",
     },
     {
-      label: "Total ADA Locked",
-      value: "2.05",
+      label: "Contracts Deployed",
+      value: "5",
     },
   ];
 
@@ -109,7 +109,7 @@ export default function LandingPage() {
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-ocean text-sm font-medium mb-5"
               >
                 <span className="w-2 h-2 rounded-full bg-green animate-pulse" />
-                Cardano Preview Testnet
+                Arbitrum Sepolia Testnet
               </motion.div>
 
               <motion.h1
@@ -141,7 +141,7 @@ export default function LandingPage() {
                 className="text-base text-white/50 max-w-md mb-7 leading-relaxed"
               >
                 The next generation traceability platform. From ocean to shelf,
-                every product is immutably verified on Cardano using CIP-68 standards.
+                every product is immutably verified on Arbitrum using Soulbound NFTs.
               </motion.p>
 
               <motion.div
@@ -157,13 +157,13 @@ export default function LandingPage() {
                   Start Tracing →
                 </button>
                 <a
-                  href="https://preview.cardanoscan.io/tokenPolicy/def68337867cb4f1f95b6b811fedbfcdd7780d10a95cc072077088ea"
+                  href="https://sepolia.arbiscan.io/address/0x9a284cc21afd3319012c4e0e338d68dc79e13d7e"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 rounded-xl bg-white/5 border border-white/15 text-white/70 hover:text-white hover:bg-white/10 transition-all text-sm font-medium inline-flex items-center gap-2"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Cardanoscan
+                  Arbiscan
                 </a>
               </motion.div>
             </div>
@@ -361,7 +361,7 @@ export default function LandingPage() {
               <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-ocean/30 hover:border-ocean/60 transition-all duration-300 backdrop-blur-sm h-full">
                 <h3 className="text-2xl font-bold text-white mb-4">Immutable Origin</h3>
                 <p className="text-base text-white/60 leading-relaxed">
-                  Wild catch or farm-raised, every tuna batch is minted as a traceable UTxO on Cardano from day one. Not a database entry. Not a PDF. A cryptographic proof that survives forever, even if the company disappears.
+                  Wild catch or farm-raised, every tuna batch is minted as a Soulbound NFT on Arbitrum from day one. Not a database entry. Not a PDF. A cryptographic proof that survives forever, even if the company disappears.
                 </p>
               </div>
             </motion.div>
@@ -380,7 +380,7 @@ export default function LandingPage() {
               <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-gold/30 hover:border-gold/60 transition-all duration-300 backdrop-blur-sm h-full">
                 <h3 className="text-2xl font-bold text-white mb-4">Cardano Deflationary Engine</h3>
                 <p className="text-base text-white/60 leading-relaxed">
-                  TORO doesn't just use Cardano. Every final product UTxO permanently locks ADA in an immutable script, removing supply from circulation forever. Every trace transaction pays fees, validates blocks, and keeps the network alive. We turned tuna cans into a deflationary engine for ADA.
+                  TORO uses Arbitrum for fast, cheap traceability. Every batch is a Soulbound NFT that evolves through the supply chain. Stations update the NFT as it moves from catch to can. The final merge locks the NFT forever as an immutable record.
                 </p>
               </div>
             </motion.div>
@@ -399,7 +399,7 @@ export default function LandingPage() {
               <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-gold/30 hover:border-gold/60 transition-all duration-300 backdrop-blur-sm h-full">
                 <h3 className="text-2xl font-bold text-white mb-4">Zero-Trust Verification</h3>
                 <p className="text-base text-white/60 leading-relaxed">
-                  No central server to hack. No admin panel to fake. Every datum, location, weight, certificate hash, lives on-chain. Reconstruct the full supply chain from any Cardano explorer using just the batch ID. We can't alter history even if we wanted to.
+                  No central server to hack. No admin panel to fake. Every datum, location, weight, certificate hash, lives on-chain. Reconstruct the full supply chain from any Arbitrum explorer using just the lot code. We can't alter history even if we wanted to.
                 </p>
               </div>
               

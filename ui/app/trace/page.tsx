@@ -5,33 +5,57 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Search, Package } from "lucide-react";
 
+// Deployed lot codes from the demo script
+const FEATURED_LOTS = [
+  {
+    id: "TORO-LOT-001",
+    label: "TORO Premium Tuna",
+    quantity: "3,900 cans",
+    status: "Verified",
+    batches: 1,
+  },
+  {
+    id: "TORO-LOT-002",
+    label: "TORO Premium Tuna Blend",
+    quantity: "8,800 cans",
+    status: "Verified",
+    batches: 2,
+  },
+  {
+    id: "TORO-LOT-003",
+    label: "TORO Premium Tuna",
+    quantity: "5,800 cans",
+    status: "Verified",
+    batches: 1,
+  },
+  {
+    id: "TORO-LOT-004",
+    label: "TORO Premium Tuna",
+    quantity: "2,300 cans",
+    status: "Verified",
+    batches: 1,
+  },
+];
+
 export default function TracePage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
-  // Mock data - only MOTN3042 for now
-  const mockProducts = [
-    {
-      id: "MOTN3042",
-      label: "Batch MOTN3042",
-      quantity: "5,440 cans",
-      status: "Verified",
-    },
-  ];
-
-  const filteredProducts = mockProducts.filter((product) =>
-    product.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.label.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredLots = FEATURED_LOTS.filter((lot) =>
+    lot.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    lot.label.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleSearch = (productId: string) => {
-    router.push(`/trace/${productId}`);
+  const handleSearch = (lotId: string) => {
+    // Use the keccak256 hash of the lot code as the URL param
+    // since the contract uses bytes32 lot codes
+    router.push(`/trace/${lotId}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && filteredProducts.length > 0) {
-      handleSearch(filteredProducts[0].id);
+    if (e.key === "Enter" && filteredLots.length > 0) {
+      handleSearch(filteredLots[0].id);
     }
   };
 
@@ -54,7 +78,7 @@ export default function TracePage() {
               TORO Product Explorer
             </h1>
             <p className="text-lg md:text-xl text-white/50 mb-12">
-              Know Your Product Origin
+              Trace your tuna from catch to can — verified on Arbitrum Sepolia
             </p>
           </motion.div>
 
@@ -81,7 +105,7 @@ export default function TracePage() {
                 <Search className="w-5 h-5 text-ocean flex-shrink-0" />
                 <input
                   type="text"
-                  placeholder="Search by batch ID (e.g., MOTN3042)"
+                  placeholder="Search by lot code (e.g., TORO-LOT-001)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -92,24 +116,24 @@ export default function TracePage() {
               </div>
 
               {/* Search Results Dropdown */}
-              {searchQuery && filteredProducts.length > 0 && (
+              {searchQuery && filteredLots.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="absolute top-full mt-4 w-full max-w-2xl left-1/2 -translate-x-1/2 bg-white/[0.05] border border-white/[0.1] rounded-xl backdrop-blur-sm overflow-hidden z-20"
                 >
-                  {filteredProducts.map((product) => (
+                  {filteredLots.map((lot) => (
                     <motion.button
-                      key={product.id}
-                      onClick={() => handleSearch(product.id)}
+                      key={lot.id}
+                      onClick={() => handleSearch(lot.id)}
                       className="w-full px-6 py-4 text-left hover:bg-white/[0.05] transition-colors border-b border-white/[0.05] last:border-b-0"
                       whileHover={{ paddingLeft: 24 }}
                     >
                       <div className="flex items-center gap-3">
                         <Package className="w-5 h-5 text-ocean flex-shrink-0" />
                         <div>
-                          <p className="text-white font-medium">{product.id}</p>
-                          <p className="text-white/40 text-sm">{product.label}</p>
+                          <p className="text-white font-medium">{lot.id}</p>
+                          <p className="text-white/40 text-sm">{lot.label}</p>
                         </div>
                       </div>
                     </motion.button>
@@ -133,14 +157,14 @@ export default function TracePage() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
               Featured Products
             </h2>
-            <p className="text-white/40">Explore verified batches on the blockchain</p>
+            <p className="text-white/40">Explore verified batches on Arbitrum Sepolia</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockProducts.map((product, i) => (
+            {FEATURED_LOTS.map((lot, i) => (
               <motion.button
-                key={product.id}
-                onClick={() => handleSearch(product.id)}
+                key={lot.id}
+                onClick={() => handleSearch(lot.id)}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -151,16 +175,19 @@ export default function TracePage() {
                   <div className="flex items-start justify-between mb-4">
                     <Package className="w-8 h-8 text-ocean group-hover:scale-110 transition-transform" />
                     <span className="px-3 py-1 rounded-full bg-green/20 text-green text-xs font-medium border border-green/40">
-                      {product.status}
+                      {lot.status}
                     </span>
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{product.id}</h3>
-                  <p className="text-white/60 text-sm mb-4">{product.label}</p>
+                  <h3 className="text-lg font-bold text-white mb-2">{lot.id}</h3>
+                  <p className="text-white/60 text-sm mb-4">{lot.label}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-white/40 text-sm">{product.quantity}</span>
+                    <span className="text-white/40 text-sm">{lot.quantity}</span>
                     <span className="text-ocean text-sm font-medium group-hover:translate-x-1 transition-transform">
                       View Trace →
                     </span>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-white/[0.06]">
+                    <span className="text-xs text-white/30">{lot.batches} input batch{lot.batches > 1 ? "es" : ""}</span>
                   </div>
                 </div>
               </motion.button>

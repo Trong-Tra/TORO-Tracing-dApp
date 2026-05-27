@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { cardanoscanUrl } from "@/data/trace";
-import type { TraceStage } from "@/data/trace";
+import { explorerUrl } from "@/src/lib/trace";
+import type { TraceStage } from "@/src/lib/trace";
 
 interface StageCardProps {
   stage: TraceStage;
@@ -30,9 +30,9 @@ export default function StageCard({ stage, color, index }: StageCardProps) {
             </span>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-white">{stage.stage}</h3>
+            <h3 className="text-lg font-semibold text-white">{stage.stageName}</h3>
             <p className="text-xs text-white/40 font-mono">
-              {stage.tx.slice(0, 16)}…
+              {stage.txHash.slice(0, 16)}…
             </p>
           </div>
         </div>
@@ -44,13 +44,13 @@ export default function StageCard({ stage, color, index }: StageCardProps) {
             <p className="text-[10px] uppercase tracking-wider text-white/40 mb-0.5">
               {key}
             </p>
-            <p className="text-sm text-white/90 font-medium truncate">{value}</p>
+            <p className="text-sm text-white/90 font-medium truncate">{String(value)}</p>
           </div>
         ))}
       </div>
 
       <a
-        href={cardanoscanUrl(stage.tx)}
+        href={explorerUrl(stage.txHash)}
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors no-underline"
@@ -67,7 +67,7 @@ export default function StageCard({ stage, color, index }: StageCardProps) {
         }}
       >
         <ExternalLink className="w-3 h-3" />
-        View on Cardanoscan
+        View on Arbiscan
       </a>
     </motion.div>
   );

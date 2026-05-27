@@ -4,15 +4,16 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
 import StageCard from "./StageCard";
-import type { TraceChain } from "@/data/trace";
+import type { TraceStage } from "@/src/lib/trace";
 
 interface TraceTimelineProps {
-  chain: TraceChain;
-  onBack: () => void;
-  showBackButton?: boolean;
+  trace: TraceStage[];
+  color: string;
+  title: string;
+  onBack?: () => void;
 }
 
-export default function TraceTimeline({ chain, onBack, showBackButton = true }: TraceTimelineProps) {
+export default function TraceTimeline({ trace, color, title, onBack }: TraceTimelineProps) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
   return (
@@ -25,7 +26,7 @@ export default function TraceTimeline({ chain, onBack, showBackButton = true }: 
     >
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
-        {showBackButton && (
+        {onBack && (
           <motion.button
             onClick={onBack}
             className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors text-sm"
@@ -33,12 +34,12 @@ export default function TraceTimeline({ chain, onBack, showBackButton = true }: 
             whileTap={{ scale: 0.98 }}
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Sources
+            Back
           </motion.button>
         )}
         <div className="flex-1">
-          <h2 className="text-2xl font-bold text-white">{chain.label}</h2>
-          <p className="text-sm text-white/50">{chain.subtitle}</p>
+          <h2 className="text-2xl font-bold text-white">{title}</h2>
+          <p className="text-sm text-white/50">{trace.length} trace points on Arbitrum Sepolia</p>
         </div>
       </div>
 
@@ -48,15 +49,15 @@ export default function TraceTimeline({ chain, onBack, showBackButton = true }: 
         <div
           className="absolute left-6 md:left-8 top-0 bottom-0 w-px"
           style={{
-            background: `linear-gradient(to bottom, ${chain.color}66, ${chain.color}22)`,
+            background: `linear-gradient(to bottom, ${color}66, ${color}22)`,
           }}
         />
 
         <div className="space-y-4">
-          {chain.stages.map((stage, i) => {
+          {trace.map((stage, i) => {
             const isExpanded = expandedIndex === i;
             return (
-              <div key={stage.tx + i} className="relative">
+              <div key={stage.txHash + i} className="relative">
                 {/* Node */}
                 <motion.button
                   onClick={() => setExpandedIndex(isExpanded ? null : i)}
@@ -70,17 +71,17 @@ export default function TraceTimeline({ chain, onBack, showBackButton = true }: 
                     className="relative z-10 w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center border-2 transition-all shrink-0"
                     style={{
                       background: isExpanded
-                        ? `${chain.color}33`
+                        ? `${color}33`
                         : "#0c2c54",
-                      borderColor: isExpanded ? chain.color : `${chain.color}66`,
+                      borderColor: isExpanded ? color : `${color}66`,
                       boxShadow: isExpanded
-                        ? `0 0 30px ${chain.color}44`
+                        ? `0 0 30px ${color}44`
                         : "none",
                     }}
                   >
                     <span
                       className="text-sm md:text-base font-bold"
-                      style={{ color: chain.color }}
+                      style={{ color }}
                     >
                       {i + 1}
                     </span>
@@ -89,10 +90,10 @@ export default function TraceTimeline({ chain, onBack, showBackButton = true }: 
                   {/* Stage name */}
                   <div className="flex-1 min-w-0">
                     <h3 className="text-base md:text-lg font-semibold text-white group-hover:text-ocean transition-colors">
-                      {stage.stage}
+                      {stage.stageName}
                     </h3>
                     <p className="text-xs text-white/40 font-mono truncate">
-                      {stage.tx.slice(0, 20)}…
+                      {stage.txHash.slice(0, 20)}…
                     </p>
                   </div>
 
@@ -116,7 +117,7 @@ export default function TraceTimeline({ chain, onBack, showBackButton = true }: 
                       transition={{ duration: 0.3 }}
                       className="overflow-hidden ml-16 md:ml-20 mt-2"
                     >
-                      <StageCard stage={stage} color={chain.color} index={i} />
+                      <StageCard stage={stage} color={color} index={i} />
                     </motion.div>
                   )}
                 </AnimatePresence>

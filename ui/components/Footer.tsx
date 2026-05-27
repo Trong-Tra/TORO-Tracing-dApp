@@ -35,8 +35,8 @@ export default function Footer() {
               <a href="/#team" className="block text-white/60 hover:text-white text-sm transition-colors no-underline">
                 Team
               </a>
-              <a href="https://preview.cardanoscan.io/tokenPolicy/def68337867cb4f1f95b6b811fedbfcdd7780d10a95cc072077088ea" target="_blank" rel="noopener noreferrer" className="block text-white/60 hover:text-ocean text-sm transition-colors no-underline flex items-center gap-1.5">
-                Policy
+              <a href="https://sepolia.arbiscan.io/address/0x9a284cc21afd3319012c4e0e338d68dc79e13d7e" target="_blank" rel="noopener noreferrer" className="block text-white/60 hover:text-ocean text-sm transition-colors no-underline flex items-center gap-1.5">
+                Contracts
                 <ExternalLink className="w-3 h-3" />
               </a>
               <a href="#" className="block text-white/60 hover:text-white text-sm transition-colors no-underline">
@@ -89,9 +89,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/40">
         <p>© {new Date().getFullYear()} TORO. All rights reserved.</p>
         <div className="flex items-center gap-4 text-xs">
-          <span>Cardano Preview Testnet</span>
+          <span>Arbitrum Sepolia Testnet</span>
           <span className="text-white/10">•</span>
-          <span>CIP-68 Standard</span>
+          <span>Soulbound NFT Traceability</span>
         </div>
       </div>
     </footer>
