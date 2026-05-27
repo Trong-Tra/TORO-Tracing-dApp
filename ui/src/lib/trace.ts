@@ -1,5 +1,5 @@
 import { publicClient, CONTRACTS, ABIS } from "./contracts";
-import { decodeAbiParameters, parseAbiParameters, hexToString } from "viem";
+import { decodeAbiParameters, parseAbiParameters, keccak256, toHex } from "viem";
 
 // ───────── Types ─────────
 
@@ -189,11 +189,13 @@ export async function fetchBatchId(tokenId: number): Promise<string> {
 
 export async function fetchFinalRecord(lotCode: string): Promise<{ tokenIds: bigint[]; totalCans: bigint; packagingDate: bigint } | null> {
   try {
+    // Lot codes are stored as keccak256 hashes on-chain
+    const lotCodeHash = keccak256(toHex(lotCode));
     const record = (await publicClient.readContract({
       address: CONTRACTS.recordMinter as `0x${string}`,
       abi: ABIS.recordMinter,
       functionName: "getFinalRecord",
-      args: [lotCode as `0x${string}`],
+      args: [lotCodeHash as `0x${string}`],
     })) as [bigint[], bigint, bigint, string, boolean];
 
     if (!record[4]) return null; // exists = false
