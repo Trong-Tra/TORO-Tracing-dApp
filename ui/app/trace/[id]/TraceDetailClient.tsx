@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Package, Shield, Calendar, Boxes } from "lucide-react";
 import TraceTimeline from "@/components/TraceTimeline";
 import { fetchProductLot, explorerUrl } from "@/src/lib/trace";
+import { CONTRACTS } from "@/src/lib/contracts";
 import type { ProductLot, ProductBatch } from "@/src/lib/trace";
 
 const BATCH_COLORS = ["#3e96cc", "#ff914d", "#4ade80", "#f472b6", "#a78bfa"];
@@ -118,7 +119,7 @@ export default function TraceDetailClient() {
             <span className="text-sm text-white/40 shrink-0">Input Batches:</span>
             {product.batches.map((batch, idx) => (
               <button
-                key={batch.tokenId}
+                key={batch.batchHash}
                 onClick={() => setSelectedBatch(idx)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all shrink-0 border ${
                   selectedBatch === idx
@@ -126,7 +127,7 @@ export default function TraceDetailClient() {
                     : "bg-white/5 text-white/50 border-white/10 hover:bg-white/10"
                 }`}
               >
-                Batch #{batch.tokenId} ({batch.sourceType})
+                {batch.batchId} ({batch.sourceType})
               </button>
             ))}
           </div>
@@ -139,7 +140,7 @@ export default function TraceDetailClient() {
           <TraceTimeline
             trace={selectedBatchData.trace}
             color={BATCH_COLORS[selectedBatch % BATCH_COLORS.length]}
-            title={`Batch #${selectedBatchData.tokenId} — ${selectedBatchData.sourceType}`}
+            title={`${selectedBatchData.batchId} — ${selectedBatchData.sourceType}`}
           />
         </div>
       )}
@@ -147,16 +148,14 @@ export default function TraceDetailClient() {
       {/* ── Explorer Link ── */}
       <div className="px-4 py-6 max-w-6xl mx-auto w-full text-center border-t border-white/[0.06]">
         <a
-          href={explorerUrl(CONTRACTS.recordMinter)}
+          href={`https://sepolia.arbiscan.io/address/${CONTRACTS.registry}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-ocean/60 hover:text-ocean transition-colors"
         >
-          View Record Minter Contract on Arbiscan →
+          View Registry Contract on Arbiscan →
         </a>
       </div>
     </div>
   );
 }
-
-import { CONTRACTS } from "@/src/lib/contracts";

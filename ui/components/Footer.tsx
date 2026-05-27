@@ -35,7 +35,7 @@ export default function Footer() {
               <a href="/#team" className="block text-white/60 hover:text-white text-sm transition-colors no-underline">
                 Team
               </a>
-              <a href="https://sepolia.arbiscan.io/address/0x9a284cc21afd3319012c4e0e338d68dc79e13d7e" target="_blank" rel="noopener noreferrer" className="block text-white/60 hover:text-ocean text-sm transition-colors no-underline flex items-center gap-1.5">
+              <a href="https://sepolia.arbiscan.io/address/0x1eb19bebb5ad754e320255436adfcb3482963046" target="_blank" rel="noopener noreferrer" className="block text-white/60 hover:text-ocean text-sm transition-colors no-underline flex items-center gap-1.5">
                 Contracts
                 <ExternalLink className="w-3 h-3" />
               </a>

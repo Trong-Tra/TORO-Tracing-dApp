@@ -1,5 +1,6 @@
-import { publicClient, CONTRACTS, ABIS } from "./contracts";
+import { publicClient, CONTRACTS, ABIS, DEPLOYMENT_BLOCK } from "./contracts";
 import { decodeAbiParameters, parseAbiParameters, keccak256, toHex } from "viem";
+import type { Log } from "viem";
 
 // ───────── Types ─────────
 
@@ -13,8 +14,8 @@ export type TraceStage = {
 };
 
 export type ProductBatch = {
-  tokenId: number;
   batchId: string;
+  batchHash: string;
   sourceType: string;
   trace: TraceStage[];
 };
@@ -29,11 +30,11 @@ export type ProductLot = {
 // ───────── Stage Names ─────────
 
 const STAGE_NAMES: Record<number, string> = {
-  0: "Source",
-  1: "Manufacturing",
-  2: "Warehouse",
-  3: "Distribution",
-  4: "Final",
+  1: "Source",
+  2: "Inventory",
+  3: "Manufacturing",
+  4: "Warehouse",
+  5: "Distribution",
 };
 
 // ───────── Code Registry ─────────
@@ -48,6 +49,8 @@ const CODE_LABELS: Record<number, string> = {
   0x106: "Catch Weight (kg)",
   0x107: "Vessel/Farm ID",
   0x108: "Supplier Name",
+  0x110: "Inventory Received",
+  0x111: "Inventory Location",
   0x200: "Factory Name",
   0x201: "Factory Country",
   0x202: "Factory Lat",
@@ -96,6 +99,7 @@ const SPECIES_MAP: Record<number, string> = { 1: "Yellowfin", 2: "Skipjack", 3: 
 const METHOD_MAP: Record<number, string> = { 1: "Longline", 2: "Purse Seine", 3: "Pole & Line", 4: "Gillnet", 5: "Aquaculture" };
 const AREA_MAP: Record<number, string> = { 1: "Pacific Ocean", 2: "Indian Ocean", 3: "Atlantic Ocean" };
 const COUNTRY_MAP: Record<number, string> = { 360: "Indonesia", 392: "Japan", 702: "Singapore", 704: "Vietnam", 764: "Thailand" };
+const INVENTORY_LOC_MAP: Record<number, string> = { 1: "Port Cold Storage", 2: "Farm Holding Tank" };
 
 // ───────── Decoding ─────────
 
@@ -114,7 +118,6 @@ function decodeTraceData(hexData: string): Record<string, string | number> {
       const label = CODE_LABELS[code] || `0x${code.toString(16)}`;
       const rawValue = values[i];
 
-      // Try to decode based on code type
       if (code === 0x100) {
         result[label] = SOURCE_TYPE_MAP[Number(rawValue)] || rawValue;
       } else if (code === 0x101) {
@@ -125,7 +128,9 @@ function decodeTraceData(hexData: string): Record<string, string | number> {
         result[label] = METHOD_MAP[Number(rawValue)] || rawValue;
       } else if (code === 0x105) {
         result[label] = AREA_MAP[Number(rawValue)] || rawValue;
-      } else if (code === 0x103 || code === 0x204 || code === 0x205 || code === 0x304 || code === 0x404 || code === 0x405 || code === 0x408 || code === 0x504) {
+      } else if (code === 0x111) {
+        result[label] = INVENTORY_LOC_MAP[Number(rawValue)] || rawValue;
+      } else if (code === 0x103 || code === 0x204 || code === 0x205 || code === 0x304 || code === 0x404 || code === 0x405 || code === 0x408 || code === 0x504 || code === 0x110) {
         result[label] = new Date(Number(rawValue) * 1000).toISOString().split("T")[0];
       } else if (code === 0x305 || code === 0x409) {
         result[label] = `${Number(rawValue)}°C`;
@@ -134,7 +139,6 @@ function decodeTraceData(hexData: string): Record<string, string | number> {
       } else if (code === 0x106 || code === 0x208 || code === 0x209 || code === 0x20a || code === 0x502) {
         result[label] = Number(rawValue).toLocaleString();
       } else if (code === 0x200 || code === 0x300 || code === 0x400 || code === 0x500 || code === 0x505 || code === 0x501) {
-        // These are keccak256 hashes of strings - just show a short hash
         result[label] = `${rawValue.slice(0, 10)}...${rawValue.slice(-8)}`;
       } else {
         result[label] = Number(rawValue).toLocaleString();
@@ -146,91 +150,136 @@ function decodeTraceData(hexData: string): Record<string, string | number> {
   }
 }
 
-// ───────── Contract Reads ─────────
+function extractPackagingDate(hexData: string): number {
+  try {
+    const decoded = decodeAbiParameters(
+      parseAbiParameters("uint256[] codes, bytes32[] values"),
+      hexData as `0x${string}`
+    );
+    const codes = decoded[0] as bigint[];
+    const values = decoded[1] as string[];
+    for (let i = 0; i < codes.length; i++) {
+      if (Number(codes[i]) === 0x504) {
+        return Number(values[i]);
+      }
+    }
+    return 0;
+  } catch {
+    return 0;
+  }
+}
 
-export async function fetchTokenHistory(tokenId: number): Promise<TraceStage[]> {
-  const history = (await publicClient.readContract({
+// ───────── Batch name lookup ─────────
+
+const BATCH_NAME_MAP: Record<string, string> = {
+  [keccak256(toHex("WILD-CATCH-001"))]: "WILD-CATCH-001",
+  [keccak256(toHex("WILD-CATCH-002"))]: "WILD-CATCH-002",
+  [keccak256(toHex("FARM-001"))]: "FARM-001",
+  [keccak256(toHex("FARM-002"))]: "FARM-002",
+  [keccak256(toHex("WILD-CATCH-003"))]: "WILD-CATCH-003",
+};
+
+function getBatchName(batchHash: string): string {
+  return BATCH_NAME_MAP[batchHash] || batchHash.slice(0, 14) + "...";
+}
+
+// ───────── Event Fetching ─────────
+
+type TraceEvent = {
+  id: `0x${string}`;
+  stage: number;
+  data: `0x${string}`;
+  timestamp: bigint;
+  recorder: `0x${string}`;
+};
+
+type LotCreatedEvent = {
+  lotCode: `0x${string}`;
+  inputBatchIds: `0x${string}`[];
+  totalCans: bigint;
+  data: `0x${string}`;
+  timestamp: bigint;
+  recorder: `0x${string}`;
+};
+
+async function fetchTraceEvents(id: `0x${string}`): Promise<TraceStage[]> {
+  const logs = await publicClient.getContractEvents({
     address: CONTRACTS.registry as `0x${string}`,
     abi: ABIS.registry,
-    functionName: "getTokenHistory",
-    args: [BigInt(tokenId)],
-  })) as string[];
+    eventName: "TraceRecorded",
+    args: { id },
+    fromBlock: DEPLOYMENT_BLOCK,
+    toBlock: "latest",
+  });
 
-  const stages: TraceStage[] = [];
-  for (const txHash of history) {
-    const trace = (await publicClient.readContract({
-      address: CONTRACTS.registry as `0x${string}`,
-      abi: ABIS.registry,
-      functionName: "getTrace",
-      args: [txHash as `0x${string}`],
-    })) as { tokenId: bigint; stage: number; data: string; timestamp: bigint; recorder: string };
-
-    stages.push({
-      stage: trace.stage,
-      stageName: STAGE_NAMES[trace.stage] || `Stage ${trace.stage}`,
-      txHash,
-      timestamp: Number(trace.timestamp),
-      recorder: trace.recorder,
-      details: decodeTraceData(trace.data),
-    });
-  }
-  return stages;
+  return logs
+    .map((log) => {
+      const args = (log as any).args as TraceEvent;
+      return {
+        stage: args.stage,
+        stageName: STAGE_NAMES[args.stage] || `Stage ${args.stage}`,
+        txHash: log.transactionHash,
+        timestamp: Number(args.timestamp),
+        recorder: args.recorder,
+        details: decodeTraceData(args.data),
+      };
+    })
+    .sort((a, b) => a.stage - b.stage);
 }
 
-export async function fetchBatchId(tokenId: number): Promise<string> {
-  const batchId = (await publicClient.readContract({
-    address: CONTRACTS.sbt as `0x${string}`,
-    abi: ABIS.sbt,
-    functionName: "batchIdOf",
-    args: [BigInt(tokenId)],
-  })) as string;
-  return batchId;
+async function fetchLotCreatedEvent(lotCodeHash: `0x${string}`): Promise<LotCreatedEvent | null> {
+  const logs = await publicClient.getContractEvents({
+    address: CONTRACTS.registry as `0x${string}`,
+    abi: ABIS.registry,
+    eventName: "LotCreated",
+    args: { lotCode: lotCodeHash },
+    fromBlock: DEPLOYMENT_BLOCK,
+    toBlock: "latest",
+  });
+
+  if (logs.length === 0) return null;
+  return (logs[0] as any).args as LotCreatedEvent;
 }
 
-export async function fetchFinalRecord(lotCode: string): Promise<{ tokenIds: bigint[]; totalCans: bigint; packagingDate: bigint } | null> {
-  try {
-    // Lot codes are stored as keccak256 hashes on-chain
-    const lotCodeHash = keccak256(toHex(lotCode));
-    const record = (await publicClient.readContract({
-      address: CONTRACTS.recordMinter as `0x${string}`,
-      abi: ABIS.recordMinter,
-      functionName: "getFinalRecord",
-      args: [lotCodeHash as `0x${string}`],
-    })) as { tokenIds: bigint[]; totalCans: bigint; packagingDate: bigint; finalTraceHash: string; exists: boolean };
-
-    if (!record.exists) return null;
-    return {
-      tokenIds: record.tokenIds,
-      totalCans: record.totalCans,
-      packagingDate: record.packagingDate,
-    };
-  } catch {
-    return null;
-  }
-}
+// ───────── Contract Reads ─────────
 
 export async function fetchProductLot(lotCode: string): Promise<ProductLot | null> {
-  const record = await fetchFinalRecord(lotCode);
-  if (!record) return null;
+  const lotCodeHash = keccak256(toHex(lotCode));
 
+  const lotEvent = await fetchLotCreatedEvent(lotCodeHash as `0x${string}`);
+  if (!lotEvent) return null;
+
+  // Fetch traces for each input batch
   const batches: ProductBatch[] = [];
-  for (const tokenId of record.tokenIds) {
-    const batchId = await fetchBatchId(Number(tokenId));
-    const trace = await fetchTokenHistory(Number(tokenId));
+  for (const batchHash of lotEvent.inputBatchIds) {
+    const trace = await fetchTraceEvents(batchHash);
     const sourceType = trace[0]?.details["Source Type"] as string || "Unknown";
-
     batches.push({
-      tokenId: Number(tokenId),
-      batchId,
+      batchId: getBatchName(batchHash),
+      batchHash,
       sourceType,
       trace,
     });
   }
 
+  // Fetch lot-level traces (manufacturing, warehouse, distribution)
+  // These are merged into each batch's trace for display
+  const lotTraces = await fetchTraceEvents(lotCodeHash as `0x${string}`);
+
+  // For display compatibility: append lot traces to the first batch
+  // In single-batch lots, this shows the full flow on one timeline
+  // In multi-batch lots, each batch shows its own traces + lot traces
+  if (batches.length > 0) {
+    batches[0].trace = [...batches[0].trace, ...lotTraces];
+  }
+
+  // Extract packaging date from lot data
+  const packagingDate = extractPackagingDate(lotEvent.data);
+
   return {
     lotCode,
-    totalCans: Number(record.totalCans),
-    packagingDate: Number(record.packagingDate),
+    totalCans: Number(lotEvent.totalCans),
+    packagingDate,
     batches,
   };
 }

@@ -42,7 +42,7 @@ export default function LandingPage() {
     },
     {
       label: "Contracts Deployed",
-      value: "5",
+      value: "1",
     },
   ];
 
@@ -157,7 +157,7 @@ export default function LandingPage() {
                   Start Tracing →
                 </button>
                 <a
-                  href="https://sepolia.arbiscan.io/address/0x9a284cc21afd3319012c4e0e338d68dc79e13d7e"
+                  href="https://sepolia.arbiscan.io/address/0x1eb19bebb5ad754e320255436adfcb3482963046"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 rounded-xl bg-white/5 border border-white/15 text-white/70 hover:text-white hover:bg-white/10 transition-all text-sm font-medium inline-flex items-center gap-2"
