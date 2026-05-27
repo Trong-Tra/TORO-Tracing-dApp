@@ -25,6 +25,7 @@ export type ProductLot = {
   totalCans: number;
   packagingDate: number;
   batches: ProductBatch[];
+  lotTraces: TraceStage[];
 };
 
 // ───────── Stage Names ─────────
@@ -263,15 +264,7 @@ export async function fetchProductLot(lotCode: string): Promise<ProductLot | nul
   }
 
   // Fetch lot-level traces (manufacturing, warehouse, distribution)
-  // These are merged into each batch's trace for display
   const lotTraces = await fetchTraceEvents(lotCodeHash as `0x${string}`);
-
-  // For display compatibility: append lot traces to the first batch
-  // In single-batch lots, this shows the full flow on one timeline
-  // In multi-batch lots, each batch shows its own traces + lot traces
-  if (batches.length > 0) {
-    batches[0].trace = [...batches[0].trace, ...lotTraces];
-  }
 
   // Extract packaging date from lot data
   const packagingDate = extractPackagingDate(lotEvent.data);
@@ -281,6 +274,7 @@ export async function fetchProductLot(lotCode: string): Promise<ProductLot | nul
     totalCans: Number(lotEvent.totalCans),
     packagingDate,
     batches,
+    lotTraces,
   };
 }
 

@@ -134,13 +134,24 @@ export default function TraceDetailClient() {
         </div>
       )}
 
-      {/* ── Trace Timeline ── */}
+      {/* ── Batch Trace Timeline ── */}
       {selectedBatchData && selectedBatch !== null && (
-        <div className="flex-1 px-4 max-w-6xl mx-auto w-full pb-12">
+        <div className="flex-1 px-4 max-w-6xl mx-auto w-full pb-8">
           <TraceTimeline
             trace={selectedBatchData.trace}
             color={BATCH_COLORS[selectedBatch % BATCH_COLORS.length]}
             title={`${selectedBatchData.batchId} — ${selectedBatchData.sourceType}`}
+          />
+        </div>
+      )}
+
+      {/* ── Lot Trace Timeline ── */}
+      {product.lotTraces.length > 0 && (
+        <div className="flex-1 px-4 max-w-6xl mx-auto w-full pb-12">
+          <TraceTimeline
+            trace={product.lotTraces}
+            color="#ffc354"
+            title={`${product.lotCode} — Lot Timeline`}
           />
         </div>
       )}
