@@ -163,15 +163,15 @@ export async function fetchTokenHistory(tokenId: number): Promise<TraceStage[]> 
       abi: ABIS.registry,
       functionName: "getTrace",
       args: [txHash as `0x${string}`],
-    })) as [bigint, number, string, bigint, string];
+    })) as { tokenId: bigint; stage: number; data: string; timestamp: bigint; recorder: string };
 
     stages.push({
-      stage: trace[1],
-      stageName: STAGE_NAMES[trace[1]] || `Stage ${trace[1]}`,
+      stage: trace.stage,
+      stageName: STAGE_NAMES[trace.stage] || `Stage ${trace.stage}`,
       txHash,
-      timestamp: Number(trace[3]),
-      recorder: trace[4],
-      details: decodeTraceData(trace[2]),
+      timestamp: Number(trace.timestamp),
+      recorder: trace.recorder,
+      details: decodeTraceData(trace.data),
     });
   }
   return stages;
@@ -196,13 +196,13 @@ export async function fetchFinalRecord(lotCode: string): Promise<{ tokenIds: big
       abi: ABIS.recordMinter,
       functionName: "getFinalRecord",
       args: [lotCodeHash as `0x${string}`],
-    })) as [bigint[], bigint, bigint, string, boolean];
+    })) as { tokenIds: bigint[]; totalCans: bigint; packagingDate: bigint; finalTraceHash: string; exists: boolean };
 
-    if (!record[4]) return null; // exists = false
+    if (!record.exists) return null;
     return {
-      tokenIds: record[0],
-      totalCans: record[1],
-      packagingDate: record[2],
+      tokenIds: record.tokenIds,
+      totalCans: record.totalCans,
+      packagingDate: record.packagingDate,
     };
   } catch {
     return null;
