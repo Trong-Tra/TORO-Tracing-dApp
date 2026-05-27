@@ -1,0 +1,312 @@
+{
+  "_description": "Mock trace data for TORO supply chain. Each stage shows the on-chain codes + values that would be passed to the contract.",
+
+  "batch_1_wild_catch": {
+    "batchId": "WILD-CATCH-001",
+    "tokenId": 1,
+    "trace": [
+      {
+        "stage": 0,
+        "stageName": "Source",
+        "station": "Station A (Vessel)",
+        "txHash": "0xabc123...",
+        "timestamp": 1715731200,
+        "codes": [256, 257, 258, 259, 260, 261, 262, 263, 264],
+        "values": [
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "0x00000000000000000000000000000000000000000000000000000000000002c0",
+          "0x00000000000000000000000000000000000000000000000000000000663fe180",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "0x0000000000000000000000000000000000000000000000000000000000000320",
+          "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+          "0x9b4c4d2a1b3c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0"
+        ],
+        "humanReadable": {
+          "sourceType": "Vessel",
+          "species": "Yellowfin Tuna",
+          "country": "Vietnam (704)",
+          "catchDate": "2024-05-15T00:00:00Z",
+          "fishingMethod": "Longline",
+          "catchArea": "Pacific Ocean",
+          "catchWeightKg": 800,
+          "vesselId": "FV-Pacific-07",
+          "supplierName": "Pacific Tuna Co."
+        }
+      },
+      {
+        "stage": 1,
+        "stageName": "Manufacturing",
+        "station": "Station B (Factory)",
+        "txHash": "0xdef456...",
+        "timestamp": 1717200000,
+        "codes": [512, 513, 514, 515, 516, 517, 518, 519, 520, 521],
+        "values": [
+          "0x7a3f1e9b2c4d6a8f5e3b1c9d7a5f3e1b9c7d5a3f1e9b7c5d3a1f9e7b5c3d1a9f7",
+          "0x00000000000000000000000000000000000000000000000000000000000002c0",
+          "0x0000000000000000000000000000000000000000000000000000000000a4cb80",
+          "0x00000000000000000000000000000000000000000000000000000000065a8b80",
+          "0x0000000000000000000000000000000000000000000000000000000066463a00",
+          "0x0000000000000000000000000000000000000000000000000000000066621180",
+          "0x3a5f8e2b1c9d7a4f6e3b1c9d7a5f3e1b9c7d5a3f1e9b7c5d3a1f9e7b5c3d1a9f7",
+          "0x000000000000000000000000000000000000000000000000000000000000079e",
+          "0x0000000000000000000000000000000000000000000000000000000000000f3c",
+          "0x0000000000000000000000000000000000000000000000000000000000000032"
+        ],
+        "humanReadable": {
+          "factoryName": "TORO Seafood Factory",
+          "factoryCountry": "Vietnam (704)",
+          "factoryLat": "10.800000°N",
+          "factoryLng": "106.700000°E",
+          "productionDate": "2024-06-01T00:00:00Z",
+          "packagingDate": "2024-06-15T00:00:00Z",
+          "batchCode": "B-20260615-A",
+          "inputWeightKg": 1950,
+          "outputCans": 3900,
+          "wastageKg": 50
+        }
+      },
+      {
+        "stage": 2,
+        "stageName": "Warehouse",
+        "station": "Station C (Cold Storage)",
+        "txHash": "0xghi789...",
+        "timestamp": 1719000000,
+        "codes": [768, 769, 770, 771, 772, 773, 774],
+        "values": [
+          "0x4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5",
+          "0x00000000000000000000000000000000000000000000000000000000000002be",
+          "0x0000000000000000000000000000000000000000000000000000000000013b00",
+          "0x0000000000000000000000000000000000000000000000000000000062f3b300",
+          "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "0x0000000000000000000000000000000000000000000000000000000000000048",
+          "0x0000000000000000000000000000000000000000000000000000000000000001"
+        ],
+        "humanReadable": {
+          "warehouseName": "Singapore Cold Storage",
+          "warehouseCountry": "Singapore (702)",
+          "warehouseLat": "1.290000°N",
+          "warehouseLng": "103.850000°E",
+          "storageDate": "2024-06-22T00:00:00Z",
+          "storageTempC": 2,
+          "storageDurationHrs": 72,
+          "certHaccp": true
+        }
+      },
+      {
+        "stage": 3,
+        "stageName": "Distribution",
+        "station": "Station D (Logistics)",
+        "txHash": "0xjkl012...",
+        "timestamp": 1719500000,
+        "codes": [1024, 1025, 1026, 1027, 1028, 1029, 1030, 1031, 1032],
+        "values": [
+          "0x2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+          "0x5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+          "0x00000000000000000000000000000000000000000000000000000000000002c0",
+          "0x0000000000000000000000000000000000000000000000000000000000000188",
+          "0x00000000000000000000000000000000000000000000000000000000667a5d80",
+          "0x00000000000000000000000000000000000000000000000000000000668b7a00",
+          "0x0000000000000000000000000000000000000000000000000000000000000030",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "humanReadable": {
+          "shipmentCode": "SHP-2026-0892",
+          "containerId": "CONT-B-99",
+          "shippingFrom": "Vietnam (704)",
+          "shippingTo": "Japan (392)",
+          "departureDate": "2024-06-28T00:00:00Z",
+          "arrivalDate": "2024-06-30T00:00:00Z",
+          "transitDurationHrs": 48,
+          "checkpointLocation": "Singapore",
+          "transitTempC": 0
+        }
+      },
+      {
+        "stage": 4,
+        "stageName": "Final",
+        "station": "Record Minter",
+        "txHash": "0xmnq345...",
+        "timestamp": 1719800000,
+        "codes": [1280, 1281, 1282, 1283, 1284, 1285],
+        "values": [
+          "0x3a5f8e2b1c9d7a4f6e3b1c9d7a5f3e1b9c7d5a3f1e9b7c5d3a1f9e7b5c3d1a9f7",
+          "0x7b3f1e9b2c4d6a8f5e3b1c9d7a5f3e1b9c7d5a3f1e9b7c5d3a1f9e7b5c3d1a9f7",
+          "0x0000000000000000000000000000000000000000000000000000000000001540",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "0x0000000000000000000000000000000000000000000000000000000066926a80",
+          "0x9b4c4d2a1b3c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0"
+        ],
+        "humanReadable": {
+          "lotCode": "TORO-LOT-001",
+          "productLabel": "TORO Premium Tuna",
+          "totalCans": 5440,
+          "batchesMerged": 1,
+          "packagingDate": "2024-07-01T00:00:00Z",
+          "distributionCenter": "Tokyo Retail Hub"
+        }
+      }
+    ]
+  },
+
+  "batch_2_farm": {
+    "batchId": "FARM-001",
+    "tokenId": 2,
+    "trace": [
+      {
+        "stage": 0,
+        "stageName": "Source",
+        "station": "Station A (Farm)",
+        "txHash": "0xabc124...",
+        "timestamp": 1715800000,
+        "codes": [256, 257, 258, 259, 260, 261, 262, 263, 264],
+        "values": [
+          "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "0x00000000000000000000000000000000000000000000000000000000000002fc",
+          "0x0000000000000000000000000000000000000000000000000000000066415000",
+          "0x0000000000000000000000000000000000000000000000000000000000000005",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "0x00000000000000000000000000000000000000000000000000000000000007d0",
+          "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b926",
+          "0x9b4c4d2a1b3c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d1"
+        ],
+        "humanReadable": {
+          "sourceType": "Farm",
+          "species": "Yellowfin Tuna",
+          "country": "Thailand (764)",
+          "catchDate": "2024-05-16T00:00:00Z",
+          "fishingMethod": "Aquaculture",
+          "catchArea": "Pacific Ocean",
+          "catchWeightKg": 2000,
+          "farmId": "FARM-SONGKHLA-03",
+          "supplierName": "Thai Aqua Farms Ltd."
+        }
+      },
+      {
+        "stage": 1,
+        "stageName": "Manufacturing",
+        "station": "Station B (Factory)",
+        "txHash": "0xdef457...",
+        "timestamp": 1717300000,
+        "codes": [512, 513, 514, 515, 516, 517, 518, 519, 520, 521],
+        "values": [
+          "0x7a3f1e9b2c4d6a8f5e3b1c9d7a5f3e1b9c7d5a3f1e9b7c5d3a1f9e7b5c3d1a9f7",
+          "0x00000000000000000000000000000000000000000000000000000000000002c0",
+          "0x0000000000000000000000000000000000000000000000000000000000a4cb80",
+          "0x00000000000000000000000000000000000000000000000000000000065a8b80",
+          "0x00000000000000000000000000000000000000000000000000000000664db400",
+          "0x0000000000000000000000000000000000000000000000000000000066663780",
+          "0x3a5f8e2b1c9d7a4f6e3b1c9d7a5f3e1b9c7d5a3f1e9b7c5d3a1f9e7b5c3d1a9f7",
+          "0x00000000000000000000000000000000000000000000000000000000000007d0",
+          "0x0000000000000000000000000000000000000000000000000000000000000f3c",
+          "0x0000000000000000000000000000000000000000000000000000000000000032"
+        ],
+        "humanReadable": {
+          "factoryName": "TORO Seafood Factory",
+          "factoryCountry": "Vietnam (704)",
+          "factoryLat": "10.800000°N",
+          "factoryLng": "106.700000°E",
+          "productionDate": "2024-06-02T00:00:00Z",
+          "packagingDate": "2024-06-15T00:00:00Z",
+          "batchCode": "B-20260615-A",
+          "inputWeightKg": 2000,
+          "outputCans": 3900,
+          "wastageKg": 50
+        }
+      },
+      {
+        "stage": 2,
+        "stageName": "Warehouse",
+        "station": "Station C (Cold Storage)",
+        "txHash": "0xghi790...",
+        "timestamp": 1719100000,
+        "codes": [768, 769, 770, 771, 772, 773, 774],
+        "values": [
+          "0x4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5",
+          "0x00000000000000000000000000000000000000000000000000000000000002be",
+          "0x0000000000000000000000000000000000000000000000000000000000013b00",
+          "0x0000000000000000000000000000000000000000000000000000000062f3b300",
+          "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "0x0000000000000000000000000000000000000000000000000000000000000048",
+          "0x0000000000000000000000000000000000000000000000000000000000000001"
+        ],
+        "humanReadable": {
+          "warehouseName": "Singapore Cold Storage",
+          "warehouseCountry": "Singapore (702)",
+          "warehouseLat": "1.290000°N",
+          "warehouseLng": "103.850000°E",
+          "storageDate": "2024-06-23T00:00:00Z",
+          "storageTempC": 2,
+          "storageDurationHrs": 72,
+          "certHaccp": true
+        }
+      },
+      {
+        "stage": 3,
+        "stageName": "Distribution",
+        "station": "Station D (Logistics)",
+        "txHash": "0xjkl013...",
+        "timestamp": 1719600000,
+        "codes": [1024, 1025, 1026, 1027, 1028, 1029, 1030, 1031, 1032],
+        "values": [
+          "0x2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+          "0x5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+          "0x00000000000000000000000000000000000000000000000000000000000002c0",
+          "0x0000000000000000000000000000000000000000000000000000000000000188",
+          "0x00000000000000000000000000000000000000000000000000000000667a5d80",
+          "0x00000000000000000000000000000000000000000000000000000000668b7a00",
+          "0x0000000000000000000000000000000000000000000000000000000000000030",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "humanReadable": {
+          "shipmentCode": "SHP-2026-0893",
+          "containerId": "CONT-B-100",
+          "shippingFrom": "Vietnam (704)",
+          "shippingTo": "Japan (392)",
+          "departureDate": "2024-06-29T00:00:00Z",
+          "arrivalDate": "2024-07-01T00:00:00Z",
+          "transitDurationHrs": 48,
+          "checkpointLocation": "Singapore",
+          "transitTempC": 0
+        }
+      },
+      {
+        "stage": 4,
+        "stageName": "Final",
+        "station": "Record Minter",
+        "txHash": "0xmnq346...",
+        "timestamp": 1719900000,
+        "codes": [1280, 1281, 1282, 1283, 1284, 1285],
+        "values": [
+          "0x3a5f8e2b1c9d7a4f6e3b1c9d7a5f3e1b9c7d5a3f1e9b7c5d3a1f9e7b5c3d1a9f7",
+          "0x7b3f1e9b2c4d6a8f5e3b1c9d7a5f3e1b9c7d5a3f1e9b7c5d3a1f9e7b5c3d1a9f7",
+          "0x0000000000000000000000000000000000000000000000000000000000001540",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "0x00000000000000000000000000000000000000000000000000000000669a2c80",
+          "0x9b4c4d2a1b3c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0"
+        ],
+        "humanReadable": {
+          "lotCode": "TORO-LOT-001",
+          "productLabel": "TORO Premium Tuna",
+          "totalCans": 5440,
+          "batchesMerged": 1,
+          "packagingDate": "2024-07-02T00:00:00Z",
+          "distributionCenter": "Tokyo Retail Hub"
+        }
+      }
+    ]
+  },
+
+  "final_merge": {
+    "lotCode": "TORO-LOT-001",
+    "inputTokenIds": [1, 2],
+    "totalCans": 5440,
+    "packagingDate": "2024-07-01T00:00:00Z",
+    "finalTxHash": "0xfin123...",
+    "frozen": true
+  }
+}
