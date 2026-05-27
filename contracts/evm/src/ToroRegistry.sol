@@ -1,66 +1,53 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
-
-import {ToroTypes} from "./ToroTypes.sol";
+pragma solidity ^0.8.24;
 
 /// @title ToroRegistry
-/// @notice On-chain registry for tracing tuna from catch to can.
-/// @dev Two supply chains (Farm A and Catch B) converge at FinalProduct.
+/// @notice On-chain registry for all TORO trace points.
+/// @dev Every evolve() call produces a unique record keyed by a derived hash.
+///      The actual blockchain tx hash verifies the record externally.
 contract ToroRegistry {
 
     // ───────── Errors ─────────
     error Unauthorized();
-    error InvalidStageSequence();
-    error BatchAlreadyExists();
-    error BatchNotFound();
-    error ChainNotReady();
 
     // ───────── Events ─────────
-    event StageRecorded(
-        bytes32 indexed batchId,
-        ToroTypes.Stage indexed stage,
-        bytes32 txHash,
+    event TraceRecorded(
+        bytes32 indexed txHash,
+        uint256 indexed tokenId,
+        uint8 indexed stage,
+        address recorder,
         uint256 timestamp
     );
 
-    event OperatorAdded(address indexed operator);
-    event OperatorRemoved(address indexed operator);
-
-    // ───────── State ─────────
+    // ───────── Roles ─────────
     address public owner;
-    mapping(address => bool) public operators;
+    mapping(address => bool) public authorizedRecorders;
 
-    // batchId => list of stage hashes (chronological)
-    mapping(bytes32 => bytes32[]) public batchHistory;
+    // ───────── Data ─────────
+    struct TracePoint {
+        uint256 tokenId;
+        uint8 stage;
+        bytes data; // abi-encoded(uint256[] codes, bytes32[] values)
+        uint256 timestamp;
+        address recorder;
+    }
 
-    // keccak256(batchId + stageIndex + encodedData) => true
-    mapping(bytes32 => bool) public knownRecords;
+    // derived record hash => TracePoint
+    mapping(bytes32 => TracePoint) public traces;
 
-    // Per-stage detail storage ( keyed by txHash )
-    mapping(bytes32 => ToroTypes.Hatchery) public hatcheries;
-    mapping(bytes32 => ToroTypes.Nursery) public nurseries;
-    mapping(bytes32 => ToroTypes.Growout) public growouts;
-    mapping(bytes32 => ToroTypes.HarvestTransport) public harvestTransports;
-    mapping(bytes32 => ToroTypes.FarmProcessing) public farmProcessings;
-    mapping(bytes32 => ToroTypes.CatchIce) public catchIces;
-    mapping(bytes32 => ToroTypes.PortLanding) public portLandings;
-    mapping(bytes32 => ToroTypes.TransportPlant) public transportPlants;
-    mapping(bytes32 => ToroTypes.CatchProcessing) public catchProcessings;
-    mapping(bytes32 => ToroTypes.FinalProduct) public finalProducts;
+    // tokenId => list of record hashes (chronological)
+    mapping(uint256 => bytes32[]) public tokenHistory;
 
-    // txHash => stage enum (for lookups)
-    mapping(bytes32 => ToroTypes.Stage) public recordStage;
-
-    // batchId => stage => txHash (latest for that stage)
-    mapping(bytes32 => mapping(ToroTypes.Stage => bytes32)) public latestStageHash;
+    // optional human-readable labels for compact codes
+    mapping(uint256 => string) public codeLabels;
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert Unauthorized();
         _;
     }
 
-    modifier onlyOperator() {
-        if (msg.sender != owner && !operators[msg.sender]) revert Unauthorized();
+    modifier onlyAuthorized() {
+        if (msg.sender != owner && !authorizedRecorders[msg.sender]) revert Unauthorized();
         _;
     }
 
@@ -69,127 +56,60 @@ contract ToroRegistry {
     }
 
     // ───────── Admin ─────────
-    function addOperator(address _operator) external onlyOwner {
-        operators[_operator] = true;
-        emit OperatorAdded(_operator);
+
+    function authorizeRecorder(address _recorder) external onlyAuthorized {
+        authorizedRecorders[_recorder] = true;
     }
 
-    function removeOperator(address _operator) external onlyOwner {
-        operators[_operator] = false;
-        emit OperatorRemoved(_operator);
+    function revokeRecorder(address _recorder) external onlyAuthorized {
+        authorizedRecorders[_recorder] = false;
     }
 
-    function transferOwnership(address _newOwner) external onlyOwner {
-        owner = _newOwner;
+    function setCodeLabel(uint256 _code, string calldata _label) external onlyOwner {
+        codeLabels[_code] = _label;
     }
 
-    // ───────── Helpers ─────────
-    function _stageIndex(ToroTypes.Stage _stage) internal pure returns (uint256) {
-        return uint256(_stage);
-    }
+    // ───────── Record ─────────
 
-    function _recordHash(bytes32 _batchId, uint256 _stageIdx, bytes memory _encoded) internal pure returns (bytes32) {
-        return keccak256(abi.encodePacked(_batchId, _stageIdx, _encoded));
-    }
+    /// @notice Write a trace point for a token.
+    /// @return txHash A derived unique hash for this record.
+    function record(uint256 _tokenId, uint8 _stage, bytes calldata _data) external onlyAuthorized returns (bytes32 txHash) {
+        txHash = keccak256(
+            abi.encodePacked(
+                block.chainid,
+                block.number,
+                block.timestamp,
+                msg.sender,
+                _tokenId,
+                _stage,
+                _data
+            )
+        );
 
-    function _storeRecord(bytes32 _batchId, ToroTypes.Stage _stage, bytes32 _txHash, bytes memory _encoded) internal {
-        bytes32 hash = _recordHash(_batchId, _stageIndex(_stage), _encoded);
-        if (knownRecords[hash]) revert BatchAlreadyExists();
-        knownRecords[hash] = true;
+        traces[txHash] = TracePoint({
+            tokenId: _tokenId,
+            stage: _stage,
+            data: _data,
+            timestamp: block.timestamp,
+            recorder: msg.sender
+        });
 
-        batchHistory[_batchId].push(_txHash);
-        recordStage[_txHash] = _stage;
-        latestStageHash[_batchId][_stage] = _txHash;
+        tokenHistory[_tokenId].push(txHash);
 
-        emit StageRecorded(_batchId, _stage, _txHash, block.timestamp);
-    }
-
-    // ───────── Farm Chain (A) ─────────
-
-    function recordHatchery(ToroTypes.Hatchery calldata _data) external onlyOperator returns (bytes32 txHash) {
-        txHash = keccak256(abi.encode(_data, block.timestamp, block.number));
-        hatcheries[txHash] = _data;
-        _storeRecord(_data.batchId, ToroTypes.Stage.Hatchery, txHash, abi.encode(_data));
-    }
-
-    function recordNursery(ToroTypes.Nursery calldata _data) external onlyOperator returns (bytes32 txHash) {
-        if (latestStageHash[_data.batchId][ToroTypes.Stage.Hatchery] == bytes32(0)) revert InvalidStageSequence();
-        txHash = keccak256(abi.encode(_data, block.timestamp, block.number));
-        nurseries[txHash] = _data;
-        _storeRecord(_data.batchId, ToroTypes.Stage.Nursery, txHash, abi.encode(_data));
-    }
-
-    function recordGrowout(ToroTypes.Growout calldata _data) external onlyOperator returns (bytes32 txHash) {
-        if (latestStageHash[_data.batchId][ToroTypes.Stage.Nursery] == bytes32(0)) revert InvalidStageSequence();
-        txHash = keccak256(abi.encode(_data, block.timestamp, block.number));
-        growouts[txHash] = _data;
-        _storeRecord(_data.batchId, ToroTypes.Stage.Growout, txHash, abi.encode(_data));
-    }
-
-    function recordHarvestTransport(ToroTypes.HarvestTransport calldata _data) external onlyOperator returns (bytes32 txHash) {
-        if (latestStageHash[_data.batchId][ToroTypes.Stage.Growout] == bytes32(0)) revert InvalidStageSequence();
-        txHash = keccak256(abi.encode(_data, block.timestamp, block.number));
-        harvestTransports[txHash] = _data;
-        _storeRecord(_data.batchId, ToroTypes.Stage.HarvestTransport, txHash, abi.encode(_data));
-    }
-
-    function recordFarmProcessing(ToroTypes.FarmProcessing calldata _data) external onlyOperator returns (bytes32 txHash) {
-        if (latestStageHash[_data.batchId][ToroTypes.Stage.HarvestTransport] == bytes32(0)) revert InvalidStageSequence();
-        txHash = keccak256(abi.encode(_data, block.timestamp, block.number));
-        farmProcessings[txHash] = _data;
-        _storeRecord(_data.batchId, ToroTypes.Stage.FarmProcessing, txHash, abi.encode(_data));
-    }
-
-    // ───────── Catch Chain (B) ─────────
-
-    function recordCatchIce(ToroTypes.CatchIce calldata _data) external onlyOperator returns (bytes32 txHash) {
-        txHash = keccak256(abi.encode(_data, block.timestamp, block.number));
-        catchIces[txHash] = _data;
-        _storeRecord(_data.batchId, ToroTypes.Stage.CatchIce, txHash, abi.encode(_data));
-    }
-
-    function recordPortLanding(ToroTypes.PortLanding calldata _data) external onlyOperator returns (bytes32 txHash) {
-        if (latestStageHash[_data.batchId][ToroTypes.Stage.CatchIce] == bytes32(0)) revert InvalidStageSequence();
-        txHash = keccak256(abi.encode(_data, block.timestamp, block.number));
-        portLandings[txHash] = _data;
-        _storeRecord(_data.batchId, ToroTypes.Stage.PortLanding, txHash, abi.encode(_data));
-    }
-
-    function recordTransportPlant(ToroTypes.TransportPlant calldata _data) external onlyOperator returns (bytes32 txHash) {
-        if (latestStageHash[_data.batchId][ToroTypes.Stage.PortLanding] == bytes32(0)) revert InvalidStageSequence();
-        txHash = keccak256(abi.encode(_data, block.timestamp, block.number));
-        transportPlants[txHash] = _data;
-        _storeRecord(_data.batchId, ToroTypes.Stage.TransportPlant, txHash, abi.encode(_data));
-    }
-
-    function recordCatchProcessing(ToroTypes.CatchProcessing calldata _data) external onlyOperator returns (bytes32 txHash) {
-        if (latestStageHash[_data.batchId][ToroTypes.Stage.TransportPlant] == bytes32(0)) revert InvalidStageSequence();
-        txHash = keccak256(abi.encode(_data, block.timestamp, block.number));
-        catchProcessings[txHash] = _data;
-        _storeRecord(_data.batchId, ToroTypes.Stage.CatchProcessing, txHash, abi.encode(_data));
-    }
-
-    // ───────── Final Product ─────────
-
-    function recordFinalProduct(ToroTypes.FinalProduct calldata _data) external onlyOperator returns (bytes32 txHash) {
-        if (latestStageHash[_data.batchId][ToroTypes.Stage.FarmProcessing] == bytes32(0)) revert ChainNotReady();
-        if (latestStageHash[_data.batchId][ToroTypes.Stage.CatchProcessing] == bytes32(0)) revert ChainNotReady();
-        txHash = keccak256(abi.encode(_data, block.timestamp, block.number));
-        finalProducts[txHash] = _data;
-        _storeRecord(_data.batchId, ToroTypes.Stage.FinalProduct, txHash, abi.encode(_data));
+        emit TraceRecorded(txHash, _tokenId, _stage, msg.sender, block.timestamp);
     }
 
     // ───────── Views ─────────
 
-    function batchStageCount(bytes32 _batchId) external view returns (uint256) {
-        return batchHistory[_batchId].length;
+    function tokenTraceCount(uint256 _tokenId) external view returns (uint256) {
+        return tokenHistory[_tokenId].length;
     }
 
-    function getBatchHistory(bytes32 _batchId) external view returns (bytes32[] memory) {
-        return batchHistory[_batchId];
+    function getTokenHistory(uint256 _tokenId) external view returns (bytes32[] memory) {
+        return tokenHistory[_tokenId];
     }
 
-    function getLatestStageHash(bytes32 _batchId, ToroTypes.Stage _stage) external view returns (bytes32) {
-        return latestStageHash[_batchId][_stage];
+    function getTrace(bytes32 _txHash) external view returns (TracePoint memory) {
+        return traces[_txHash];
     }
 }
