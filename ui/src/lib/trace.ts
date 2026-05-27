@@ -133,7 +133,7 @@ function decodeTraceData(hexData: string): Record<string, string | number> {
         result[label] = Number(rawValue) === 1 ? "✓ Certified" : "✗ Not Certified";
       } else if (code === 0x106 || code === 0x208 || code === 0x209 || code === 0x20a || code === 0x502) {
         result[label] = Number(rawValue).toLocaleString();
-      } else if (code === 0x200 || code === 0x300 || code === 0x400 || code === 0x500 || code === 0x505) {
+      } else if (code === 0x200 || code === 0x300 || code === 0x400 || code === 0x500 || code === 0x505 || code === 0x501) {
         // These are keccak256 hashes of strings - just show a short hash
         result[label] = `${rawValue.slice(0, 10)}...${rawValue.slice(-8)}`;
       } else {

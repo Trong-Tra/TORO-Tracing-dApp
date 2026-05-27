@@ -222,8 +222,8 @@ contract DeployAndDemo is Script {
         // Warehouse → Dist
         stationWarehouse.evolve(tokenId, STAGE_DIST, distData, address(stationDist));
 
-        // Dist → Record Minter
-        stationDist.evolve(tokenId, STAGE_FINAL, _encodeSingleFinal(), address(recordMinter));
+        // Dist → Record Minter (pass without recording a new trace)
+        stationDist.pass(tokenId, address(recordMinter));
 
         // Finalize if lotCode is set
         if (lotCode != bytes32(0)) {
