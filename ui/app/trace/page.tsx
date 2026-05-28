@@ -48,11 +48,6 @@ export default function TracePage() {
                 isFocused ? "scale-105" : "scale-100"
               }`}
             >
-              <div
-                className={`absolute inset-0 rounded-2xl transition-all duration-300 ${
-                  isFocused ? "bg-ocean/20 blur-xl" : "bg-transparent"
-                }`}
-              />
               <div className="relative flex items-center gap-4 px-6 py-4 rounded-2xl bg-white/[0.03] border border-white/[0.1] hover:border-white/[0.2] transition-all duration-300 backdrop-blur-sm">
                 <Search className="w-5 h-5 text-ocean flex-shrink-0" />
                 <input
