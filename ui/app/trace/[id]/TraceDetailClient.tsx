@@ -113,7 +113,7 @@ export default function TraceDetailClient() {
             <div className="absolute w-80 h-80 rounded-full bg-white/[0.04] -top-44 -right-28" />
             <div className="absolute w-60 h-60 rounded-full bg-white/[0.03] -bottom-36 -left-28" />
             <div className="relative z-10">
-              <img src="/Logo_default.png" alt="TORO" className="w-16 h-auto mx-auto mb-4 opacity-90" />
+              <img src="/Logo_darkbg.png" alt="TORO" className="w-16 h-auto mx-auto mb-4 opacity-90" />
               <p className="text-[#c7d2fe] text-[11px] tracking-[2px] font-medium mb-2">NGUỒN GỐC TRUY XUẤT</p>
               <h1 className="text-white text-lg sm:text-xl font-extrabold leading-relaxed">
                 CÁ NGỪ XUẤT KHẨU<br />CỦA VIỆT NAM
