@@ -186,6 +186,8 @@ function getBatchName(batchHash: string): string {
 
 // ───────── Event Fetching ─────────
 
+const CHUNK_SIZE = BigInt(40000);
+
 type TraceEvent = {
   id: `0x${string}`;
   stage: number;
@@ -203,15 +205,33 @@ type LotCreatedEvent = {
   recorder: `0x${string}`;
 };
 
+async function getEventsInChunks<T>(
+  eventName: string,
+  args: Record<string, unknown>
+): Promise<T[]> {
+  const latestBlock = await publicClient.getBlockNumber();
+  let from = DEPLOYMENT_BLOCK;
+  const allLogs: T[] = [];
+
+  while (from <= latestBlock) {
+    const to = from + CHUNK_SIZE < latestBlock ? from + CHUNK_SIZE : latestBlock;
+    const logs = await publicClient.getContractEvents({
+      address: CONTRACTS.registry as `0x${string}`,
+      abi: ABIS.registry,
+      eventName,
+      args,
+      fromBlock: from,
+      toBlock: to,
+    });
+    allLogs.push(...(logs as T[]));
+    from = to + BigInt(1);
+  }
+
+  return allLogs;
+}
+
 async function fetchTraceEvents(id: `0x${string}`): Promise<TraceStage[]> {
-  const logs = await publicClient.getContractEvents({
-    address: CONTRACTS.registry as `0x${string}`,
-    abi: ABIS.registry,
-    eventName: "TraceRecorded",
-    args: { id },
-    fromBlock: DEPLOYMENT_BLOCK,
-    toBlock: "latest",
-  });
+  const logs = await getEventsInChunks<any>("TraceRecorded", { id });
 
   return logs
     .map((log) => {
@@ -229,14 +249,7 @@ async function fetchTraceEvents(id: `0x${string}`): Promise<TraceStage[]> {
 }
 
 async function fetchLotCreatedEvent(lotCodeHash: `0x${string}`): Promise<LotCreatedEvent | null> {
-  const logs = await publicClient.getContractEvents({
-    address: CONTRACTS.registry as `0x${string}`,
-    abi: ABIS.registry,
-    eventName: "LotCreated",
-    args: { lotCode: lotCodeHash },
-    fromBlock: DEPLOYMENT_BLOCK,
-    toBlock: "latest",
-  });
+  const logs = await getEventsInChunks<any>("LotCreated", { lotCode: lotCodeHash });
 
   if (logs.length === 0) return null;
   return (logs[0] as any).args as LotCreatedEvent;
