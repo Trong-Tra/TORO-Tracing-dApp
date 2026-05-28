@@ -1,0 +1,474 @@
+{
+  "lots": {
+    "TORO-LOT-001": {
+      "lotCode": "TORO-LOT-001",
+      "totalCans": 3900,
+      "packagingDate": 1719800000,
+      "productLabel": "0x270d022c9b6fb1d0eff40e94b9440132d32ea619c42e886a450d53973ffd7203",
+      "batches": [
+        {
+          "batchId": "WILD-CATCH-001",
+          "batchHash": "0x37684fa9faacb22a76c70837eaa6357cab1fe490da04173800bd2500f57451c9",
+          "sourceType": "Vessel",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "0x50e2a014644321c077746aa0dc509153033e98bd014b4bda45ca6a4552e1e6b8",
+              "timestamp": 1779871315,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418420,
+              "details": {
+                "Source Type": "Vessel",
+                "Fish Species": "Yellowfin",
+                "Country": "Vietnam",
+                "Catch Date": "2024-05-15",
+                "Fishing Method": "Longline",
+                "Catch Area": "Pacific Ocean",
+                "Catch Weight (kg)": "800",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "0xb2e6b54f943237ff79bf2a320952537e23cd8aa1b61b975af25706e37db14c28",
+              "timestamp": 1779871317,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418427,
+              "details": {
+                "Inventory Received": "2024-05-18",
+                "Inventory Location": "Port Cold Storage"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "0xe7c8f429a4a4ef6b30ce0f725b79f3aabae31cc45d0921788c2b382d5ed98175",
+              "timestamp": 1779871319,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418435,
+              "details": {
+                "Factory Name": "0xa1d8d7b5...c14b79e5",
+                "Production Date": "2024-06-01",
+                "Packaging Date": "2024-06-14",
+                "Input Weight (kg)": "1,950",
+                "Output Cans": "3,900",
+                "Wastage (kg)": "50"
+              }
+            }
+          ]
+        }
+      ],
+      "lotTraces": [
+        {
+          "stage": 3,
+          "stageName": "Manufacturing",
+          "txHash": "0xb303ad21521d0d324a2269936969a97ae42b051d78c9198845b967d86d6b6f70",
+          "timestamp": 1779871320,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418441,
+          "details": {
+            "Product Label": "0x270d022c...3ffd7203",
+            "Packaging Date": "2024-07-01"
+          }
+        },
+        {
+          "stage": 4,
+          "stageName": "Warehouse",
+          "txHash": "0x73d3bd39f69420038b3b2928a136602cab935d8dd66cd4eb643eaea1ba95ad82",
+          "timestamp": 1779871322,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418447,
+          "details": {
+            "Warehouse Name": "0xd1f88c6b...89850427",
+            "Storage Date": "2024-06-21",
+            "Storage Temp (°C)": "2°C",
+            "Storage Duration (hrs)": "72"
+          }
+        },
+        {
+          "stage": 5,
+          "stageName": "Distribution",
+          "txHash": "0x92d7af0ae7621603cd5529a08cef7f1cff8b85fb74826a580b268568e424fbf6",
+          "timestamp": 1779871324,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418454,
+          "details": {
+            "Shipment Code": "0x40d0502a...1457bf65",
+            "Departure Date": "2024-06-27",
+            "Arrival Date": "2024-06-29",
+            "Transit Duration (hrs)": "48",
+            "Transit Temp (°C)": "0°C"
+          }
+        }
+      ]
+    },
+    "TORO-LOT-002": {
+      "lotCode": "TORO-LOT-002",
+      "totalCans": 8800,
+      "packagingDate": 1720000000,
+      "productLabel": "0x270d022c9b6fb1d0eff40e94b9440132d32ea619c42e886a450d53973ffd7203",
+      "batches": [
+        {
+          "batchId": "WILD-CATCH-002",
+          "batchHash": "0xa35752a075b1d59923b0441eb6091ee01f36c000fe31edb15bd669a03cca72f5",
+          "sourceType": "Vessel",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "0x323d634c7a73a797b7c6be7c4fe5ec93d21c8019e0fc34650c02543bf51de636",
+              "timestamp": 1779871326,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418458,
+              "details": {
+                "Source Type": "Vessel",
+                "Fish Species": "Yellowfin",
+                "Country": "Vietnam",
+                "Catch Date": "2024-05-15",
+                "Fishing Method": "Longline",
+                "Catch Area": "Pacific Ocean",
+                "Catch Weight (kg)": "850",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "0x0f06859deff83ec9a02f05bff419766e07e974fac74e6fc8782988e12237c2d8",
+              "timestamp": 1779871328,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418463,
+              "details": {
+                "Inventory Received": "2024-05-19",
+                "Inventory Location": "Port Cold Storage"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "0xba6cf7530ff73d4683814f93376c038b4bc68a1824e35541a9eb9945ec5c91de",
+              "timestamp": 1779871330,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418471,
+              "details": {
+                "Factory Name": "0xa1d8d7b5...c14b79e5",
+                "Production Date": "2024-06-02",
+                "Packaging Date": "2024-06-16",
+                "Input Weight (kg)": "2,000",
+                "Output Cans": "4,000",
+                "Wastage (kg)": "60"
+              }
+            }
+          ]
+        },
+        {
+          "batchId": "FARM-001",
+          "batchHash": "0x2162c055eae80bdba07b7e3afea6397a95b21ac787ada1338df142429199a295",
+          "sourceType": "Farm",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "0x60f5d11a7a1cd34592b35846ba8f898506a4976342858485cf02e17bf95298e8",
+              "timestamp": 1779871333,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418478,
+              "details": {
+                "Source Type": "Farm",
+                "Fish Species": "Yellowfin",
+                "Country": "Thailand",
+                "Catch Date": "2024-05-16",
+                "Fishing Method": "Aquaculture",
+                "Catch Area": "Pacific Ocean",
+                "Catch Weight (kg)": "2,500",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "0x8b1df1614ae9a5ac25d5217d52bdf859c0e4043c2992661e7453890bd099e79f",
+              "timestamp": 1779871334,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418481,
+              "details": {
+                "Inventory Received": "2024-05-20",
+                "Inventory Location": "Farm Holding Tank"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "0x5fac7f089de37c434e18c1421a2dee969137bcca43f2593b0c76bbd650df0dd4",
+              "timestamp": 1779871336,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418488,
+              "details": {
+                "Factory Name": "0xa1d8d7b5...c14b79e5",
+                "Production Date": "2024-06-03",
+                "Packaging Date": "2024-06-17",
+                "Input Weight (kg)": "2,400",
+                "Output Cans": "4,800",
+                "Wastage (kg)": "80"
+              }
+            }
+          ]
+        }
+      ],
+      "lotTraces": [
+        {
+          "stage": 3,
+          "stageName": "Manufacturing",
+          "txHash": "0xf92fd2fe74bc58b6993a37a66f5d03a035c3bd3cde519bc3c3450d6f33ac96c4",
+          "timestamp": 1779871337,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418492,
+          "details": {
+            "Product Label": "0x270d022c...3ffd7203",
+            "Packaging Date": "2024-07-03"
+          }
+        },
+        {
+          "stage": 4,
+          "stageName": "Warehouse",
+          "txHash": "0x3bbebb75886209f116ac4a2f410031c34dbd26a4276184ab9fd6dcdc46233d5c",
+          "timestamp": 1779871341,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418505,
+          "details": {
+            "Warehouse Name": "0xd1f88c6b...89850427",
+            "Storage Date": "2024-06-22",
+            "Storage Temp (°C)": "2°C",
+            "Storage Duration (hrs)": "48"
+          }
+        },
+        {
+          "stage": 5,
+          "stageName": "Distribution",
+          "txHash": "0xd13dca08749608674c248a53b0494159cd8d82f303ba60fd7298dc76d0af9554",
+          "timestamp": 1779871342,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418511,
+          "details": {
+            "Shipment Code": "0x40d0502a...1457bf65",
+            "Departure Date": "2024-06-28",
+            "Arrival Date": "2024-07-01",
+            "Transit Duration (hrs)": "36",
+            "Transit Temp (°C)": "0°C"
+          }
+        }
+      ]
+    },
+    "TORO-LOT-003": {
+      "lotCode": "TORO-LOT-003",
+      "totalCans": 5800,
+      "packagingDate": 1720100000,
+      "productLabel": "0x270d022c9b6fb1d0eff40e94b9440132d32ea619c42e886a450d53973ffd7203",
+      "batches": [
+        {
+          "batchId": "FARM-002",
+          "batchHash": "0x5f6d62ebb944c49e4485ca4808c31ba01f932a53b3d54af59e071bd213d81dd9",
+          "sourceType": "Farm",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "0xc19ab2a956cbcbfde13f732595f58c6a34776c42cf2235264b1540359ed51388",
+              "timestamp": 1779871344,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418514,
+              "details": {
+                "Source Type": "Farm",
+                "Fish Species": "Skipjack",
+                "Country": "Thailand",
+                "Catch Date": "2024-05-18",
+                "Fishing Method": "Aquaculture",
+                "Catch Area": "Indian Ocean",
+                "Catch Weight (kg)": "3,000",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "0x644ecb2da27af41b208ead19c26f7e726f6bc8decbc82a18832fef1034bcde95",
+              "timestamp": 1779871346,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418515,
+              "details": {
+                "Inventory Received": "2024-05-21",
+                "Inventory Location": "Farm Holding Tank"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "0x1883a1cccd6ed3b6931e229ee0e1703c9957e0aa0eccb9e1ed873d05977f6642",
+              "timestamp": 1779871347,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418517,
+              "details": {
+                "Factory Name": "0xa1d8d7b5...c14b79e5",
+                "Production Date": "2024-06-04",
+                "Packaging Date": "2024-06-18",
+                "Input Weight (kg)": "2,900",
+                "Output Cans": "5,800",
+                "Wastage (kg)": "100"
+              }
+            }
+          ]
+        }
+      ],
+      "lotTraces": [
+        {
+          "stage": 3,
+          "stageName": "Manufacturing",
+          "txHash": "0xab3a6288fee13b62cb025b1320bdc668e71ddb3c82fb050a36e4c0eedbe553a5",
+          "timestamp": 1779871348,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418519,
+          "details": {
+            "Product Label": "0x270d022c...3ffd7203",
+            "Packaging Date": "2024-07-04"
+          }
+        },
+        {
+          "stage": 4,
+          "stageName": "Warehouse",
+          "txHash": "0xb58199a43689ec7f46b907aad8415a802f9430facd0d5ee41b1c50133a320f32",
+          "timestamp": 1779871350,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418526,
+          "details": {
+            "Warehouse Name": "0xd1f88c6b...89850427",
+            "Storage Date": "2024-06-25",
+            "Storage Temp (°C)": "1°C",
+            "Storage Duration (hrs)": "96"
+          }
+        },
+        {
+          "stage": 5,
+          "stageName": "Distribution",
+          "txHash": "0x4cf2335790f7a4d736d0cb970967bbce7a0de041a577b8d1e6034bc19b1ec8a1",
+          "timestamp": 1779871353,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418531,
+          "details": {
+            "Shipment Code": "0x40d0502a...1457bf65",
+            "Departure Date": "2024-07-01",
+            "Arrival Date": "2024-07-03",
+            "Transit Duration (hrs)": "48",
+            "Transit Temp (°C)": "1°C"
+          }
+        }
+      ]
+    },
+    "TORO-LOT-004": {
+      "lotCode": "TORO-LOT-004",
+      "totalCans": 2300,
+      "packagingDate": 1720200000,
+      "productLabel": "0x270d022c9b6fb1d0eff40e94b9440132d32ea619c42e886a450d53973ffd7203",
+      "batches": [
+        {
+          "batchId": "WILD-CATCH-003",
+          "batchHash": "0xe4f81ae1466c3976e8e8766b0d00fd16452695dd31e001f9eaf5dffe4e213521",
+          "sourceType": "Vessel",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "0x745237d1315225de0bf3d3beda460dadbd10f8b1f260b3885261584457d8e9eb",
+              "timestamp": 1779871356,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418540,
+              "details": {
+                "Source Type": "Vessel",
+                "Fish Species": "Bigeye",
+                "Country": "Indonesia",
+                "Catch Date": "2024-05-19",
+                "Fishing Method": "Purse Seine",
+                "Catch Area": "Pacific Ocean",
+                "Catch Weight (kg)": "1,200",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "0x830ac5046fe1f4be347d060f5049c0790ba3fe89e41eed551d1eb05bb85e7758",
+              "timestamp": 1779871358,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418548,
+              "details": {
+                "Inventory Received": "2024-05-22",
+                "Inventory Location": "Port Cold Storage"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "0x4f75845a028c81429c15aaa27d4132ca392b22755bdd5d8e833c41265d5d47cf",
+              "timestamp": 1779871361,
+              "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+              "blockNumber": 271418556,
+              "details": {
+                "Factory Name": "0xa1d8d7b5...c14b79e5",
+                "Production Date": "2024-06-05",
+                "Packaging Date": "2024-06-19",
+                "Input Weight (kg)": "1,150",
+                "Output Cans": "2,300",
+                "Wastage (kg)": "40"
+              }
+            }
+          ]
+        }
+      ],
+      "lotTraces": [
+        {
+          "stage": 3,
+          "stageName": "Manufacturing",
+          "txHash": "0x5796bfee9144dec12330c9356e8bfcdb0576da41656d841744f6bcca9731de3f",
+          "timestamp": 1779871362,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418561,
+          "details": {
+            "Product Label": "0x270d022c...3ffd7203",
+            "Packaging Date": "2024-07-05"
+          }
+        },
+        {
+          "stage": 4,
+          "stageName": "Warehouse",
+          "txHash": "0x150c9d916696b5081b73f8c88f44fb52425a134b7973194788fcb311b05537fc",
+          "timestamp": 1779871367,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418576,
+          "details": {
+            "Warehouse Name": "0xd1f88c6b...89850427",
+            "Storage Date": "2024-06-26",
+            "Storage Temp (°C)": "3°C",
+            "Storage Duration (hrs)": "24"
+          }
+        },
+        {
+          "stage": 5,
+          "stageName": "Distribution",
+          "txHash": "0x1baf5b3f2be501ac8227ea228ca0693fb3fbec0c398bb3376fe507deefdc929b",
+          "timestamp": 1779871369,
+          "recorder": "0x7EA634e331CF7b503df2e224f77a7C589462F1F2",
+          "blockNumber": 271418581,
+          "details": {
+            "Shipment Code": "0x40d0502a...1457bf65",
+            "Departure Date": "2024-07-02",
+            "Arrival Date": "2024-07-04",
+            "Transit Duration (hrs)": "24",
+            "Transit Temp (°C)": "0°C"
+          }
+        }
+      ]
+    }
+  },
+  "batches": {}
+}
