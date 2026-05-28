@@ -10,9 +10,15 @@ export default function TracePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && searchQuery.trim()) {
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
       router.push(`/trace/${searchQuery.trim()}`);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
     }
   };
 
@@ -49,7 +55,12 @@ export default function TracePage() {
               }`}
             >
               <div className="relative flex items-center gap-4 px-6 py-4 rounded-2xl bg-white/[0.03] border border-white/[0.1] hover:border-white/[0.2] transition-all duration-300 backdrop-blur-sm">
-                <Search className="w-5 h-5 text-ocean flex-shrink-0" />
+                <button
+                  onClick={handleSearch}
+                  className="flex-shrink-0 text-ocean hover:text-white transition-colors"
+                >
+                  <Search className="w-5 h-5" />
+                </button>
                 <input
                   type="text"
                   placeholder="Nhập mã lô (ví dụ: TORO-LOT-001)"
