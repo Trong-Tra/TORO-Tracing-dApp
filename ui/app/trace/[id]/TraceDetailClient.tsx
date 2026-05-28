@@ -60,7 +60,7 @@ export default function TraceDetailClient() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0a1628] flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-[3px] border-blue-600 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -104,25 +104,27 @@ export default function TraceDetailClient() {
         </div>
       </div>
 
-      {/* ── Light Content Area ── */}
-      <div className="bg-[#e9eef5] min-h-[calc(100vh-64px)]">
-        <div className="max-w-lg sm:max-w-2xl mx-auto pb-8">
+      {/* ── Light phone frame ── */}
+      <div className="bg-[#e9eef5] max-w-lg sm:max-w-2xl mx-auto sm:rounded-[34px] sm:my-6 sm:shadow-2xl overflow-hidden">
 
-          {/* Hero */}
-          <section className="relative bg-gradient-to-b from-[#001f5c] via-[#01296f] to-[#01337e] pt-8 pb-28 px-6 text-center overflow-hidden rounded-b-[32px]">
-            <div className="absolute w-80 h-80 rounded-full bg-white/[0.04] -top-44 -right-28" />
-            <div className="absolute w-60 h-60 rounded-full bg-white/[0.03] -bottom-36 -left-28" />
-            <div className="relative z-10">
-              <img src="/Logo_darkbg.png" alt="TORO" className="w-16 h-auto mx-auto mb-4 opacity-90" />
-              <p className="text-[#c7d2fe] text-[11px] tracking-[2px] font-medium mb-2">NGUỒN GỐC TRUY XUẤT</p>
-              <h1 className="text-white text-lg sm:text-xl font-extrabold leading-relaxed">
-                CÁ NGỪ XUẤT KHẨU<br />CỦA VIỆT NAM
-              </h1>
-            </div>
-          </section>
+        {/* Hero */}
+        <section className="relative bg-gradient-to-b from-[#001f5c] via-[#01296f] to-[#01337e] pt-8 pb-28 px-6 text-center overflow-hidden">
+          <div className="absolute w-80 h-80 rounded-full bg-white/[0.04] -top-44 -right-28" />
+          <div className="absolute w-60 h-60 rounded-full bg-white/[0.03] -bottom-36 -left-28" />
+          <div className="relative z-10">
+            <img src="/Logo_darkbg.png" alt="TORO" className="w-16 h-auto mx-auto mb-4 opacity-90" />
+            <p className="text-[#c7d2fe] text-[11px] tracking-[2px] font-medium mb-2">NGUỒN GỐC TRUY XUẤT</p>
+            <h1 className="text-white text-lg sm:text-xl font-extrabold leading-relaxed">
+              CÁ NGỪ XUẤT KHẨU<br />CỦA VIỆT NAM
+            </h1>
+          </div>
+        </section>
+
+        {/* Content */}
+        <div className="px-4 pb-8">
 
           {/* Floating Card */}
-          <div className="relative z-20 mx-4 -mt-20 bg-white rounded-[28px] p-5 shadow-xl">
+          <div className="relative z-20 -mt-20 bg-white rounded-[28px] p-5 shadow-xl">
             <div className="flex items-center gap-2.5 mb-4 text-green-600 text-xs font-bold">
               <div className="w-[22px] h-[22px] rounded-full bg-green-100 flex items-center justify-center text-[11px]">
                 <i className="fa-solid fa-check" />
@@ -151,7 +153,7 @@ export default function TraceDetailClient() {
           </div>
 
           {/* KPI Grid */}
-          <div className="grid grid-cols-4 gap-2.5 px-4 mt-5 mb-7">
+          <div className="grid grid-cols-4 gap-2.5 mt-5 mb-7">
             {kpi.map((item, i) => (
               <div key={i} className="bg-white rounded-2xl p-3 min-h-[110px] text-center shadow-sm flex flex-col justify-center">
                 <div className="w-9 h-9 mx-auto mb-2 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-[15px]">
@@ -164,27 +166,30 @@ export default function TraceDetailClient() {
           </div>
 
           {/* Section Title */}
-          <div className="px-4 mb-5">
+          <div className="mb-5">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f2a5f]">HÀNH TRÌNH TRUY XUẤT</h2>
             {product.batches.length > 1 && (
               <p className="text-slate-500 text-xs mt-1">
-                {product.batches.length} lô nguyên liệu: {product.batches.map(b => b.batchId).join(", ")}
+                {product.batches.length} lô nguyên liệu: {product.batches.map((b) => b.batchId).join(", ")}
               </p>
             )}
           </div>
 
           {/* Timeline */}
-          <div className="relative pl-14 pr-4 pb-4">
+          <div className="relative pl-14 pr-0 pb-4">
             <div className="absolute left-[34px] top-0 bottom-0 w-0.5 bg-[#d7dee8]" />
 
             {STAGE_META.map((stage, idx) => {
-              const trace = stage.num === 1
-                ? batchTrace.find(t => t.stage === 1)
-                : lotTrace.find(t => t.stage === stage.num);
+              const trace =
+                stage.num === 1
+                  ? batchTrace.find((t) => t.stage === 1)
+                  : lotTrace.find((t) => t.stage === stage.num);
 
               return (
                 <div key={idx} className="relative mb-5">
-                  <div className={`absolute left-[-46px] top-4 w-10 h-10 rounded-full ${stage.color} flex items-center justify-center text-white text-base border-4 border-[#e9eef5] shadow-md z-10`}>
+                  <div
+                    className={`absolute left-[-46px] top-4 w-10 h-10 rounded-full ${stage.color} flex items-center justify-center text-white text-base border-4 border-[#e9eef5] shadow-md z-10`}
+                  >
                     <i className={`fa-solid ${stage.icon}`} />
                   </div>
                   <div className="bg-white rounded-3xl p-5 shadow-sm">
@@ -194,8 +199,8 @@ export default function TraceDetailClient() {
                     <div className="grid grid-cols-2 gap-3.5">
                       {stage.num === 1 && (
                         <>
-                          <Detail label="Tàu khai thác" value={getDetail(batchTrace, 1, "Vessel/Farm ID")} />
                           <Detail label="Loại tàu" value={getDetail(batchTrace, 1, "Source Type")} />
+                          <Detail label="Giống cá" value={getDetail(batchTrace, 1, "Fish Species")} />
                           <Detail label="Ngày đánh bắt" value={getDetail(batchTrace, 1, "Catch Date")} />
                           <Detail label="Phương pháp" value={getDetail(batchTrace, 1, "Fishing Method")} />
                           <Detail label="Vùng biển" value={getDetail(batchTrace, 1, "Catch Area")} />
@@ -204,12 +209,12 @@ export default function TraceDetailClient() {
                       )}
                       {stage.num === 3 && (
                         <>
-                          <Detail label="Nhà máy" value={getDetail(lotTrace, 3, "Factory Name")} />
+                          <Detail label="Nhà máy" value={getDetail(batchTrace, 3, "Factory Name")} />
                           <Detail label="Mã lô" value={batch?.batchId || "—"} />
-                          <Detail label="Ngày SX" value={getDetail(lotTrace, 3, "Production Date")} />
+                          <Detail label="Ngày SX" value={getDetail(batchTrace, 3, "Production Date")} />
                           <Detail label="Ngày đóng gói" value={getDetail(lotTrace, 3, "Packaging Date")} />
-                          <Detail label="Đầu vào" value={getDetail(lotTrace, 3, "Input Weight (kg)") + " kg"} />
-                          <Detail label="Số lon" value={getDetail(lotTrace, 3, "Output Cans")} />
+                          <Detail label="Đầu vào" value={getDetail(batchTrace, 3, "Input Weight (kg)") + " kg"} />
+                          <Detail label="Số lon" value={getDetail(batchTrace, 3, "Output Cans")} />
                         </>
                       )}
                       {stage.num === 4 && (
@@ -222,8 +227,7 @@ export default function TraceDetailClient() {
                       )}
                       {stage.num === 5 && (
                         <>
-                          <Detail label="Từ" value={getDetail(lotTrace, 5, "From Country") || "Singapore"} />
-                          <Detail label="Đến" value={getDetail(lotTrace, 5, "To Country") || "Nhật Bản"} />
+                          <Detail label="Mã vận chuyển" value={getDetail(lotTrace, 5, "Shipment Code")} />
                           <Detail label="Khởi hành" value={getDetail(lotTrace, 5, "Departure Date")} />
                           <Detail label="Đến nơi" value={getDetail(lotTrace, 5, "Arrival Date")} />
                           <Detail label="Thời gian" value={getDetail(lotTrace, 5, "Transit Duration (hrs)") + " giờ"} />
@@ -236,7 +240,7 @@ export default function TraceDetailClient() {
                       <div className="mt-5 pt-4 border-t border-gray-200">
                         <p className="text-center text-xs font-extrabold text-[#0f2a5f] mb-4">CHỨNG NHẬN & KIỂM NGHIỆM</p>
                         <div className="grid grid-cols-3 gap-2.5">
-                          {certs.map(c => (
+                          {certs.map((c) => (
                             <div key={c.key} className="bg-slate-50 rounded-xl py-3 px-2 text-center">
                               <i className={`fa-solid ${c.icon} text-green-600 text-[15px] mb-2`} />
                               <div className="text-green-600 text-[11px] font-bold">{c.label}</div>
@@ -248,8 +252,12 @@ export default function TraceDetailClient() {
                     )}
 
                     {trace?.txHash && (
-                      <a href={explorerUrl(trace.txHash)} target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-4 text-[11px] text-blue-600 font-semibold hover:underline">
+                      <a
+                        href={explorerUrl(trace.txHash)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 mt-4 text-[11px] text-blue-600 font-semibold hover:underline"
+                      >
                         <i className="fa-solid fa-arrow-up-right-from-square text-[10px]" />
                         Xem giao dịch
                       </a>
@@ -269,7 +277,7 @@ export default function TraceDetailClient() {
                   5. PHÂN PHỐI <span className="text-slate-500">(DISTRIBUTOR)</span>
                 </h3>
                 <div className="grid grid-cols-2 gap-3.5">
-                  <Detail label="Nhà phân phối" value={getDetail(lotTrace, 5, "To Country") || "Tokyo Distributor"} />
+                  <Detail label="Nhà phân phối" value="Tokyo Distributor" />
                   <Detail label="Tình trạng" value="Đã nhận hàng" />
                 </div>
               </div>
@@ -277,7 +285,7 @@ export default function TraceDetailClient() {
           </div>
 
           {/* Blockchain */}
-          <div className="mx-4 mb-6 bg-white rounded-3xl p-4 flex items-center justify-between shadow-sm">
+          <div className="mb-6 bg-white rounded-3xl p-4 flex items-center justify-between shadow-sm">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-900 to-blue-600 flex items-center justify-center text-white text-xl flex-shrink-0">
               <i className="fa-solid fa-shield-halved" />
             </div>
@@ -291,7 +299,7 @@ export default function TraceDetailClient() {
           </div>
 
           {/* Footer text */}
-          <div className="text-center pb-6">
+          <div className="text-center pb-2">
             <p className="text-[#001b4f] text-xs font-semibold tracking-wide">TORO — TRUSTLESS OCEANIC RECORD OF ORIGIN</p>
             <p className="text-blue-800/60 text-[10px] mt-1">Minh bạch • Chính xác • Bền vững</p>
           </div>
