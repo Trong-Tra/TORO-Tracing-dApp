@@ -6,8 +6,6 @@ import QRCode from "qrcode";
 import { fetchProductLot, explorerUrl } from "@/src/lib/trace";
 import type { ProductLot, TraceStage } from "@/src/lib/trace";
 
-// ───────── Helpers ─────────
-
 function getDetail(traces: TraceStage[], stage: number, key: string): string {
   const t = traces.find((x) => x.stage === stage);
   const v = t?.details?.[key];
@@ -93,9 +91,9 @@ export default function TraceDetailClient() {
 
   return (
     <div className="min-h-screen bg-[#0a1628]">
-      {/* ── Header ── */}
+      {/* Header */}
       <div className="sticky top-0 z-40 px-4 py-4 border-b border-white/[0.06] bg-[#0a1628]/80 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           <a href="/trace" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm">
             <i className="fa-solid fa-arrow-left" />
             Quay lại
@@ -104,80 +102,79 @@ export default function TraceDetailClient() {
         </div>
       </div>
 
-      {/* ── Light phone frame ── */}
-      <div className="bg-[#e9eef5] max-w-lg sm:max-w-2xl mx-auto sm:rounded-[34px] sm:my-6 sm:shadow-2xl overflow-hidden">
-
+      {/* Light content area - full width on desktop */}
+      <div className="bg-[#e9eef5]">
         {/* Hero */}
-        <section className="relative bg-gradient-to-b from-[#001f5c] via-[#01296f] to-[#01337e] pt-8 pb-28 px-6 text-center overflow-hidden">
+        <section className="relative bg-gradient-to-b from-[#001f5c] via-[#01296f] to-[#01337e] pt-10 pb-32 px-6 text-center overflow-hidden">
           <div className="absolute w-80 h-80 rounded-full bg-white/[0.04] -top-44 -right-28" />
           <div className="absolute w-60 h-60 rounded-full bg-white/[0.03] -bottom-36 -left-28" />
-          <div className="relative z-10">
+          <div className="relative z-10 max-w-7xl mx-auto">
             <img src="/Logo_darkbg.png" alt="TORO" className="w-16 h-auto mx-auto mb-4 opacity-90" />
             <p className="text-[#c7d2fe] text-[11px] tracking-[2px] font-medium mb-2">NGUỒN GỐC TRUY XUẤT</p>
-            <h1 className="text-white text-lg sm:text-xl font-extrabold leading-relaxed">
+            <h1 className="text-white text-xl sm:text-2xl font-extrabold leading-relaxed">
               CÁ NGỪ XUẤT KHẨU<br />CỦA VIỆT NAM
             </h1>
           </div>
         </section>
 
         {/* Content */}
-        <div className="px-4 pb-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 pb-12 -mt-24">
 
           {/* Floating Card */}
-          <div className="relative z-20 -mt-20 bg-white rounded-[28px] p-5 shadow-xl">
-            <div className="flex items-center gap-2.5 mb-4 text-green-600 text-xs font-bold">
-              <div className="w-[22px] h-[22px] rounded-full bg-green-100 flex items-center justify-center text-[11px]">
+          <div className="relative z-20 bg-white rounded-[28px] p-6 shadow-xl">
+            <div className="flex items-center gap-2.5 mb-5 text-green-600 text-sm font-bold">
+              <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-xs">
                 <i className="fa-solid fa-check" />
               </div>
               Sản phẩm được xác thực bởi Blockchain
             </div>
-            <div className="flex justify-between items-start gap-4">
+            <div className="flex justify-between items-start gap-6">
               <div className="flex-1 min-w-0">
-                <p className="text-slate-500 text-[11px] font-bold tracking-wide mb-2">MÃ TRUY XUẤT</p>
-                <p className="text-[#0f172a] text-xl font-extrabold leading-tight mb-4 break-words">
+                <p className="text-slate-500 text-xs font-bold tracking-wide mb-2">MÃ TRUY XUẤT</p>
+                <p className="text-[#0f172a] text-2xl font-extrabold leading-tight mb-5 break-words">
                   {id}
                 </p>
                 {qrUrl && (
                   <>
-                    <div className="w-20 h-20 rounded-xl overflow-hidden border border-gray-200 bg-white">
-                      <img src={qrUrl} alt="QR" className="w-full h-full object-cover" />
+                    <div className="w-24 h-24 rounded-xl overflow-hidden border border-gray-200 bg-white">
+                      <img src={qrUrl} alt="QR" className="w-full h-full" />
                     </div>
-                    <p className="text-slate-500 text-[10px] font-semibold mt-1.5">Quét mã QR</p>
+                    <p className="text-slate-500 text-xs font-semibold mt-2">Quét mã QR</p>
                   </>
                 )}
               </div>
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-[22px] overflow-hidden shadow-lg border-4 border-white flex-shrink-0">
-                <img src="/tuna_on_can.png" alt="Tuna" className="w-full h-full object-cover" />
+              <div className="w-36 h-28 sm:w-44 sm:h-32 rounded-[22px] overflow-hidden shadow-lg border-4 border-white flex-shrink-0 bg-white flex items-center justify-center">
+                <img src="/tuna_on_can.png" alt="Tuna" className="w-full h-full" />
               </div>
             </div>
           </div>
 
           {/* KPI Grid */}
-          <div className="grid grid-cols-4 gap-2.5 mt-5 mb-7">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 mb-8">
             {kpi.map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl p-3 min-h-[110px] text-center shadow-sm flex flex-col justify-center">
-                <div className="w-9 h-9 mx-auto mb-2 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-[15px]">
+              <div key={i} className="bg-white rounded-2xl p-4 min-h-[120px] text-center shadow-sm flex flex-col justify-center">
+                <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base">
                   <i className={item.icon} />
                 </div>
-                <p className="text-slate-400 text-[9px] leading-relaxed mb-1">{item.title}</p>
-                <p className="text-[#0f172a] text-[11px] leading-relaxed font-bold">{item.value}</p>
+                <p className="text-slate-400 text-[10px] leading-relaxed mb-1">{item.title}</p>
+                <p className="text-[#0f172a] text-sm leading-relaxed font-bold">{item.value}</p>
               </div>
             ))}
           </div>
 
           {/* Section Title */}
-          <div className="mb-5">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f2a5f]">HÀNH TRÌNH TRUY XUẤT</h2>
+          <div className="mb-6">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0f2a5f]">HÀNH TRÌNH TRUY XUẤT</h2>
             {product.batches.length > 1 && (
-              <p className="text-slate-500 text-xs mt-1">
+              <p className="text-slate-500 text-sm mt-1">
                 {product.batches.length} lô nguyên liệu: {product.batches.map((b) => b.batchId).join(", ")}
               </p>
             )}
           </div>
 
           {/* Timeline */}
-          <div className="relative pl-14 pr-0 pb-4">
-            <div className="absolute left-[34px] top-0 bottom-0 w-0.5 bg-[#d7dee8]" />
+          <div className="relative pl-16 pr-0 sm:pl-20 pb-4">
+            <div className="absolute left-[38px] sm:left-[46px] top-0 bottom-0 w-0.5 bg-[#d7dee8]" />
 
             {STAGE_META.map((stage, idx) => {
               const trace =
@@ -186,17 +183,17 @@ export default function TraceDetailClient() {
                   : lotTrace.find((t) => t.stage === stage.num);
 
               return (
-                <div key={idx} className="relative mb-5">
+                <div key={idx} className="relative mb-6">
                   <div
-                    className={`absolute left-[-46px] top-4 w-10 h-10 rounded-full ${stage.color} flex items-center justify-center text-white text-base border-4 border-[#e9eef5] shadow-md z-10`}
+                    className={`absolute left-[-50px] sm:left-[-58px] top-4 w-11 h-11 sm:w-12 sm:h-12 rounded-full ${stage.color} flex items-center justify-center text-white text-lg border-4 border-[#e9eef5] shadow-md z-10`}
                   >
                     <i className={`fa-solid ${stage.icon}`} />
                   </div>
-                  <div className="bg-white rounded-3xl p-5 shadow-sm">
-                    <h3 className="text-[15px] font-extrabold text-[#0f2a5f] mb-4">
+                  <div className="bg-white rounded-3xl p-6 shadow-sm">
+                    <h3 className="text-base sm:text-lg font-extrabold text-[#0f2a5f] mb-5">
                       {idx + 1}. {stage.title} <span className="text-slate-500">({stage.en})</span>
                     </h3>
-                    <div className="grid grid-cols-2 gap-3.5">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                       {stage.num === 1 && (
                         <>
                           <Detail label="Loại tàu" value={getDetail(batchTrace, 1, "Source Type")} />
@@ -237,14 +234,14 @@ export default function TraceDetailClient() {
                     </div>
 
                     {stage.num === 3 && certs.length > 0 && (
-                      <div className="mt-5 pt-4 border-t border-gray-200">
-                        <p className="text-center text-xs font-extrabold text-[#0f2a5f] mb-4">CHỨNG NHẬN & KIỂM NGHIỆM</p>
-                        <div className="grid grid-cols-3 gap-2.5">
+                      <div className="mt-6 pt-5 border-t border-gray-200">
+                        <p className="text-center text-sm font-extrabold text-[#0f2a5f] mb-4">CHỨNG NHẬN & KIỂM NGHIỆM</p>
+                        <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
                           {certs.map((c) => (
                             <div key={c.key} className="bg-slate-50 rounded-xl py-3 px-2 text-center">
-                              <i className={`fa-solid ${c.icon} text-green-600 text-[15px] mb-2`} />
-                              <div className="text-green-600 text-[11px] font-bold">{c.label}</div>
-                              <small className="block mt-1 text-slate-400 text-[9px]">CERTIFIED</small>
+                              <i className={`fa-solid ${c.icon} text-green-600 text-base mb-2`} />
+                              <div className="text-green-600 text-xs font-bold">{c.label}</div>
+                              <small className="block mt-1 text-slate-400 text-[10px]">CERTIFIED</small>
                             </div>
                           ))}
                         </div>
@@ -256,7 +253,7 @@ export default function TraceDetailClient() {
                         href={explorerUrl(trace.txHash)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-4 text-[11px] text-blue-600 font-semibold hover:underline"
+                        className="inline-flex items-center gap-1.5 mt-4 text-xs text-blue-600 font-semibold hover:underline"
                       >
                         <i className="fa-solid fa-arrow-up-right-from-square text-[10px]" />
                         Xem giao dịch
@@ -268,15 +265,15 @@ export default function TraceDetailClient() {
             })}
 
             {/* Distribution */}
-            <div className="relative mb-5">
-              <div className="absolute left-[-46px] top-4 w-10 h-10 rounded-full bg-teal-700 flex items-center justify-center text-white text-base border-4 border-[#e9eef5] shadow-md z-10">
+            <div className="relative mb-6">
+              <div className="absolute left-[-50px] sm:left-[-58px] top-4 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-teal-700 flex items-center justify-center text-white text-lg border-4 border-[#e9eef5] shadow-md z-10">
                 <i className="fa-solid fa-store" />
               </div>
-              <div className="bg-white rounded-3xl p-5 shadow-sm">
-                <h3 className="text-[15px] font-extrabold text-[#0f2a5f] mb-4">
+              <div className="bg-white rounded-3xl p-6 shadow-sm">
+                <h3 className="text-base sm:text-lg font-extrabold text-[#0f2a5f] mb-5">
                   5. PHÂN PHỐI <span className="text-slate-500">(DISTRIBUTOR)</span>
                 </h3>
-                <div className="grid grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   <Detail label="Nhà phân phối" value="Tokyo Distributor" />
                   <Detail label="Tình trạng" value="Đã nhận hàng" />
                 </div>
@@ -285,23 +282,17 @@ export default function TraceDetailClient() {
           </div>
 
           {/* Blockchain */}
-          <div className="mb-6 bg-white rounded-3xl p-4 flex items-center justify-between shadow-sm">
+          <div className="bg-white rounded-3xl p-5 flex items-center justify-between shadow-sm">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-900 to-blue-600 flex items-center justify-center text-white text-xl flex-shrink-0">
               <i className="fa-solid fa-shield-halved" />
             </div>
-            <div className="flex-1 ml-3.5">
-              <h4 className="text-[#0f2a5f] text-[15px] font-bold mb-1">XÁC THỰC BLOCKCHAIN</h4>
-              <p className="text-slate-500 text-[11px] leading-relaxed">Dữ liệu được ghi nhận trên blockchain và xác minh toàn chuỗi cung ứng</p>
+            <div className="flex-1 ml-4">
+              <h4 className="text-[#0f2a5f] text-base font-bold mb-1">XÁC THỰC BLOCKCHAIN</h4>
+              <p className="text-slate-500 text-xs leading-relaxed">Dữ liệu được ghi nhận trên blockchain và xác minh toàn chuỗi cung ứng</p>
             </div>
-            <div className="bg-green-100 text-green-700 px-3 py-2 rounded-full text-[11px] font-bold flex-shrink-0 ml-2">
+            <div className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-xs font-bold flex-shrink-0 ml-3">
               ✓ Verified
             </div>
-          </div>
-
-          {/* Footer text */}
-          <div className="text-center pb-2">
-            <p className="text-[#001b4f] text-xs font-semibold tracking-wide">TORO — TRUSTLESS OCEANIC RECORD OF ORIGIN</p>
-            <p className="text-blue-800/60 text-[10px] mt-1">Minh bạch • Chính xác • Bền vững</p>
           </div>
         </div>
       </div>
@@ -312,8 +303,8 @@ export default function TraceDetailClient() {
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-slate-500 text-[11px] mb-1 font-semibold">{label}</p>
-      <p className="text-[#0f172a] text-xs leading-relaxed font-bold">{value}</p>
+      <p className="text-slate-500 text-xs mb-1 font-semibold">{label}</p>
+      <p className="text-[#0f172a] text-sm leading-relaxed font-bold">{value}</p>
     </div>
   );
 }
