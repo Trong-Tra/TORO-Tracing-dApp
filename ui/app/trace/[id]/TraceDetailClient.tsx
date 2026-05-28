@@ -256,7 +256,7 @@ export default function TraceDetailClient() {
                         className="inline-flex items-center gap-1.5 mt-4 text-xs text-blue-600 font-semibold hover:underline"
                       >
                         <i className="fa-solid fa-arrow-up-right-from-square text-[10px]" />
-                        Xem giao dịch
+                        Xem giao dịch trên blockchain
                       </a>
                     )}
                   </div>
