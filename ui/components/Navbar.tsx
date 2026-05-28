@@ -8,6 +8,9 @@ export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
+  // Hide navbar on trace detail pages
+  if (pathname.startsWith("/trace/")) return null;
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
