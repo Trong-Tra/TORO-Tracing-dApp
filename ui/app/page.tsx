@@ -5,6 +5,7 @@ import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { QrCode, Fish, Factory, ExternalLink } from "lucide-react";
 import Can3D from "@/components/Can3D";
+import traceIndex from "@/src/data/traceIndex.json";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -35,14 +36,24 @@ export default function LandingPage() {
   const AX = -80;
   const AY = -100;
 
+  const lots = Object.values(traceIndex.lots);
+  const totalCans = lots.reduce((s, l: any) => s + (l.totalCans || 0), 0);
+  const totalEvents = lots.reduce((s, l: any) => {
+    let count = (l.lotTraces || []).length;
+    l.batches?.forEach((b: any) => {
+      count += (b.trace || []).length;
+    });
+    return s + count;
+  }, 0);
+
   const stats = [
     {
-      label: "Traceable Products",
-      value: "5,440",
+      label: "Products Traced",
+      value: totalCans.toLocaleString(),
     },
     {
-      label: "Contracts Deployed",
-      value: "1",
+      label: "Supply Chain Events",
+      value: totalEvents.toLocaleString(),
     },
   ];
 
@@ -157,7 +168,7 @@ export default function LandingPage() {
                   Start Tracing →
                 </button>
                 <a
-                  href="https://sepolia.arbiscan.io/address/0x1eb19bebb5ad754e320255436adfcb3482963046"
+                  href="https://sepolia.arbiscan.io/address/0x2119161e3f789e7946f7acae8516c63db8a57077"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 rounded-xl bg-white/5 border border-white/15 text-white/70 hover:text-white hover:bg-white/10 transition-all text-sm font-medium inline-flex items-center gap-2"

@@ -23,7 +23,7 @@ export default function TracePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0a1628] pt-20">
+    <div className="flex flex-col bg-[#0a1628] pt-20">
       <section className="relative px-6 md:px-10 py-24 md:py-32 bg-gradient-to-b from-[#0c1f3a] to-[#0a1628]">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-20 right-0 w-96 h-96 bg-ocean/5 rounded-full blur-3xl" />
@@ -63,7 +63,7 @@ export default function TracePage() {
                 </button>
                 <input
                   type="text"
-                  placeholder="Nhập mã lô (ví dụ: TORO-LOT-001)"
+                  placeholder="Nhập mã lô (ví dụ: TORO-01)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={handleKeyDown}

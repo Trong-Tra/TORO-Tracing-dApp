@@ -2,10 +2,10 @@ import TraceDetailClient from "./TraceDetailClient";
 
 export function generateStaticParams() {
   return [
-    { id: "TORO-LOT-001" },
-    { id: "TORO-LOT-002" },
-    { id: "TORO-LOT-003" },
-    { id: "TORO-LOT-004" },
+    { id: "TORO-01" },
+    { id: "TORO-02" },
+    { id: "TORO-03" },
+    { id: "TORO-04" },
   ];
 }
 

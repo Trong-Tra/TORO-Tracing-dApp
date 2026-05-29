@@ -8,14 +8,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
-  // Hide navbar on trace detail pages
-  if (pathname.startsWith("/trace/")) return null;
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Hide navbar on trace detail pages
+  if (pathname.startsWith("/trace/")) return null;
 
   return (
     <nav
@@ -83,7 +83,7 @@ export default function Navbar() {
         {/* Right CTAs */}
         <div className="flex items-center gap-3">
           <a
-            href="https://sepolia.arbiscan.io/address/0x1eb19bebb5ad754e320255436adfcb3482963046"
+            href="https://sepolia.arbiscan.io/address/0x2119161e3f789e7946f7acae8516c63db8a57077"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex px-4 py-2 rounded-lg border border-white/[0.08] text-white/50 hover:text-white hover:border-white/20 transition-all text-sm font-medium no-underline"

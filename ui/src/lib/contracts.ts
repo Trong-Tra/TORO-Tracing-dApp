@@ -21,11 +21,11 @@ export const publicClient = createPublicClient({
 
 // Deployed contract address
 export const CONTRACTS = {
-  registry: "0x1eb19bebb5ad754e320255436adfcb3482963046",
+  registry: "0x2119161e3f789e7946f7acae8516c63db8a57077",
 } as const;
 
 // Deployment block for event filtering
-export const DEPLOYMENT_BLOCK = BigInt(271418386);
+export const DEPLOYMENT_BLOCK = BigInt(271896448);
 
 // Contract ABI
 import registryAbi from "./abi/ToroRegistry.json";
