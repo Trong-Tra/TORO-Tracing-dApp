@@ -77,7 +77,7 @@ export default function LandingPage() {
 
   const team = [
     { name: "Tron", image: "/team-mascot/Blockchain.png", twitter: "https://x.com/Trx_Tra" },
-    { name: "Chau", image: "/team-mascot/BA.png", twitter: "https://x.com/ChowThanks" },
+    { name: "Chow", image: "/team-mascot/BA.png", twitter: "https://x.com/ChowThanks" },
     { name: "Hoang", image: "/team-mascot/Graph.png", twitter: "" },
     { name: "Duy", image: "/team-mascot/Web-app.png", twitter: "https://x.com/DanDuy4" },
   ];
