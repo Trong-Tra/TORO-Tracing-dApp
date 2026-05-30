@@ -136,14 +136,20 @@ export default function LandingPage() {
                 <span className="text-ocean">O</span>rigin
               </motion.h1>
 
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-base text-white/40 mb-5 font-mono tracking-wide"
+                className="flex items-center gap-2 mb-5"
               >
-                Traceability Platform for Seafood Supply Chains
-              </motion.p>
+                <svg className="w-5 h-4 rounded-sm flex-shrink-0" viewBox="0 0 640 480">
+                  <path fill="#da251d" d="M0 0h640v480H0z" />
+                  <path fill="#ff0" d="m320 90 26.5 81.5h85.8l-69.4 50.4 26.5 81.5-69.4-50.4-69.4 50.4 26.5-81.5-69.4-50.4h85.8z" />
+                </svg>
+                <p className="text-base text-white/40 font-mono tracking-wide">
+                  Traceability Platform for Seafood Supply Chains
+                </p>
+              </motion.div>
 
               <motion.p
                 initial={{ opacity: 0 }}
