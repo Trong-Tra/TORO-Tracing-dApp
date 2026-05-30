@@ -460,6 +460,108 @@
           }
         }
       ]
+    },
+    "TORO-05": {
+      "lotCode": "TORO-05",
+      "totalCans": 2900,
+      "packagingDate": 1719273600,
+      "productLabel": "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000005010000000000000000000000000000000000000000000000000000000000000504000000000000000000000000000000000000000000000000000000000000000263c3a1206e67e1bbab20c491c3b36e672068e1bb99700000000000000000000000000000000000000000000000000000000000000000000000000000667a0880",
+      "batches": [
+        {
+          "batchId": "WILD-CATCH-005",
+          "batchHash": "0x57494c442d43415443482d303035000000000000000000000000000000000000",
+          "sourceType": "Vessel",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "0x92df5b90a7413101a2e78a6b22aa66ebc1ba0f97f0d27823218c4e464ce6bbf5",
+              "timestamp": 1780103275,
+              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
+              "blockNumber": 272091733,
+              "details": {
+                "Source Type": "Vessel",
+                "Fish Species": "Yellowfin",
+                "Region": "Bình Định",
+                "Catch Date": "22/5/2024",
+                "Fishing Method": "Longline",
+                "Catch Area": "Pacific Ocean",
+                "Catch Weight (kg)": "1,500",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "0xa2ac417bce9cab447ff484222c09a5e1409e98481c45e5b9d70214e7cb77356d",
+              "timestamp": 1780103277,
+              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
+              "blockNumber": 272091740,
+              "details": {
+                "Inventory Received": "25/5/2024",
+                "Inventory Location": "Port Cold Storage"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "0x0b5914f901c1bd3dc50b75fded58222394cd0b4e695c87da7c3b40058740c43a",
+              "timestamp": 1780103278,
+              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
+              "blockNumber": 272091745,
+              "details": {
+                "Factory Name": "TORO-Seafood Processing 1",
+                "Production Date": "10/6/2024",
+                "Packaging Date": "20/6/2024",
+                "Input Weight (kg)": "1,450",
+                "Output Cans": "2,900",
+                "Wastage (kg)": "45"
+              }
+            }
+          ]
+        }
+      ],
+      "lotTraces": [
+        {
+          "stage": 3,
+          "stageName": "Manufacturing",
+          "txHash": "0xbd7c35a88c5a235f5f04ae0d12dfa0ffc3beee0893eca01bb2ddc56783a9222f",
+          "timestamp": 1780103280,
+          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
+          "blockNumber": 272091749,
+          "details": {
+            "Product Label": "cá ngừ đóng hộp",
+            "Packaging Date": "25/6/2024"
+          }
+        },
+        {
+          "stage": 4,
+          "stageName": "Warehouse",
+          "txHash": "0xe650c3ca1837aa2dc316dd198d4d03cb1e1dc5d866b2ef9fb518cf9785fd6eef",
+          "timestamp": 1780103282,
+          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
+          "blockNumber": 272091755,
+          "details": {
+            "Warehouse Name": "TORO-Cold Storage 2",
+            "Storage Start": "20/6/2024",
+            "Storage End": "28/6/2024",
+            "Storage Temp (°C)": "0xffffffff...fffffffe"
+          }
+        },
+        {
+          "stage": 5,
+          "stageName": "Distribution",
+          "txHash": "0xbdbb6fae69129db8fc9ba6a725d0c5034b5f81d2bdf48071110dfeb42a30121b",
+          "timestamp": 1780103283,
+          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
+          "blockNumber": 272091760,
+          "details": {
+            "Shipment Code": "TORO-Shipping 2",
+            "Departure Date": "28/6/2024",
+            "Arrival Date": "30/6/2024"
+          }
+        }
+      ]
     }
   },
   "batches": {}

@@ -1,12 +1,8 @@
 import TraceDetailClient from "./TraceDetailClient";
+import traceIndex from "@/src/data/traceIndex.json";
 
 export function generateStaticParams() {
-  return [
-    { id: "TORO-01" },
-    { id: "TORO-02" },
-    { id: "TORO-03" },
-    { id: "TORO-04" },
-  ];
+  return Object.keys(traceIndex.lots).map((id) => ({ id }));
 }
 
 export default function TraceDetailPage() {
