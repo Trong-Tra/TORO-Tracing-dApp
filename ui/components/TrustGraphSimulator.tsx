@@ -702,9 +702,17 @@ export default function TrustGraphSimulator() {
                 Louvain: Cụm thông đồng khép kín. LOF: Sản lượng dị thường.
               </div>
             </div>
-            <button className="mt-4 w-full rounded-lg border border-red-400/60 bg-transparent py-2.5 text-sm font-semibold text-red-200 hover:bg-red-500/10 transition">
-              XEM BÁO CÁO CHI TIẾT
-            </button>
+            <div className="flex gap-3 mt-4">
+              <button
+                onClick={() => { setScanStage(0); setStatus("NORMAL"); setRiskScore(12); }}
+                className="flex-1 rounded-lg border border-white/20 bg-transparent py-2.5 text-sm font-semibold text-slate-200 hover:bg-white/10 transition"
+              >
+                ↺ Quay lại
+              </button>
+              <button className="flex-1 rounded-lg border border-red-400/60 bg-transparent py-2.5 text-sm font-semibold text-red-200 hover:bg-red-500/10 transition">
+                XEM BÁO CÁO CHI TIẾT
+              </button>
+            </div>
           </>
         )}
       </div>
