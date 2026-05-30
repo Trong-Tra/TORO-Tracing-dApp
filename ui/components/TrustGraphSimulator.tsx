@@ -1,488 +1,712 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import * as d3 from "d3";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  GitBranch,
-  Users,
+  Activity,
   AlertTriangle,
-  RefreshCw,
-  Brain,
-  CheckCircle2,
+  Loader2,
+  Shield,
   ShieldCheck,
-  ShieldAlert,
-  ShieldX,
 } from "lucide-react";
 
-/* ─── Types ─── */
-interface GraphNode extends d3.SimulationNodeDatum {
+const NODE_COLORS = {
+  source: "#00bf63",
+  station: "#3e96cc",
+  collusion: "#ffc354",
+};
+
+interface NetNode {
   id: string;
-  group: "farmer" | "validator";
-  label: string;
-  isAnomaly?: boolean;
+  group: string;
+  val: number;
+  color: string;
+}
+interface NetLink {
+  source: string;
+  target: string;
+  color: string;
 }
 
-interface GraphLink extends d3.SimulationLinkDatum<GraphNode> {
-  isCollusion?: boolean;
-  isAnomaly?: boolean;
-}
+const createNetwork = () => {
+  const nodes: NetNode[] = [];
+  const links: NetLink[] = [];
 
-type Scenario = "safe" | "collusion" | "anomaly";
+  for (let i = 1; i <= 40; i += 1) {
+    const isSource = i <= 24;
+    nodes.push({
+      id: `node-${i}`,
+      group: isSource ? "source" : "station",
+      val: isSource ? 3.8 : 5.2,
+      color: isSource ? NODE_COLORS.source : NODE_COLORS.station,
+    });
+  }
 
-interface DashboardState {
-  statusText: string;
-  statusIcon: "safe" | "warning" | "danger";
-  statusClass: string;
-  risk: number;
-  featHistory: number;
-  featCollusion: number;
-  featAnomaly: number;
-}
+  const collusionCluster = ["node-7", "node-8", "node-9", "node-30", "node-31", "node-32"];
+  const scanCollusionCluster = ["node-7", "node-8", "node-9", "node-30", "node-31"];
+  const scanAnomalyNode = "node-27";
 
-/* ─── Initial Data ─── */
-const initialNodes: GraphNode[] = [
-  { id: "N1", group: "farmer", label: "Farmer 1" },
-  { id: "N2", group: "farmer", label: "Farmer 2" },
-  { id: "N3", group: "farmer", label: "Farmer 3" },
-  { id: "N4", group: "farmer", label: "Farmer 4" },
-  { id: "N5", group: "farmer", label: "Farmer 5" },
-  { id: "V1", group: "validator", label: "Validator 1" },
-  { id: "V2", group: "validator", label: "Validator 2" },
-  { id: "V3", group: "validator", label: "Validator 3" },
-  { id: "V4", group: "validator", label: "Validator 4" },
-];
+  collusionCluster.forEach((id) => {
+    const target = nodes.find((n) => n.id === id);
+    if (target) {
+      target.group = "collusion";
+      target.val = 7.2;
+      target.color = NODE_COLORS.collusion;
+    }
+  });
 
-const initialLinks: GraphLink[] = [
-  { source: "N1", target: "V1" },
-  { source: "N2", target: "V3" },
-  { source: "N3", target: "V2" },
-  { source: "N4", target: "V4" },
-  { source: "N5", target: "V1" },
-  { source: "N3", target: "V4" },
-];
+  for (let i = 0; i < 64; i += 1) {
+    const source = `node-${Math.floor(Math.random() * 24) + 1}`;
+    const target = `node-${Math.floor(Math.random() * 16) + 25}`;
+    links.push({
+      source,
+      target,
+      color: "rgba(62,150,204,0.22)",
+    });
+  }
 
-const SAFE_STATE: DashboardState = {
-  statusText: "Safe Network",
-  statusIcon: "safe",
-  statusClass: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-  risk: 25,
-  featHistory: 80,
-  featCollusion: 10,
-  featAnomaly: 10,
+  for (let i = 0; i < collusionCluster.length; i += 1) {
+    for (let j = i + 1; j < collusionCluster.length; j += 1) {
+      links.push({
+        source: collusionCluster[i],
+        target: collusionCluster[j],
+        color: "rgba(255,195,84,0.6)",
+      });
+    }
+  }
+
+  return {
+    nodes,
+    links,
+    collusionCluster,
+    scanCollusionCluster,
+    scanAnomalyNode,
+    anomalyNodes: ["node-3", "node-6", "node-12", "node-15", "node-22", "node-27", "node-33", "node-36"],
+    anomalyLink: ["node-12", "node-27"],
+  };
 };
 
-const COLLUSION_STATE: DashboardState = {
-  statusText: "Collusion Cluster Detected",
-  statusIcon: "warning",
-  statusClass: "bg-amber-500/15 text-amber-400 border-amber-500/30",
-  risk: 65,
-  featHistory: 30,
-  featCollusion: 60,
-  featAnomaly: 10,
-};
+const GraphCanvas = ({ status, scanStage }: { status: string; scanStage: number }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const network = useMemo(() => createNetwork(), []);
+  const positions = useRef<{ id: string; x: number; y: number; z: number; drift: number }[]>([]);
+  const transitionStartRef = useRef(0);
+  const fromStatusRef = useRef(status);
+  const toStatusRef = useRef(status);
+  const scanTransitionStartRef = useRef(0);
+  const fromScanStageRef = useRef(scanStage);
+  const toScanStageRef = useRef(scanStage);
 
-const ANOMALY_STATE: DashboardState = {
-  statusText: "Behavioral Anomaly (LOF > 3.0)",
-  statusIcon: "danger",
-  statusClass: "bg-red-500/15 text-red-400 border-red-500/30",
-  risk: 92,
-  featHistory: 10,
-  featCollusion: 10,
-  featAnomaly: 80,
+  useEffect(() => {
+    fromStatusRef.current = toStatusRef.current;
+    toStatusRef.current = status;
+    transitionStartRef.current = performance.now();
+  }, [status]);
+
+  useEffect(() => {
+    fromScanStageRef.current = toScanStageRef.current;
+    toScanStageRef.current = scanStage;
+    scanTransitionStartRef.current = performance.now();
+  }, [scanStage]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return undefined;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return undefined;
+
+    const resize = () => {
+      const rect = container.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+
+    if (!positions.current.length) {
+      const rect = container.getBoundingClientRect();
+      positions.current = network.nodes.map((node, index) => ({
+        id: node.id,
+        x: Math.random() * rect.width,
+        y: Math.random() * rect.height,
+        z: (index % 12) / 12,
+        drift: Math.random() * Math.PI * 2,
+      }));
+    }
+
+    let frame: number;
+    const start = performance.now();
+
+    const draw = (time: number) => {
+      const t = (time - start) / 1000;
+      const rect = container.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      ctx.fillStyle = "#0a1628";
+      ctx.fillRect(0, 0, rect.width, rect.height);
+
+      const transitionDuration = 1100;
+      const elapsed = time - transitionStartRef.current;
+      const rawProgress = Math.min(1, elapsed / transitionDuration);
+      const ease = rawProgress * rawProgress * (3 - 2 * rawProgress);
+      const fromStatus = fromStatusRef.current;
+      const toStatus = toStatusRef.current;
+
+      const weights = {
+        NORMAL: fromStatus === "NORMAL" ? 1 - ease : toStatus === "NORMAL" ? ease : 0,
+        COLLUSION: fromStatus === "COLLUSION" ? 1 - ease : toStatus === "COLLUSION" ? ease : 0,
+        ANOMALY: fromStatus === "ANOMALY" ? 1 - ease : toStatus === "ANOMALY" ? ease : 0,
+      };
+
+      const glowBoost = toStatus === "COLLUSION" ? 0.3 : 0.12;
+      const zoom = 1 + weights.COLLUSION * 0.04 + weights.ANOMALY * 0.06;
+      const zoomX = rect.width * 0.5;
+      const zoomY = rect.height * 0.5;
+      const cameraShiftX = weights.COLLUSION * 46 + weights.ANOMALY * -42;
+      const cameraShiftY = weights.COLLUSION * -24 + weights.ANOMALY * 28;
+      const nodesMap = new Map(network.nodes.map((n) => [n.id, n]));
+      const collusionSet = new Set(network.collusionCluster);
+      const anomalySet = new Set(network.anomalyNodes);
+      const [anomalyA, anomalyB] = network.anomalyLink;
+      const scanCollusionSet = new Set(network.scanCollusionCluster);
+      const scanAnomalyId = network.scanAnomalyNode;
+
+      const scanTransitionDuration = 650;
+      const scanElapsed = time - scanTransitionStartRef.current;
+      const scanRaw = Math.min(1, scanElapsed / scanTransitionDuration);
+      const scanEase = scanRaw * scanRaw * (3 - 2 * scanRaw);
+      const scanFrom = fromScanStageRef.current;
+      const scanTo = toScanStageRef.current;
+      const scanStageWeights = {
+        0: scanFrom === 0 ? 1 - scanEase : scanTo === 0 ? scanEase : 0,
+        1: scanFrom === 1 ? 1 - scanEase : scanTo === 1 ? scanEase : 0,
+        2: scanFrom === 2 ? 1 - scanEase : scanTo === 2 ? scanEase : 0,
+        3: scanFrom === 3 ? 1 - scanEase : scanTo === 3 ? scanEase : 0,
+      };
+
+      const scanNoiseWeight = scanStageWeights[1] || 0;
+      const scanFocusWeight = (scanStageWeights[2] || 0) + (scanStageWeights[3] || 0);
+
+      let scanCx = 0;
+      let scanCy = 0;
+      if (network.scanCollusionCluster?.length) {
+        network.scanCollusionCluster.forEach((id) => {
+          const p = positions.current.find((pp) => pp.id === id);
+          if (!p) return;
+          scanCx += p.x;
+          scanCy += p.y;
+        });
+        scanCx /= network.scanCollusionCluster.length;
+        scanCy /= network.scanCollusionCluster.length;
+      }
+
+      const hexToRgb = (hex: string) => {
+        const normalized = hex.replace("#", "");
+        const bigint = parseInt(normalized, 16);
+        return {
+          r: (bigint >> 16) & 255,
+          g: (bigint >> 8) & 255,
+          b: bigint & 255,
+        };
+      };
+
+      const mixColor = (colors: Record<string, { r: number; g: number; b: number }>) => {
+        const total = Object.values(weights).reduce((acc, val) => acc + val, 0) || 1;
+        const mixed = { r: 0, g: 0, b: 0 };
+        Object.entries(colors).forEach(([key, color]) => {
+          const weight = weights[key as keyof typeof weights] / total;
+          mixed.r += color.r * weight;
+          mixed.g += color.g * weight;
+          mixed.b += color.b * weight;
+        });
+        return `rgb(${Math.round(mixed.r)}, ${Math.round(mixed.g)}, ${Math.round(mixed.b)})`;
+      };
+
+      network.links.forEach((link) => {
+        const source = positions.current.find((p) => p.id === link.source);
+        const target = positions.current.find((p) => p.id === link.target);
+        if (!source || !target) return;
+        const wobble = scanStage > 0 ? 0 : Math.sin(t + source.drift) * 8;
+        const wobbleT = scanStage > 0 ? 0 : Math.cos(t + target.drift) * 8;
+        const sx = zoomX + (source.x + wobble + cameraShiftX - zoomX) * zoom;
+        const sy = zoomY + (source.y + wobbleT * 0.6 + cameraShiftY - zoomY) * zoom;
+        const tx = zoomX + (target.x + wobbleT + cameraShiftX - zoomX) * zoom;
+        const ty = zoomY + (target.y + wobble * 0.6 + cameraShiftY - zoomY) * zoom;
+
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        ctx.lineTo(tx, ty);
+        if (scanStage > 0) {
+          ctx.strokeStyle = "rgba(148,163,184,0.12)";
+          ctx.lineWidth = 0.9;
+        } else {
+          const isCollusionLink = link.color.includes("255,195,84");
+          const isAnomalyLink =
+            (link.source === anomalyA && link.target === anomalyB) ||
+            (link.source === anomalyB && link.target === anomalyA);
+          const normalColor = hexToRgb("#3e96cc");
+          const collusionColor = isCollusionLink ? hexToRgb("#ffc354") : hexToRgb("#475569");
+          const anomalyColor = isAnomalyLink ? hexToRgb("#ef4444") : hexToRgb("#475569");
+          ctx.strokeStyle = mixColor({
+            NORMAL: normalColor,
+            COLLUSION: collusionColor,
+            ANOMALY: anomalyColor,
+          });
+          ctx.lineWidth =
+            weights.COLLUSION && isCollusionLink ? 2.4 : weights.ANOMALY && isAnomalyLink ? 2.6 : 1;
+        }
+        ctx.stroke();
+      });
+
+      if (scanFocusWeight > 0.01 && network.scanCollusionCluster?.length) {
+        const ids = network.scanCollusionCluster;
+        const pull = 0.22 * scanFocusWeight;
+        for (let i = 0; i < ids.length; i += 1) {
+          for (let j = i + 1; j < ids.length; j += 1) {
+            const s = positions.current.find((p) => p.id === ids[i]);
+            const tt = positions.current.find((p) => p.id === ids[j]);
+            if (!s || !tt) continue;
+
+            const sxRaw = s.x + (scanCx - s.x) * pull;
+            const syRaw = s.y + (scanCy - s.y) * pull;
+            const txRaw = tt.x + (scanCx - tt.x) * pull;
+            const tyRaw = tt.y + (scanCy - tt.y) * pull;
+
+            const sx = zoomX + (sxRaw + cameraShiftX - zoomX) * zoom;
+            const sy = zoomY + (syRaw + cameraShiftY - zoomY) * zoom;
+            const tx = zoomX + (txRaw + cameraShiftX - zoomX) * zoom;
+            const ty = zoomY + (tyRaw + cameraShiftY - zoomY) * zoom;
+
+            ctx.beginPath();
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(tx, ty);
+            ctx.strokeStyle = `rgba(255,195,84,${0.2 + 0.65 * scanFocusWeight})`;
+            ctx.lineWidth = 3.1;
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = "rgba(255,195,84,0.9)";
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+          }
+        }
+      }
+
+      positions.current.forEach((position) => {
+        const node = nodesMap.get(position.id);
+        if (!node) return;
+
+        if (scanStage > 0) {
+          const isCollusionFocus = scanCollusionSet.has(node.id);
+          const isAnomalyFocus = node.id === scanAnomalyId;
+          const isFocusNode = isCollusionFocus || isAnomalyFocus;
+
+          const pull = isCollusionFocus ? 0.22 * scanFocusWeight : 0;
+          const px = position.x + (scanCx - position.x) * pull;
+          const py = position.y + (scanCy - position.y) * pull;
+          const x = zoomX + (px + cameraShiftX - zoomX) * zoom;
+          const y = zoomY + (py + cameraShiftY - zoomY) * zoom;
+
+          const baseColor =
+            scanFocusWeight > 0.01
+              ? isAnomalyFocus
+                ? "rgb(239,68,68)"
+                : isCollusionFocus
+                  ? "rgb(255,195,84)"
+                  : "rgb(148,163,184)"
+              : "rgb(148,163,184)";
+
+          const stage1Target = isFocusNode ? 0.7 : 0.2;
+          const stage2Target = isFocusNode ? 1 : 0.15;
+          let nodeAlpha = 1;
+          nodeAlpha = nodeAlpha * (1 - scanNoiseWeight) + stage1Target * scanNoiseWeight;
+          nodeAlpha = nodeAlpha * (1 - scanFocusWeight) + stage2Target * scanFocusWeight;
+
+          const pulse = 1 + Math.sin(t * 2 + position.drift) * 0.1;
+          let drawRadius = node.val * pulse;
+          if (isCollusionFocus) {
+            drawRadius *= 1 + 0.25 * scanFocusWeight;
+            drawRadius *= 1 + Math.sin(t * 9) * 0.08 * scanFocusWeight;
+          }
+          if (isAnomalyFocus) {
+            drawRadius *= 1 + 2.0 * scanFocusWeight;
+          }
+
+          const rgba = baseColor.replace("rgb", "rgba").replace(")", `, ${nodeAlpha})`);
+          const rgba40 = baseColor.replace("rgb", "rgba").replace(")", `, ${0.35 * nodeAlpha})`);
+
+          const gradient = ctx.createRadialGradient(x, y, 1, x, y, drawRadius * 3.6);
+          gradient.addColorStop(0, rgba);
+          gradient.addColorStop(0.45, rgba40);
+          gradient.addColorStop(1, "rgba(10,22,40,0)");
+
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(x, y, drawRadius * 3.6, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(x, y, drawRadius, 0, Math.PI * 2);
+          ctx.fillStyle = rgba;
+          ctx.shadowBlur = 14 + 10 * scanFocusWeight;
+          ctx.shadowColor = baseColor;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          if (isCollusionFocus && scanFocusWeight > 0.01) {
+            ctx.beginPath();
+            ctx.arc(x, y, drawRadius * 2.0, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(255,195,84,${0.22 + 0.35 * scanFocusWeight})`;
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+          }
+
+          if (isAnomalyFocus && scanFocusWeight > 0.01) {
+            const rippleCount = 3;
+            for (let i = 0; i < rippleCount; i += 1) {
+              const phase = ((t * 1.8 + i / rippleCount) % 1);
+              const rr = drawRadius * (1.2 + phase * 4.0);
+              ctx.beginPath();
+              ctx.arc(x, y, rr, 0, Math.PI * 2);
+              ctx.strokeStyle = `rgba(239,68,68,${(1 - phase) * 0.35 * scanFocusWeight})`;
+              ctx.lineWidth = 1.2;
+              ctx.stroke();
+            }
+          }
+
+          return;
+        }
+
+        const pulse = 1 + Math.sin(t * 2 + position.drift) * 0.15;
+        const radius = node.val * pulse;
+        const wobbleX = Math.cos(t + position.drift) * 6;
+        const wobbleY = Math.sin(t + position.drift) * 6;
+        const x = zoomX + (position.x + wobbleX + cameraShiftX - zoomX) * zoom;
+        const y = zoomY + (position.y + wobbleY + cameraShiftY - zoomY) * zoom;
+
+        const normalNodeColor = node.group === "source" ? "#00bf63" : "#3e96cc";
+        const collusionNodeColor = collusionSet.has(node.id) ? "#ffc354" : "#64748b";
+        const anomalyNodeColor = anomalySet.has(node.id) ? "#ef4444" : "#64748b";
+
+        const baseColor = mixColor({
+          NORMAL: hexToRgb(normalNodeColor),
+          COLLUSION: hexToRgb(collusionNodeColor),
+          ANOMALY: hexToRgb(anomalyNodeColor),
+        });
+
+        let drawRadius = radius;
+        if (weights.COLLUSION && collusionSet.has(node.id)) drawRadius = radius * (1 + 0.35 * weights.COLLUSION);
+        if (weights.ANOMALY && anomalySet.has(node.id)) drawRadius = radius * (1 + 0.55 * weights.ANOMALY);
+
+        const depthBlur = 10 + weights.ANOMALY * 8 + weights.COLLUSION * 6;
+        const gradient = ctx.createRadialGradient(x, y, 1, x, y, drawRadius * 3.4);
+        gradient.addColorStop(0, baseColor);
+        gradient.addColorStop(0.4, baseColor.replace("rgb", "rgba").replace(")", ", 0.4)"));
+        gradient.addColorStop(1, "rgba(10,22,40,0)");
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(x, y, drawRadius * 3.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(x, y, drawRadius, 0, Math.PI * 2);
+        ctx.fillStyle = baseColor;
+        ctx.shadowBlur = depthBlur;
+        ctx.shadowColor = baseColor;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        if (weights.COLLUSION && collusionSet.has(node.id)) {
+          ctx.beginPath();
+          ctx.arc(x, y, drawRadius * (1.8 + glowBoost), 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(255,195,84,0.45)";
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+        }
+
+        if (weights.ANOMALY && anomalySet.has(node.id)) {
+          ctx.beginPath();
+          ctx.arc(x, y, drawRadius * (1.8 + glowBoost), 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(239,68,68,0.55)";
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+        }
+      });
+
+      frame = requestAnimationFrame(draw);
+    };
+
+    frame = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", resize);
+    };
+  }, [network, status, scanStage]);
+
+  return (
+    <div ref={containerRef} className="relative w-full h-full min-h-[400px]">
+      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full rounded-xl" aria-hidden />
+    </div>
+  );
 };
 
 export default function TrustGraphSimulator() {
-  const graphContainerRef = useRef<HTMLDivElement>(null);
-  const [scenario, setScenario] = useState<Scenario>("safe");
-  const [dash, setDash] = useState<DashboardState>(SAFE_STATE);
+  const [status, setStatus] = useState("NORMAL");
+  const [scanStage, setScanStage] = useState(0);
+  const [isScanning, setIsScanning] = useState(false);
+  const [riskScore, setRiskScore] = useState(12);
+  const scanTimeoutsRef = useRef<NodeJS.Timeout[]>([]);
+  const stageNoteTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [stageNoteVisible, setStageNoteVisible] = useState(false);
 
-  /* ─── D3 Graph ─── */
-  const renderGraph = useCallback(() => {
-    const container = graphContainerRef.current;
-    if (!container) return;
+  const handleNormal = useCallback(() => setStatus("NORMAL"), []);
+  const handleCollusion = useCallback(() => setStatus("COLLUSION"), []);
+  const handleAnomaly = useCallback(() => setStatus("ANOMALY"), []);
 
-    // Clear previous
-    container.innerHTML = "";
-
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-
-    const svg = d3
-      .select(container)
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("class", "block");
-
-    // Clone data (D3 mutates in place)
-    let nodes: GraphNode[] = JSON.parse(JSON.stringify(initialNodes));
-    let links: GraphLink[] = JSON.parse(JSON.stringify(initialLinks));
-
-    // Apply scenario mutations
-    if (scenario === "collusion") {
-      const collusionEdges: GraphLink[] = [
-        { source: "N1", target: "V1", isCollusion: true },
-        { source: "N1", target: "V2", isCollusion: true },
-        { source: "N2", target: "V1", isCollusion: true },
-        { source: "N2", target: "V2", isCollusion: true },
-        { source: "N1", target: "N2", isCollusion: true },
-        { source: "V1", target: "V2", isCollusion: true },
-      ];
-      links = [...links, ...collusionEdges];
-    } else if (scenario === "anomaly") {
-      const n4 = nodes.find((n) => n.id === "N4");
-      if (n4) n4.isAnomaly = true;
-      links.push({ source: "N4", target: "V4", isAnomaly: true });
-    }
-
-    const simulation = d3
-      .forceSimulation<GraphNode>(nodes)
-      .force(
-        "link",
-        d3.forceLink<GraphNode, GraphLink>(links).id((d) => d.id).distance(80)
-      )
-      .force("charge", d3.forceManyBody().strength(-250))
-      .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collide", d3.forceCollide<GraphNode>().radius(25));
-
-    const linkGroup = svg.append("g").attr("class", "links");
-    const nodeGroup = svg.append("g").attr("class", "nodes");
-    const labelGroup = svg.append("g").attr("class", "labels");
-
-    function update() {
-      const linkSel = linkGroup
-        .selectAll<SVGLineElement, GraphLink>("line")
-        .data(links);
-      linkSel.exit().remove();
-      const linkEnter = linkSel
-        .enter()
-        .append("line")
-        .attr("class", (d) =>
-          d.isAnomaly ? "link anomaly-link" : "link"
-        )
-        .attr("stroke-width", (d) => (d.isCollusion ? 3 : 1))
-        .attr("stroke", (d) =>
-          d.isAnomaly ? "#ef4444" : d.isCollusion ? "#f59e0b" : "#3e96cc55"
-        )
-        .attr("stroke-opacity", 0.6);
-      const linkUpdate = linkEnter.merge(linkSel as any);
-      (linkUpdate as any)
-        .attr("class", (d: GraphLink) =>
-          d.isAnomaly ? "link anomaly-link" : "link"
-        )
-        .attr("stroke-width", (d: GraphLink) =>
-          d.isAnomaly ? 4 : d.isCollusion ? 3 : 1
-        )
-        .attr("stroke", (d: GraphLink) =>
-          d.isAnomaly ? "#ef4444" : d.isCollusion ? "#f59e0b" : "#3e96cc55"
-        );
-
-      const nodeSel = nodeGroup
-        .selectAll<SVGCircleElement, GraphNode>("circle")
-        .data(nodes, (d: any) => d.id);
-      nodeSel.exit().remove();
-      const nodeEnter = nodeSel
-        .enter()
-        .append("circle")
-        .attr("r", 16)
-        .attr("stroke", "#0a1628")
-        .attr("stroke-width", 2)
-        .attr(
-          "class",
-          (d) =>
-            `node ${
-              d.group === "farmer" ? "fill-emerald-500" : "fill-ocean"
-            } ${d.isAnomaly ? "anomaly-node" : ""}`
-        )
-        .call(
-          d3
-            .drag<SVGCircleElement, GraphNode>()
-            .on("start", (event, d) => {
-              if (!event.active) simulation.alphaTarget(0.3).restart();
-              d.fx = d.x;
-              d.fy = d.y;
-            })
-            .on("drag", (event, d) => {
-              d.fx = event.x;
-              d.fy = event.y;
-            })
-            .on("end", (event, d) => {
-              if (!event.active) simulation.alphaTarget(0);
-              d.fx = null;
-              d.fy = null;
-            })
-        );
-      const nodeUpdate = nodeEnter.merge(nodeSel as any);
-      (nodeUpdate as any)
-        .attr("class", (d: GraphNode) =>
-          `node cursor-pointer ${
-            d.group === "farmer" ? "fill-emerald-500" : "fill-ocean"
-          } ${d.isAnomaly ? "anomaly-node" : ""}`
-        )
-        .attr("r", 16);
-
-      const labelSel = labelGroup
-        .selectAll<SVGTextElement, GraphNode>("text")
-        .data(nodes, (d: any) => d.id);
-      labelSel.exit().remove();
-      const labelEnter = labelSel
-        .enter()
-        .append("text")
-        .attr("class", "node-label")
-        .text((d) => d.id)
-        .attr("fill", "#fff")
-        .attr("font-size", 10)
-        .attr("font-weight", "bold")
-        .attr("text-anchor", "middle")
-        .attr("dominant-baseline", "central")
-        .attr("pointer-events", "none");
-      const labelUpdate = labelEnter.merge(labelSel as any);
-
-      simulation.on("tick", () => {
-        (linkUpdate as any)
-          .attr("x1", (d: any) =>
-            Math.max(20, Math.min(width - 20, d.source.x))
-          )
-          .attr("y1", (d: any) =>
-            Math.max(20, Math.min(height - 20, d.source.y))
-          )
-          .attr("x2", (d: any) =>
-            Math.max(20, Math.min(width - 20, d.target.x))
-          )
-          .attr("y2", (d: any) =>
-            Math.max(20, Math.min(height - 20, d.target.y))
-          );
-
-        (nodeUpdate as any)
-          .attr("cx", (d: any) =>
-            Math.max(20, Math.min(width - 20, d.x))
-          )
-          .attr("cy", (d: any) =>
-            Math.max(20, Math.min(height - 20, d.y))
-          );
-
-        (labelUpdate as any)
-          .attr("x", (d: any) =>
-            Math.max(20, Math.min(width - 20, d.x))
-          )
-          .attr("y", (d: any) =>
-            Math.max(20, Math.min(height - 20, d.y))
-          );
-      });
-    }
-
-    update();
-
-    return () => {
-      simulation.stop();
-      svg.remove();
-    };
-  }, [scenario]);
+  const handleRunAlgorithm = useCallback(() => {
+    if (isScanning) return;
+    setIsScanning(true);
+    setScanStage(0);
+    setRiskScore(12);
+    scanTimeoutsRef.current.forEach((t) => clearTimeout(t));
+    scanTimeoutsRef.current = [];
+    scanTimeoutsRef.current.push(setTimeout(() => setScanStage(1), 1000));
+    scanTimeoutsRef.current.push(setTimeout(() => setScanStage(2), 2000));
+    scanTimeoutsRef.current.push(setTimeout(() => setScanStage(3), 3000));
+  }, [isScanning]);
 
   useEffect(() => {
-    const cleanup = renderGraph();
-    return cleanup;
-  }, [renderGraph]);
+    if (scanStage === 3) setIsScanning(false);
+  }, [scanStage]);
 
-  const handleScenario = (s: Scenario) => {
-    setScenario(s);
-    if (s === "safe") setDash(SAFE_STATE);
-    if (s === "collusion") setDash(COLLUSION_STATE);
-    if (s === "anomaly") setDash(ANOMALY_STATE);
+  useEffect(() => {
+    return () => {
+      scanTimeoutsRef.current.forEach((t) => clearTimeout(t));
+      if (stageNoteTimeoutRef.current) clearTimeout(stageNoteTimeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isScanning || scanStage >= 3) {
+      setStageNoteVisible(false);
+      return;
+    }
+    setStageNoteVisible(false);
+    if (stageNoteTimeoutRef.current) clearTimeout(stageNoteTimeoutRef.current);
+    stageNoteTimeoutRef.current = setTimeout(() => {
+      setStageNoteVisible(true);
+    }, 220);
+    return () => {
+      if (stageNoteTimeoutRef.current) clearTimeout(stageNoteTimeoutRef.current);
+    };
+  }, [isScanning, scanStage]);
+
+  useEffect(() => {
+    if (scanStage !== 3) return;
+    const from = 12;
+    const to = 98;
+    const duration = 900;
+    const start = performance.now();
+    let raf: number;
+
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration);
+      const eased = p * p * (3 - 2 * p);
+      setRiskScore(Math.round(from + (to - from) * eased));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [scanStage]);
+
+  const statusConfig = {
+    NORMAL: {
+      label: "NORMAL",
+      title: "MẠNG LƯỚI AN TOÀN",
+      description: "GNN không phát hiện bất thường. Luồng dữ liệu ổn định.",
+      risk: "12%",
+      color: "text-emerald-300",
+      badge: "text-emerald-400",
+      button: "bg-[#0f1e36] hover:bg-[#162744]",
+    },
+    COLLUSION: {
+      label: "COLLUSION",
+      title: "PHÁT HIỆN THÔNG ĐỒNG",
+      description: "Phát hiện cụm xác thực chéo bất thường. Cần kiểm tra nguồn.",
+      risk: "78%",
+      color: "text-amber-300",
+      badge: "text-amber-400",
+      button: "bg-[#ff914d]/80 hover:bg-[#ff914d]",
+    },
+    ANOMALY: {
+      label: "ANOMALY",
+      title: "DỊ THƯỜNG LOGIC",
+      description: "Hành vi lệch chuẩn với pattern giao dịch đột biến.",
+      risk: "97%",
+      color: "text-red-300",
+      badge: "text-red-400",
+      button: "bg-red-500/80 hover:bg-red-500",
+    },
   };
 
-  const riskColor =
-    dash.risk <= 30 ? "text-emerald-400" : dash.risk <= 65 ? "text-amber-400" : "text-red-400";
-  const riskBarColor =
-    dash.risk <= 30 ? "bg-emerald-500" : dash.risk <= 65 ? "bg-amber-500" : "bg-red-500";
+  const activeStatus = statusConfig[status as keyof typeof statusConfig];
+
+  const stageNote = useMemo(() => {
+    if (!isScanning || scanStage >= 3) return null;
+    if (scanStage === 0) return "Khởi tạo pipeline, trích xuất đặc trưng đồ thị...";
+    if (scanStage === 1) return "Stage 1/3: Giảm nhiễu (lọc node/edge không quan trọng).";
+    if (scanStage === 2) return "Stage 2/3: Cô lập cụm thông đồng & điểm dị thường (tăng cường tín hiệu).";
+    return null;
+  }, [isScanning, scanStage]);
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* ─── Graph Card ─── */}
-      <div className="bg-surface-light/60 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden">
-        <div className="bg-white/[0.03] border-b border-white/10 p-4 flex justify-between items-center">
-          <h2 className="font-bold text-base text-white flex items-center gap-2">
-            <GitBranch className="w-4 h-4 text-ocean" />
-            Core Graph Simulator (GNN)
-          </h2>
+    <div className="flex flex-col gap-4">
+      {/* Graph Canvas */}
+      <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a1628]" style={{ height: "420px" }}>
+        <GraphCanvas status={status} scanStage={scanStage} />
+
+        {isScanning && scanStage < 3 && (
+          <div className="absolute inset-0 bg-black/35 backdrop-blur-[1px] z-[5] pointer-events-none rounded-xl" />
+        )}
+
+        {/* Header overlay */}
+        <div className="absolute left-4 top-4 z-10">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3">
+            <h2 className="text-xl font-semibold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#3e96cc] to-[#00bf63]">
+              TORO GRAPH 2.0
+            </h2>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400 font-mono mt-0.5">
+              Trust Network Simulator
+            </p>
+          </div>
         </div>
 
-        {/* Controls */}
-        <div className="p-4 flex flex-wrap gap-2 justify-center bg-white/[0.02] border-b border-white/10">
-          <button
-            onClick={() => handleScenario("collusion")}
-            className={`px-4 py-2 text-sm font-semibold rounded-lg shadow transition-colors ${
-              scenario === "collusion"
-                ? "bg-amber-500 text-white"
-                : "bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 border border-amber-500/30"
-            }`}
-          >
-            <Users className="w-3.5 h-3.5 inline mr-1.5" />
-            Simulate Collusion
-          </button>
-          <button
-            onClick={() => handleScenario("anomaly")}
-            className={`px-4 py-2 text-sm font-semibold rounded-lg shadow transition-colors ${
-              scenario === "anomaly"
-                ? "bg-red-500 text-white"
-                : "bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30"
-            }`}
-          >
-            <AlertTriangle className="w-3.5 h-3.5 inline mr-1.5" />
-            Inject Anomaly
-          </button>
-          <button
-            onClick={() => handleScenario("safe")}
-            className={`px-4 py-2 text-sm font-semibold rounded-lg shadow transition-colors ${
-              scenario === "safe"
-                ? "bg-white/20 text-white"
-                : "bg-white/5 text-white/60 hover:bg-white/10 border border-white/10"
-            }`}
-          >
-            <RefreshCw className="w-3.5 h-3.5 inline mr-1.5" />
-            Reset
-          </button>
-        </div>
-
-        {/* D3 Graph Container */}
-        <div
-          ref={graphContainerRef}
-          className="w-full h-[350px] bg-[#0a1628] relative"
-        >
-          <div className="absolute top-2 left-2 flex flex-col gap-1 bg-black/40 backdrop-blur p-2 rounded-lg text-[11px] border border-white/10 z-10">
-            <div className="flex items-center text-white/70">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block mr-2" />
-              Farmer (N)
-            </div>
-            <div className="flex items-center text-white/70">
-              <span className="w-2.5 h-2.5 rounded-full bg-ocean inline-block mr-2" />
-              Validator (V)
+        {/* Legend overlay */}
+        <div className="absolute bottom-4 left-4 z-10">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3">
+            <h3 className="text-xs uppercase tracking-widest text-slate-300 mb-2">Nodes</h3>
+            <div className="space-y-2 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#00bf63] shadow-[0_0_8px_rgba(0,191,99,0.6)]" />
+                <span className="text-slate-200">Source Node</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#3e96cc] shadow-[0_0_8px_rgba(62,150,204,0.6)]" />
+                <span className="text-slate-200">Station Node</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ─── Analytics Dashboard ─── */}
-      <div className="bg-surface-light/60 backdrop-blur-sm rounded-2xl border border-white/10 p-5">
-        <h2 className="font-bold text-base text-white mb-4 pb-2 border-b border-white/10 flex items-center gap-2">
-          <Brain className="w-4 h-4 text-purple-400" />
-          ML Risk Engine Dashboard
-        </h2>
-
-        {/* Status & Reject Badge */}
-        <div className="flex justify-between items-center mb-6 relative">
-          <div className="flex-1">
-            <p className="text-[10px] text-white/40 uppercase font-bold tracking-wider mb-1">
-              GNN Alert Status
-            </p>
-            <div
-              className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-bold border transition-colors duration-500 ${dash.statusClass}`}
+      {/* Control Panel */}
+      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl px-5 py-4">
+        <div className="flex items-start justify-between gap-4 flex-col sm:flex-row">
+          <div>
+            <h3 className="text-sm uppercase tracking-widest text-slate-300">Control Panel</h3>
+            <p className="text-xs text-slate-500">Chọn mô phỏng trạng thái mạng lưới</p>
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+              <Shield size={14} className={activeStatus.badge} />
+              <span className="uppercase tracking-widest">Trạng Thái: {activeStatus.label}</span>
+            </div>
+          </div>
+          <div className="flex gap-3 flex-col sm:flex-row w-full sm:w-auto">
+            <button
+              onClick={handleNormal}
+              className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${
+                status === "NORMAL"
+                  ? "bg-[#00bf63] text-slate-900 shadow-[0_0_16px_rgba(0,191,99,0.4)]"
+                  : "border border-[#00bf63]/50 text-[#00bf63] hover:bg-[#00bf63]/10"
+              }`}
             >
-              {dash.statusIcon === "safe" && (
-                <ShieldCheck className="w-4 h-4 mr-2" />
-              )}
-              {dash.statusIcon === "warning" && (
-                <ShieldAlert className="w-4 h-4 mr-2" />
-              )}
-              {dash.statusIcon === "danger" && (
-                <ShieldX className="w-4 h-4 mr-2" />
-              )}
-              {dash.statusText}
-            </div>
+              <ShieldCheck size={18} /> Luồng Chuẩn
+            </button>
+            <button
+              onClick={handleCollusion}
+              className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${
+                status === "COLLUSION"
+                  ? "bg-[#ffc354] text-slate-900 shadow-[0_0_16px_rgba(255,195,84,0.4)]"
+                  : "border border-[#ffc354]/50 text-[#ffc354] hover:bg-[#ffc354]/10"
+              }`}
+            >
+              <Activity size={18} /> Thông Đồng
+            </button>
+            <button
+              onClick={handleAnomaly}
+              className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${
+                status === "ANOMALY"
+                  ? "bg-red-500 text-white shadow-[0_0_16px_rgba(239,68,68,0.4)]"
+                  : "border border-red-400/50 text-red-300 hover:bg-red-400/10"
+              }`}
+            >
+              <AlertTriangle size={18} /> Dị Thường
+            </button>
           </div>
-
-          {/* REJECT BADGE */}
-          <AnimatePresence>
-            {dash.risk >= 70 && (
-              <motion.div
-                initial={{ scale: 0, rotate: -12 }}
-                animate={{ scale: 1, rotate: 12 }}
-                exit={{ scale: 0, rotate: -12 }}
-                className="absolute right-0 top-0 bg-red-600 text-white font-black text-xl px-5 py-1.5 rounded-lg border-2 border-red-800 shadow-lg"
-              >
-                REJECTED
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
+      </div>
 
-        {/* Risk Score Gauge */}
-        <div className="mb-6">
-          <div className="flex justify-between items-end mb-1">
-            <p className="text-[10px] text-white/40 uppercase font-bold tracking-wider">
-              Risk Score (XGBoost)
+      {/* Status Card */}
+      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-4">
+        {scanStage < 3 ? (
+          <>
+            <div className={`flex items-center gap-2 text-sm font-semibold ${activeStatus.badge}`}>
+              <Shield size={18} /> Trạng Thái: {activeStatus.label}
+            </div>
+            <h2 className={`mt-3 text-xl font-semibold tracking-widest ${activeStatus.color}`}>
+              {activeStatus.title}
+            </h2>
+            <p
+              className={`mt-2 text-sm text-slate-300 transition-opacity duration-500 ${
+                stageNote ? (stageNoteVisible ? "opacity-100" : "opacity-0") : "opacity-100"
+              }`}
+            >
+              {stageNote ?? activeStatus.description}
             </p>
-            <p className={`text-2xl font-black ${riskColor}`}>
-              {dash.risk}/100
-            </p>
-          </div>
-          <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
-            <motion.div
-              className={`h-3 rounded-full ${riskBarColor}`}
-              initial={{ width: 0 }}
-              animate={{ width: `${dash.risk}%` }}
-              transition={{ duration: 1, ease: "easeOut" }}
-            />
-          </div>
-          <div className="flex justify-between text-[10px] text-white/30 mt-1 font-bold">
-            <span>0 (Green Zone)</span>
-            <span>50 (Yellow Zone)</span>
-            <span>100 (Red Zone)</span>
-          </div>
-        </div>
-
-        {/* Feature Importance */}
-        <div>
-          <p className="text-[10px] text-white/40 uppercase font-bold tracking-wider mb-3">
-            Feature Importance
-          </p>
-
-          <div className="space-y-3">
-            {/* Feature 1 */}
-            <div>
-              <div className="flex justify-between text-xs mb-1 font-semibold text-white/60">
-                <span>Trust Score History</span>
-                <span>{dash.featHistory}%</span>
-              </div>
-              <div className="w-full bg-white/10 rounded-full h-1.5">
-                <motion.div
-                  className="bg-blue-400 h-1.5 rounded-full"
-                  animate={{ width: `${dash.featHistory}%` }}
-                  transition={{ duration: 0.5 }}
-                />
+            <div className="mt-4">
+              <span className="text-xs uppercase text-slate-500">Risk Score</span>
+              <div className={`text-3xl font-bold ${activeStatus.badge}`}>
+                {isScanning ? "12%" : activeStatus.risk}
               </div>
             </div>
-            {/* Feature 2 */}
-            <div>
-              <div className="flex justify-between text-xs mb-1 font-semibold text-white/60">
-                <span>Collusion Graph Density</span>
-                <span>{dash.featCollusion}%</span>
-              </div>
-              <div className="w-full bg-white/10 rounded-full h-1.5">
-                <motion.div
-                  className="bg-amber-500 h-1.5 rounded-full"
-                  animate={{ width: `${dash.featCollusion}%` }}
-                  transition={{ duration: 0.5 }}
-                />
+            <button
+              onClick={handleRunAlgorithm}
+              className={`mt-4 w-full rounded-lg py-2.5 text-sm font-semibold text-slate-100 ${activeStatus.button} ${
+                isScanning ? "animate-pulse" : ""
+              }`}
+            >
+              {isScanning ? (
+                <span className="inline-flex items-center justify-center gap-2">
+                  <Loader2 size={16} className="animate-spin" /> Đang trích xuất đặc trưng...
+                </span>
+              ) : (
+                "Chạy Thuật Toán"
+              )}
+            </button>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center gap-2 text-sm font-semibold text-red-400">
+              <AlertTriangle size={18} /> Trạng Thái: CRITICAL
+            </div>
+            <h2 className="mt-3 text-xl font-semibold tracking-widest text-red-300" style={{ textShadow: "0 0 20px rgba(239,68,68,0.4)" }}>
+              PHÁT HIỆN RỦI RO NGHIÊM TRỌNG
+            </h2>
+            <div className="mt-4">
+              <span className="text-xs uppercase text-slate-500">Risk Score</span>
+              <div className="text-4xl font-bold text-red-400 tabular-nums">{riskScore}%</div>
+              <div className="mt-2 text-xs text-slate-300">
+                Louvain: Cụm thông đồng khép kín. LOF: Sản lượng dị thường.
               </div>
             </div>
-            {/* Feature 3 */}
-            <div>
-              <div className="flex justify-between text-xs mb-1 font-semibold text-white/60">
-                <span>Logical Anomaly (LOF)</span>
-                <span>{dash.featAnomaly}%</span>
-              </div>
-              <div className="w-full bg-white/10 rounded-full h-1.5">
-                <motion.div
-                  className="bg-red-500 h-1.5 rounded-full"
-                  animate={{ width: `${dash.featAnomaly}%` }}
-                  transition={{ duration: 0.5 }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+            <button className="mt-4 w-full rounded-lg border border-red-400/60 bg-transparent py-2.5 text-sm font-semibold text-red-200 hover:bg-red-500/10 transition">
+              XEM BÁO CÁO CHI TIẾT
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
