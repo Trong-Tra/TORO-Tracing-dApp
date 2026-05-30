@@ -156,9 +156,9 @@ const GraphCanvas = ({ status, scanStage }: { status: string; scanStage: number 
       const toStatus = toStatusRef.current;
 
       const weights = {
-        NORMAL: fromStatus === "NORMAL" ? 1 - ease : toStatus === "NORMAL" ? ease : 0,
-        COLLUSION: fromStatus === "COLLUSION" ? 1 - ease : toStatus === "COLLUSION" ? ease : 0,
-        ANOMALY: fromStatus === "ANOMALY" ? 1 - ease : toStatus === "ANOMALY" ? ease : 0,
+        NORMAL: fromStatus === toStatus ? (toStatus === "NORMAL" ? 1 : 0) : fromStatus === "NORMAL" ? 1 - ease : toStatus === "NORMAL" ? ease : 0,
+        COLLUSION: fromStatus === toStatus ? (toStatus === "COLLUSION" ? 1 : 0) : fromStatus === "COLLUSION" ? 1 - ease : toStatus === "COLLUSION" ? ease : 0,
+        ANOMALY: fromStatus === toStatus ? (toStatus === "ANOMALY" ? 1 : 0) : fromStatus === "ANOMALY" ? 1 - ease : toStatus === "ANOMALY" ? ease : 0,
       };
 
       const glowBoost = toStatus === "COLLUSION" ? 0.3 : 0.12;
