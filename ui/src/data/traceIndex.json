@@ -84,7 +84,7 @@
             "Warehouse Name": "TORO-Cold Storage 1",
             "Storage Start": "22/6/2024",
             "Storage End": "30/6/2024",
-            "Storage Temp (°C)": "2"
+            "Storage Temp (°C)": 2
           }
         },
         {
@@ -239,7 +239,7 @@
             "Warehouse Name": "TORO-Cold Storage 2",
             "Storage Start": "23/6/2024",
             "Storage End": "1/7/2024",
-            "Storage Temp (°C)": "2"
+            "Storage Temp (°C)": 2
           }
         },
         {
@@ -341,7 +341,7 @@
             "Warehouse Name": "TORO-Cold Storage 1",
             "Storage Start": "25/6/2024",
             "Storage End": "3/7/2024",
-            "Storage Temp (°C)": "1"
+            "Storage Temp (°C)": 1
           }
         },
         {
@@ -443,7 +443,7 @@
             "Warehouse Name": "TORO-Cold Storage 3",
             "Storage Start": "26/6/2024",
             "Storage End": "2/7/2024",
-            "Storage Temp (°C)": "3"
+            "Storage Temp (°C)": 3
           }
         },
         {
@@ -545,7 +545,7 @@
             "Warehouse Name": "TORO-Cold Storage 2",
             "Storage Start": "20/6/2024",
             "Storage End": "28/6/2024",
-            "Storage Temp (°C)": "0xffffffff...fffffffe"
+            "Storage Temp (°C)": -2
           }
         },
         {

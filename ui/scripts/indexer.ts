@@ -115,6 +115,15 @@ function decodeValue(code: number, hex: string): string | number {
     return d.toLocaleDateString("vi-VN");
   }
 
+  // Signed temperature fields
+  if (code === 0x306) {
+    const n = BigInt(hex);
+    // interpret as int256 (two's complement)
+    const MAX = BigInt("0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    const signed = n > MAX ? n - BigInt("0x10000000000000000000000000000000000000000000000000000000000000000") : n;
+    return Number(signed);
+  }
+
   // Numbers
   const num = BigInt(hex);
   if (num > BigInt(1_000_000_000_000)) {
