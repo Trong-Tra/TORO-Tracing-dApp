@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { QrCode, Fish, Factory, ExternalLink } from "lucide-react";
 import Can3D from "@/components/Can3D";
 import traceIndex from "@/src/data/traceIndex.json";
+import TraceTreeAnimation from "@/components/TraceTreeAnimation";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -341,6 +342,26 @@ export default function LandingPage() {
           </div>
         </motion.div>
       </div>
+
+      {/* ─── TRACE TREE ANIMATION ─── */}
+      <section className="relative px-6 md:px-10 py-16 overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+              From <span className="text-ocean">Ocean</span> to <span className="text-gold">Shelf</span>
+            </h2>
+            <p className="text-white/40 max-w-2xl mx-auto">
+              Every batch traces its journey. Multiple sources merge into a single verified product lot.
+            </p>
+          </motion.div>
+          <TraceTreeAnimation />
+        </div>
+      </section>
 
       {/* ─── WHY TORO ─── */}
       <section id="about" className="relative px-6 md:px-10 py-24 bg-gradient-to-br from-[#0a1628] via-[#0c1f3a] to-[#0a1628] overflow-hidden">
