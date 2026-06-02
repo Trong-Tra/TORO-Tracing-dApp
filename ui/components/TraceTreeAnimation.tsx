@@ -17,6 +17,18 @@ function clamp01(t: number): number {
   return Math.min(1, Math.max(0, t));
 }
 
+function bezier3(p0: [number, number], p1: [number, number], p2: [number, number], p3: [number, number], t: number): [number, number] {
+  const mt = 1 - t;
+  return [
+    mt * mt * mt * p0[0] + 3 * mt * mt * t * p1[0] + 3 * mt * t * t * p2[0] + t * t * t * p3[0],
+    mt * mt * mt * p0[1] + 3 * mt * mt * t * p1[1] + 3 * mt * t * t * p2[1] + t * t * t * p3[1],
+  ];
+}
+
+function sampleBezier3(p0: [number, number], p1: [number, number], p2: [number, number], p3: [number, number], steps: number): [number, number][] {
+  return Array.from({ length: steps + 1 }, (_, i) => bezier3(p0, p1, p2, p3, i / steps));
+}
+
 export default function TraceTreeAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -58,13 +70,12 @@ export default function TraceTreeAnimation() {
       { x: 0.90, label: "DISTRIBUTION", color: "#ffc354" },
     ];
 
-    // Branches: vertical lines that go up/down from a stage and just end
     interface Branch {
       stageX: number;
       side: "top" | "bottom";
       color: string;
-      label: string;
-      items: { label: string; sublabel?: string }[];
+      badge: string;
+      nodes: { x: number; label: string; sublabel?: string }[];
     }
 
     const branches: Branch[] = [
@@ -72,83 +83,81 @@ export default function TraceTreeAnimation() {
         stageX: 0.14,
         side: "top",
         color: "#00bf63",
-        label: "WILD-CATCH-001",
-        items: [
-          { label: "Catch Yellowfin", sublabel: "Bình Định" },
-          { label: "mintBatch()", sublabel: "800kg" },
+        badge: "WILD-CATCH-001",
+        nodes: [
+          { x: 0.22, label: "Catch Yellowfin", sublabel: "Bình Định" },
+          { x: 0.32, label: "mintBatch()", sublabel: "800kg" },
         ],
       },
       {
         stageX: 0.34,
         side: "bottom",
         color: "#3e96cc",
-        label: "Port Receipt",
-        items: [
-          { label: "Weight check", sublabel: "GPS + Timestamp" },
+        badge: "Port Receipt",
+        nodes: [
+          { x: 0.42, label: "Weight check", sublabel: "GPS + Timestamp" },
         ],
       },
       {
         stageX: 0.54,
         side: "bottom",
         color: "#ffc354",
-        label: "FARM-001",
-        items: [
-          { label: "Farm Raised", sublabel: "Khánh Hòa" },
-          { label: "mintBatch()", sublabel: "2500kg" },
+        badge: "FARM-001",
+        nodes: [
+          { x: 0.62, label: "Farm Raised", sublabel: "Khánh Hòa" },
+          { x: 0.72, label: "mintBatch()", sublabel: "2500kg" },
         ],
       },
       {
         stageX: 0.74,
         side: "top",
-        color: "#ffc354",
-        label: "TORO-02",
-        items: [
-          { label: "createProductLot()", sublabel: "8800 cans" },
+        color: "#cb6ce6",
+        badge: "TORO-02",
+        nodes: [
+          { x: 0.82, label: "createProductLot()", sublabel: "8800 cans" },
         ],
       },
     ];
 
-    // Build simple vertical branch paths (just go up/down and end)
+    // Build curved branch path: curve out from trunk, then horizontal, just ends
     function buildBranchPath(branch: Branch): [number, number][] {
-      const pts: [number, number][] = [];
-      const startY = trunkY;
-      const endY = branch.side === "top" ? trunkY - 0.28 : trunkY + 0.28;
-      const steps = 25;
-      for (let i = 0; i <= steps; i++) {
-        const t = i / steps;
-        const eased = easeOutCubic(t);
-        pts.push([branch.stageX, startY + (endY - startY) * eased]);
+      const trunkPt: [number, number] = [branch.stageX, trunkY];
+      const outY = branch.side === "top" ? trunkY - 0.20 : trunkY + 0.20;
+      const midY = branch.side === "top" ? trunkY - 0.08 : trunkY + 0.08;
+      const endX = branch.nodes[branch.nodes.length - 1].x + 0.04;
+
+      // Curve out from trunk
+      const curve = sampleBezier3(
+        trunkPt,
+        [trunkPt[0] + 0.03, midY],
+        [trunkPt[0] + 0.06, outY + (branch.side === "top" ? 0.03 : -0.03)],
+        [trunkPt[0] + 0.10, outY],
+        25
+      );
+
+      // Horizontal line to end
+      const startX = trunkPt[0] + 0.10;
+      const horiz: [number, number][] = [];
+      for (let i = 0; i <= 40; i++) {
+        horiz.push([startX + (endX - startX) * (i / 40), outY]);
       }
-      return pts;
+
+      return [...curve, ...horiz];
     }
 
     const branchPaths = branches.map(buildBranchPath);
 
-    // Build horizontal mini-lines for branch items
-    function buildItemLine(branch: Branch, itemIdx: number): [number, number][] {
-      const baseY = branch.side === "top" ? trunkY - 0.12 - itemIdx * 0.08 : trunkY + 0.12 + itemIdx * 0.08;
-      const startX = branch.stageX;
-      const endX = branch.stageX + 0.16;
-      const pts: [number, number][] = [];
-      for (let i = 0; i <= 20; i++) {
-        pts.push([startX + (endX - startX) * (i / 20), baseY]);
-      }
-      return pts;
-    }
-
-    // Animation
+    // Animation timings
     const GRID_DUR = 400;
     const TRUNK_DUR = 1000;
-    const BRANCH_DUR = 600;
-    const ITEM_DUR = 400;
+    const BRANCH_DUR = 800;
     const NODE_DUR = 400;
     const LABEL_DUR = 350;
 
     const TRUNK_START = 200;
     const BRANCH_START = 900;
-    const ITEM_START = 1400;
-    const NODE_START = 1800;
-    const LABEL_START = 2200;
+    const NODE_START = 1600;
+    const LABEL_START = 2000;
 
     const drawGrid = (alpha: number) => {
       ctx.strokeStyle = `rgba(19,34,56,${alpha * 0.5})`;
@@ -169,6 +178,7 @@ export default function TraceTreeAnimation() {
       ctx.strokeStyle = color;
       ctx.lineWidth = width;
       ctx.lineCap = "round";
+      ctx.lineJoin = "round";
       ctx.beginPath();
       ctx.moveTo(path[0][0] * W, path[0][1] * H);
       for (let i = 1; i <= maxIdx; i++) ctx.lineTo(path[i][0] * W, path[i][1] * H);
@@ -210,7 +220,7 @@ export default function TraceTreeAnimation() {
       const eased = easeOutQuart(clamp01(progress));
       const px = x * W;
       const py = y * H;
-      const offsetY = side === "top" ? -10 : 10;
+      const offsetY = side === "top" ? -14 : 14;
 
       ctx.save();
       ctx.globalAlpha = eased;
@@ -240,25 +250,26 @@ export default function TraceTreeAnimation() {
       ctx.restore();
     };
 
-    const drawItemLabel = (x: number, y: number, label: string, sublabel: string | undefined, color: string, progress: number) => {
+    const drawNodeLabel = (x: number, y: number, label: string, sublabel: string | undefined, color: string, progress: number, side: "top" | "bottom") => {
       if (progress <= 0) return;
       const eased = easeOutQuart(clamp01(progress));
-      const px = (x + 0.18) * W;
+      const px = x * W;
       const py = y * H;
+      const offsetY = side === "top" ? -12 : 12;
 
       ctx.save();
       ctx.globalAlpha = eased;
-      ctx.textAlign = "left";
+      ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
       ctx.font = "bold 10px system-ui, -apple-system, sans-serif";
       ctx.fillStyle = color;
-      ctx.fillText(label, px, py);
+      ctx.fillText(label, px, py + offsetY);
 
       if (sublabel) {
         ctx.font = "9px system-ui, -apple-system, sans-serif";
         ctx.fillStyle = WHITE_50;
-        ctx.fillText(sublabel, px, py + 13);
+        ctx.fillText(sublabel, px, py + offsetY + 13);
       }
       ctx.restore();
     };
@@ -309,7 +320,6 @@ export default function TraceTreeAnimation() {
       ctx.moveTo(leftX * W, trunkY * H);
       ctx.lineTo(trunkEndX * W, trunkY * H);
       ctx.stroke();
-      // Leading dot
       if (trunkProgress < 1) {
         ctx.fillStyle = WHITE;
         ctx.shadowBlur = 8;
@@ -320,38 +330,31 @@ export default function TraceTreeAnimation() {
       }
       ctx.restore();
 
-      // Branches (vertical lines)
+      // Branches (curve out + horizontal, no merge back)
       branches.forEach((branch, bi) => {
-        const delay = bi * 150;
+        const delay = bi * 180;
         const progress = clamp01((elapsed - BRANCH_START - delay) / BRANCH_DUR);
         drawPath(branchPaths[bi], branch.color + "60", 1.5, easeOutCubic(progress));
 
-        // Branch end node
-        const endNode = branchPaths[bi][branchPaths[bi].length - 1];
-        const endProgress = clamp01((elapsed - NODE_START - delay) / NODE_DUR);
-        drawRingNode(endNode[0], endNode[1], branch.color, endProgress, now, 5);
-
-        // Branch badge
-        const midY = branch.side === "top" ? trunkY - 0.06 : trunkY + 0.06;
+        // Badge near branch start
+        const outY = branch.side === "top" ? trunkY - 0.20 : trunkY + 0.20;
+        const badgeX = branch.stageX + 0.14;
         const badgeProgress = clamp01((elapsed - LABEL_START - delay) / LABEL_DUR);
-        drawBadge(branch.stageX, midY, branch.label, branch.color, badgeProgress, branch.side);
+        drawBadge(badgeX, outY, branch.badge, branch.color, badgeProgress, branch.side);
 
-        // Horizontal item lines + labels
-        branch.items.forEach((item, ii) => {
-          const itemDelay = delay + ii * 120;
-          const itemLine = buildItemLine(branch, ii);
-          const itemProgress = clamp01((elapsed - ITEM_START - itemDelay) / ITEM_DUR);
-          drawPath(itemLine, branch.color + "40", 1.2, easeOutCubic(itemProgress));
-
-          // Item end node
-          const itemEnd = itemLine[itemLine.length - 1];
-          const itemNodeProgress = clamp01((elapsed - NODE_START - 200 - itemDelay) / NODE_DUR);
-          drawRingNode(itemEnd[0], itemEnd[1], branch.color, itemNodeProgress, now, 4);
-
-          // Item label
-          const labelProgress = clamp01((elapsed - LABEL_START + 100 - itemDelay) / LABEL_DUR);
-          drawItemLabel(branch.stageX, itemEnd[1], item.label, item.sublabel, branch.color, labelProgress);
+        // Branch nodes
+        branch.nodes.forEach((node, ni) => {
+          const nodeDelay = delay + ni * 120;
+          const nodeProgress = clamp01((elapsed - NODE_START - nodeDelay) / NODE_DUR);
+          drawRingNode(node.x, outY, branch.color, nodeProgress, now, 5);
+          const labelProgress = clamp01((elapsed - LABEL_START + 100 - nodeDelay) / LABEL_DUR);
+          drawNodeLabel(node.x, outY, node.label, node.sublabel, branch.color, labelProgress, branch.side);
         });
+
+        // End cap node (small, just marks end of branch)
+        const endPt = branchPaths[bi][branchPaths[bi].length - 1];
+        const endProgress = clamp01((elapsed - NODE_START - delay - branch.nodes.length * 120) / NODE_DUR);
+        drawRingNode(endPt[0], endPt[1], branch.color, endProgress, now, 3);
       });
 
       // Trunk stage nodes + labels
@@ -373,7 +376,7 @@ export default function TraceTreeAnimation() {
       ctx.fillText("ORIGIN", leftX * W, trunkY * H + 20);
       ctx.restore();
 
-      // End arrow + label
+      // End arrow
       const endProgress = clamp01((elapsed - NODE_START - stages.length * 100) / NODE_DUR);
       if (endProgress > 0) {
         const ex = rightX * W;
