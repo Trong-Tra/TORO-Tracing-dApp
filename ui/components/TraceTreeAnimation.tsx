@@ -57,17 +57,16 @@ export default function TraceTreeAnimation() {
 
     const startTime = performance.now();
 
-    // ═════ Layout ═════
     const trunkY = 0.55;
     const leftX = 0.06;
-    const rightX = 0.94;
+    const rightX = 0.92;
 
     const stages = [
       { x: 0.14, label: "SOURCE", color: "#00bf63" },
       { x: 0.34, label: "INVENTORY", color: "#3e96cc" },
       { x: 0.54, label: "MANUFACTURING", color: "#3e96cc" },
       { x: 0.74, label: "WAREHOUSE", color: "#ffc354" },
-      { x: 0.90, label: "DISTRIBUTION", color: "#ffc354" },
+      { x: 0.88, label: "DISTRIBUTION", color: "#ffc354" },
     ];
 
     interface Branch {
@@ -85,8 +84,8 @@ export default function TraceTreeAnimation() {
         color: "#00bf63",
         badge: "WILD-CATCH-001",
         nodes: [
-          { x: 0.22, label: "Catch Yellowfin", sublabel: "Bình Định" },
-          { x: 0.32, label: "mintBatch()", sublabel: "800kg" },
+          { x: 0.28, label: "Catch Yellowfin", sublabel: "Bình Định" },
+          { x: 0.42, label: "mintBatch()", sublabel: "800kg" },
         ],
       },
       {
@@ -95,7 +94,7 @@ export default function TraceTreeAnimation() {
         color: "#3e96cc",
         badge: "Port Receipt",
         nodes: [
-          { x: 0.42, label: "Weight check", sublabel: "GPS + Timestamp" },
+          { x: 0.48, label: "Weight check", sublabel: "GPS + Timestamp" },
         ],
       },
       {
@@ -104,42 +103,30 @@ export default function TraceTreeAnimation() {
         color: "#ffc354",
         badge: "FARM-001",
         nodes: [
-          { x: 0.62, label: "Farm Raised", sublabel: "Khánh Hòa" },
-          { x: 0.72, label: "mintBatch()", sublabel: "2500kg" },
-        ],
-      },
-      {
-        stageX: 0.74,
-        side: "top",
-        color: "#cb6ce6",
-        badge: "TORO-02",
-        nodes: [
-          { x: 0.82, label: "createProductLot()", sublabel: "8800 cans" },
+          { x: 0.68, label: "Farm Raised", sublabel: "Khánh Hòa" },
+          { x: 0.82, label: "mintBatch()", sublabel: "2500kg" },
         ],
       },
     ];
 
-    // Build curved branch path: curve out from trunk, then horizontal, just ends
     function buildBranchPath(branch: Branch): [number, number][] {
       const trunkPt: [number, number] = [branch.stageX, trunkY];
-      const outY = branch.side === "top" ? trunkY - 0.20 : trunkY + 0.20;
+      const outY = branch.side === "top" ? trunkY - 0.22 : trunkY + 0.22;
       const midY = branch.side === "top" ? trunkY - 0.08 : trunkY + 0.08;
-      const endX = branch.nodes[branch.nodes.length - 1].x + 0.04;
+      const endX = branch.nodes[branch.nodes.length - 1].x + 0.06;
 
-      // Curve out from trunk
       const curve = sampleBezier3(
         trunkPt,
-        [trunkPt[0] + 0.03, midY],
-        [trunkPt[0] + 0.06, outY + (branch.side === "top" ? 0.03 : -0.03)],
-        [trunkPt[0] + 0.10, outY],
-        25
+        [trunkPt[0] + 0.04, midY],
+        [trunkPt[0] + 0.08, outY + (branch.side === "top" ? 0.04 : -0.04)],
+        [trunkPt[0] + 0.14, outY],
+        30
       );
 
-      // Horizontal line to end
-      const startX = trunkPt[0] + 0.10;
+      const startX = trunkPt[0] + 0.14;
       const horiz: [number, number][] = [];
-      for (let i = 0; i <= 40; i++) {
-        horiz.push([startX + (endX - startX) * (i / 40), outY]);
+      for (let i = 0; i <= 50; i++) {
+        horiz.push([startX + (endX - startX) * (i / 50), outY]);
       }
 
       return [...curve, ...horiz];
@@ -147,10 +134,9 @@ export default function TraceTreeAnimation() {
 
     const branchPaths = branches.map(buildBranchPath);
 
-    // Animation timings
     const GRID_DUR = 400;
     const TRUNK_DUR = 1000;
-    const BRANCH_DUR = 800;
+    const BRANCH_DUR = 900;
     const NODE_DUR = 400;
     const LABEL_DUR = 350;
 
@@ -215,12 +201,11 @@ export default function TraceTreeAnimation() {
       ctx.restore();
     };
 
-    const drawBadge = (x: number, y: number, text: string, color: string, progress: number, side: "top" | "bottom") => {
+    const drawBadge = (x: number, y: number, text: string, color: string, progress: number) => {
       if (progress <= 0) return;
       const eased = easeOutQuart(clamp01(progress));
       const px = x * W;
       const py = y * H;
-      const offsetY = side === "top" ? -14 : 14;
 
       ctx.save();
       ctx.globalAlpha = eased;
@@ -229,7 +214,7 @@ export default function TraceTreeAnimation() {
       const bw = tw + 20;
       const bh = 20;
       const bx = px - bw / 2;
-      const by = py + offsetY - bh / 2;
+      const by = py - bh / 2;
 
       ctx.fillStyle = "rgba(255,255,255,0.06)";
       ctx.strokeStyle = color + "40";
@@ -255,7 +240,7 @@ export default function TraceTreeAnimation() {
       const eased = easeOutQuart(clamp01(progress));
       const px = x * W;
       const py = y * H;
-      const offsetY = side === "top" ? -12 : 12;
+      const offsetY = side === "top" ? -14 : 14;
 
       ctx.save();
       ctx.globalAlpha = eased;
@@ -330,34 +315,35 @@ export default function TraceTreeAnimation() {
       }
       ctx.restore();
 
-      // Branches (curve out + horizontal, no merge back)
+      // Branches
       branches.forEach((branch, bi) => {
-        const delay = bi * 180;
+        const delay = bi * 200;
         const progress = clamp01((elapsed - BRANCH_START - delay) / BRANCH_DUR);
         drawPath(branchPaths[bi], branch.color + "60", 1.5, easeOutCubic(progress));
 
-        // Badge near branch start
-        const outY = branch.side === "top" ? trunkY - 0.20 : trunkY + 0.20;
-        const badgeX = branch.stageX + 0.14;
-        const badgeProgress = clamp01((elapsed - LABEL_START - delay) / LABEL_DUR);
-        drawBadge(badgeX, outY, branch.badge, branch.color, badgeProgress, branch.side);
+        const outY = branch.side === "top" ? trunkY - 0.22 : trunkY + 0.22;
 
-        // Branch nodes
+        // Badge at branch start (on the curve)
+        const badgeX = branch.stageX + 0.18;
+        const badgeProgress = clamp01((elapsed - LABEL_START - delay) / LABEL_DUR);
+        drawBadge(badgeX, outY, branch.badge, branch.color, badgeProgress);
+
+        // Branch nodes + labels
         branch.nodes.forEach((node, ni) => {
-          const nodeDelay = delay + ni * 120;
+          const nodeDelay = delay + ni * 150;
           const nodeProgress = clamp01((elapsed - NODE_START - nodeDelay) / NODE_DUR);
           drawRingNode(node.x, outY, branch.color, nodeProgress, now, 5);
           const labelProgress = clamp01((elapsed - LABEL_START + 100 - nodeDelay) / LABEL_DUR);
           drawNodeLabel(node.x, outY, node.label, node.sublabel, branch.color, labelProgress, branch.side);
         });
 
-        // End cap node (small, just marks end of branch)
+        // End cap
         const endPt = branchPaths[bi][branchPaths[bi].length - 1];
-        const endProgress = clamp01((elapsed - NODE_START - delay - branch.nodes.length * 120) / NODE_DUR);
+        const endProgress = clamp01((elapsed - NODE_START - delay - branch.nodes.length * 150) / NODE_DUR);
         drawRingNode(endPt[0], endPt[1], branch.color, endProgress, now, 3);
       });
 
-      // Trunk stage nodes + labels
+      // Trunk nodes + labels
       stages.forEach((stage, i) => {
         const nodeProgress = clamp01((elapsed - NODE_START - i * 100) / NODE_DUR);
         drawRingNode(stage.x, trunkY, stage.color, nodeProgress, now, 7);
@@ -376,10 +362,10 @@ export default function TraceTreeAnimation() {
       ctx.fillText("ORIGIN", leftX * W, trunkY * H + 20);
       ctx.restore();
 
-      // End arrow
+      // End arrow + label
       const endProgress = clamp01((elapsed - NODE_START - stages.length * 100) / NODE_DUR);
       if (endProgress > 0) {
-        const ex = rightX * W;
+        const ex = rightX * W + 10;
         const ey = trunkY * H;
         ctx.save();
         ctx.globalAlpha = easeOutQuart(endProgress);
