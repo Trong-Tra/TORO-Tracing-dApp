@@ -202,7 +202,8 @@ export default function TraceTreeAnimation() {
       const eased = easeOutQuart(clamp01(progress));
       const px = x * W;
       const py = y * H;
-      const offsetY = side === "top" ? -18 : 18;
+      const titleOffset = side === "top" ? -32 : 32;
+      const subOffset = titleOffset + (side === "top" ? -14 : 14);
 
       ctx.save();
       ctx.globalAlpha = eased;
@@ -211,11 +212,11 @@ export default function TraceTreeAnimation() {
 
       ctx.font = "bold 11px system-ui, -apple-system, sans-serif";
       ctx.fillStyle = color;
-      ctx.fillText(title, px, py + offsetY);
+      ctx.fillText(title, px, py + titleOffset);
 
       ctx.font = "10px system-ui, -apple-system, sans-serif";
       ctx.fillStyle = WHITE_50;
-      ctx.fillText(sub, px, py + offsetY + 14);
+      ctx.fillText(sub, px, py + subOffset);
       ctx.restore();
     };
 
