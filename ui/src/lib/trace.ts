@@ -43,37 +43,10 @@ export async function fetchProductLot(lotCode: string): Promise<ProductLot | nul
 // ───────── Explorer URL ─────────
 
 export function explorerUrl(txHash: string): string {
-  return `https://sepolia.arbiscan.io/tx/${txHash}`;
+  return `https://solscan.io/tx/${txHash}?cluster=devnet`;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// RPC FALLBACK — uncomment when backend indexer is ready
+// The index is generated from Solana devnet events. Re-run after reseeding:
+//   npx tsx scripts/indexer-solana.ts
 // ═══════════════════════════════════════════════════════════════════════════════
-//
-// import { publicClient, CONTRACTS, ABIS, DEPLOYMENT_BLOCK } from "./contracts";
-// import { decodeAbiParameters, parseAbiParameters, keccak256, toHex } from "viem";
-//
-// const CHUNK_SIZE = BigInt(40000);
-//
-// async function getEventsInChunks<T>(
-//   eventName: string,
-//   args: Record<string, unknown>
-// ): Promise<T[]> {
-//   const latestBlock = await publicClient.getBlockNumber();
-//   let from = DEPLOYMENT_BLOCK;
-//   const allLogs: T[] = [];
-//   while (from <= latestBlock) {
-//     const to = from + CHUNK_SIZE < latestBlock ? from + CHUNK_SIZE : latestBlock;
-//     const logs = await publicClient.getContractEvents({
-//       address: CONTRACTS.registry as `0x${string}`,
-//       abi: ABIS.registry,
-//       eventName,
-//       args,
-//       fromBlock: from,
-//       toBlock: to,
-//     });
-//     allLogs.push(...(logs as T[]));
-//     from = to + BigInt(1);
-//   }
-//   return allLogs;
-// }
