@@ -14,10 +14,10 @@
             {
               "stage": 1,
               "stageName": "Source",
-              "txHash": "0x77d98de5c667c57ee3e9f44ab1e20209cf112433e330e38d4640f0d7d733f8f5",
-              "timestamp": 1780032911,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896461,
+              "txHash": "3oX4cA9xSdcYGbCHWUtkXafeqJioSAB6ck45Soc3G9qYV24hkPjymSC7L33PEir2VCYtUXBCiJRnFshvk8KTGF3a",
+              "timestamp": 1785507839,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226423,
               "details": {
                 "Source Type": "Vessel",
                 "Fish Species": "Yellowfin",
@@ -32,10 +32,10 @@
             {
               "stage": 2,
               "stageName": "Inventory",
-              "txHash": "0xbb8ceade2561bde054f26326618dd907f2a61c882ebac5aea36693e895cde3c1",
-              "timestamp": 1780032913,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896465,
+              "txHash": "XKAQoL3gkHAUjesp2iadMRGkhNFu3xRp5h6fZ3Nfw5sxf5jrA83ZHMjEYiEJUntVoHLTETXa1upAWvhUF741dmD",
+              "timestamp": 1785507840,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226425,
               "details": {
                 "Inventory Received": "18/5/2024",
                 "Inventory Location": "Port Cold Storage"
@@ -44,10 +44,10 @@
             {
               "stage": 3,
               "stageName": "Manufacturing",
-              "txHash": "0x15d052e34e05c416acb140e94fbd4fd4464906df60ba0bc078ca1598cfc68288",
-              "timestamp": 1780032915,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896467,
+              "txHash": "2FFvKxgCNomo6QMRzeE9jm4fphdGYe3dBUEVGLoGqFX5oV4MoQ5QCP8kq54jepGFwAmyJnbpSsnf7V7d96cYdA5j",
+              "timestamp": 1785507841,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226427,
               "details": {
                 "Factory Name": "TORO-Seafood Processing 1",
                 "Production Date": "1/6/2024",
@@ -62,24 +62,12 @@
       ],
       "lotTraces": [
         {
-          "stage": 3,
-          "stageName": "Manufacturing",
-          "txHash": "0x5d2e1c455f6e328a0f4078d891c28c3503d8e0e9b916613bcb06b269e5b66a33",
-          "timestamp": 1780032917,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896472,
-          "details": {
-            "Product Label": "cá ngừ đóng hộp",
-            "Packaging Date": "1/7/2024"
-          }
-        },
-        {
           "stage": 4,
           "stageName": "Warehouse",
-          "txHash": "0xfb95d10d9c4c89d3c51dda2dd75731c5e56b8f77a9294ad04f1ce56742d9856f",
-          "timestamp": 1780032919,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896477,
+          "txHash": "5LKQDg64uhf6wALNAfvY4EiESD64CqiPowfsToQZevBwdxptB78PMgoF1pxM7QMqrU3qoPnpboSpUh999YLN7fX2",
+          "timestamp": 1785507842,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 480226431,
           "details": {
             "Warehouse Name": "TORO-Cold Storage 1",
             "Storage Start": "22/6/2024",
@@ -90,10 +78,10 @@
         {
           "stage": 5,
           "stageName": "Distribution",
-          "txHash": "0x6ce64c96d383396b2dfb625b4a5b496b6c14ca225fe13b94e6439cb196595b45",
-          "timestamp": 1780032921,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896484,
+          "txHash": "43h3FYqiVVEZjUKJ4h43S4KL6SjH5hikQviU5QPug64epw6TKtXzYXGZKcPgCd63oLfFCttcDRDffLwV4t2Ac8Eo",
+          "timestamp": 1785507843,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 480226433,
           "details": {
             "Shipment Code": "TORO-Shipping 1",
             "Departure Date": "27/6/2024",
@@ -116,10 +104,10 @@
             {
               "stage": 1,
               "stageName": "Source",
-              "txHash": "0xfa40147ac68844cd9b002383d8b8efd5889ba352d6b0db18b6e27b873cda95c9",
-              "timestamp": 1780032923,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896492,
+              "txHash": "4zu5Th2LsDMMuB72TbHHAZ19n1rrDcRG2tekWtvuFyMEPDMJMM6akNXvzM4ZqmZFbSSchNoJaurpf6uDrANdSKR5",
+              "timestamp": 1785507844,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226435,
               "details": {
                 "Source Type": "Vessel",
                 "Fish Species": "Yellowfin",
@@ -134,10 +122,10 @@
             {
               "stage": 2,
               "stageName": "Inventory",
-              "txHash": "0x67519e314f6d4678d5de7527bce81f5a3faaf7985c4dac199a17547f0d26349e",
-              "timestamp": 1780032925,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896499,
+              "txHash": "5T1dp2Vb2Ne7pWqNSnJHkBPE1wKQeuMhNRts27BR7NXBT5pzPxwiBW2pahzh5x4LzC2EcSLfZS1kUJijjug9GBVE",
+              "timestamp": 1785507844,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226437,
               "details": {
                 "Inventory Received": "19/5/2024",
                 "Inventory Location": "Port Cold Storage"
@@ -146,10 +134,10 @@
             {
               "stage": 3,
               "stageName": "Manufacturing",
-              "txHash": "0x892fbe3e9751db936f573ff746b47b3614010f83cc881e728dd9775670d5386e",
-              "timestamp": 1780032927,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896504,
+              "txHash": "XjYJejCS3SWYdkQg29tzGRZvdCZhPwHBZRKMSjimJrcwHMzekKWJ1Qdzw98qwTHfhs8X83gRYkPaPSKqzKxDLCG",
+              "timestamp": 1785507845,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226440,
               "details": {
                 "Factory Name": "TORO-Seafood Processing 1",
                 "Production Date": "2/6/2024",
@@ -169,10 +157,10 @@
             {
               "stage": 1,
               "stageName": "Source",
-              "txHash": "0x3e67fd0ad5d0477fa17c318f58cc46da001053d01dc7fd363ee771ac54bfcb47",
-              "timestamp": 1780032929,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896507,
+              "txHash": "35PxEh1J9zpyFPKot6jTNcoPCRFQEi3VyEThZCkr3u6KLXaax2u627EMRXWQfG8MvNUcfDCGwozezqM2wngYYd3Z",
+              "timestamp": 1785507848,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226448,
               "details": {
                 "Source Type": "Farm",
                 "Fish Species": "Yellowfin",
@@ -187,10 +175,10 @@
             {
               "stage": 2,
               "stageName": "Inventory",
-              "txHash": "0x5762632386797a3027947cf54b8b1211658013130033a58d089ff072f0c403a9",
-              "timestamp": 1780032931,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896515,
+              "txHash": "4e6e8Ryz6cTGb742J9jK9pdJY16kKN9ef6VRCqaKQgwcLnw8fX21MadQgPgoPWj2tJSsHmjkBx6887vvrJLuGRsT",
+              "timestamp": 1785507849,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226451,
               "details": {
                 "Inventory Received": "20/5/2024",
                 "Inventory Location": "Farm Holding Tank"
@@ -199,10 +187,10 @@
             {
               "stage": 3,
               "stageName": "Manufacturing",
-              "txHash": "0xfde5d77135cb37f8cc128970e81d40d8984a1e1406fdd3a4a498a6fd1bed1252",
-              "timestamp": 1780032934,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896519,
+              "txHash": "TFHhWtFb4ygNHthF72yvdCcL8zyedmyMcVXQ45jCnrKs8ZVVZEB25HQKjtrNz9rUFbjASrsxaWNtTARUrCu2zqb",
+              "timestamp": 1785507851,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226456,
               "details": {
                 "Factory Name": "TORO-Seafood Processing 2",
                 "Production Date": "3/6/2024",
@@ -217,24 +205,12 @@
       ],
       "lotTraces": [
         {
-          "stage": 3,
-          "stageName": "Manufacturing",
-          "txHash": "0x88f6935e92cc2bdee6888ae5742b13b6736f243226c4390f11d54732a0f3b08c",
-          "timestamp": 1780032936,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896526,
-          "details": {
-            "Product Label": "cá ngừ đóng hộp",
-            "Packaging Date": "3/7/2024"
-          }
-        },
-        {
           "stage": 4,
           "stageName": "Warehouse",
-          "txHash": "0x5fc51852a0d932ca84282cba2b8ae3c33019b15cfe66a72f2b6f0f4c4b85bbaf",
-          "timestamp": 1780032938,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896531,
+          "txHash": "4sdLKtLSLMA5Rnss3LH3jaeCnphTyU6jgZZJDoFEiHD4dWooqZsQEdfwWr2ta6duMNABGDP98KXGHsLfy6AX9uy2",
+          "timestamp": 1785508017,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 480226909,
           "details": {
             "Warehouse Name": "TORO-Cold Storage 2",
             "Storage Start": "23/6/2024",
@@ -245,10 +221,10 @@
         {
           "stage": 5,
           "stageName": "Distribution",
-          "txHash": "0xcbc54d6d2f7e5572091d650e7acc87b0f61c42dcd9d8d7559d99fe33d31c6be1",
-          "timestamp": 1780032940,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896535,
+          "txHash": "4qoyt9Q4Kq1oYzLJsfjZWmg9dWaFvvxCgF57m37RRigp32AMFRC53UEUbb2vyct616H5xiRR2uimNL3qSWqVsS1w",
+          "timestamp": 1785508019,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 480226913,
           "details": {
             "Shipment Code": "TORO-Shipping 2",
             "Departure Date": "29/6/2024",
@@ -271,10 +247,10 @@
             {
               "stage": 1,
               "stageName": "Source",
-              "txHash": "0x29482ce4a4fd37ab28594b8bc32a30b3639cfb856e78f1489572dca054478259",
-              "timestamp": 1780032942,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896538,
+              "txHash": "2vriXbmfxrp27qwcHZZiPfpedBVzvzA8KgbAAQtcJXbGpNsCsq45TRebBfLvJJG3WPUzWCpDxUUySHV1ihDbWDHQ",
+              "timestamp": 1785508020,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226917,
               "details": {
                 "Source Type": "Farm",
                 "Fish Species": "Skipjack",
@@ -289,10 +265,10 @@
             {
               "stage": 2,
               "stageName": "Inventory",
-              "txHash": "0x74c1fff52a908491bde646784207a560c856ef06cdf88069f77b1999222dbb81",
-              "timestamp": 1780032944,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896542,
+              "txHash": "LzAy5eALMrXfuVgnQNZdvF8G1uD4QuPCZ52ZyLVeCUSjzBPRvpsjcCsbFx2J8CTE5RidmYx9fGReeiE3qv8tq4J",
+              "timestamp": 1785508022,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226921,
               "details": {
                 "Inventory Received": "21/5/2024",
                 "Inventory Location": "Farm Holding Tank"
@@ -301,10 +277,10 @@
             {
               "stage": 3,
               "stageName": "Manufacturing",
-              "txHash": "0x8b8e31dbca1677c59ae794b417ab35cc9765bc9b4da22d8e03f61fc0dd50f5c3",
-              "timestamp": 1780032946,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896548,
+              "txHash": "3YGj9pjwFnfw9BqcuE5V2sgcrjjjXX47ELzVz1N4o9qDDsX57hk7dZRwLviqTQwGRKczcmBbX9DEcYQKdvkLCbvp",
+              "timestamp": 1785508027,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226936,
               "details": {
                 "Factory Name": "TORO-Seafood Processing 3",
                 "Production Date": "4/6/2024",
@@ -319,24 +295,12 @@
       ],
       "lotTraces": [
         {
-          "stage": 3,
-          "stageName": "Manufacturing",
-          "txHash": "0x0047f2ad271e18dc7f66cfe0d4c2683d4676f84ad7fa8a2a113a4e383edbed65",
-          "timestamp": 1780032948,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896553,
-          "details": {
-            "Product Label": "cá ngừ đóng hộp",
-            "Packaging Date": "4/7/2024"
-          }
-        },
-        {
           "stage": 4,
           "stageName": "Warehouse",
-          "txHash": "0x53edaaaa600d1af411c30c0be684fdc106faa1a23e1653baadd169e127fe149d",
-          "timestamp": 1780032950,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896557,
+          "txHash": "2XBMLTv9bBb899BeJTF8hNofST9ij616sLAwu17dTvjwMBBgWuEEXtzDRAM5oRGoPzf86Xv1ZyAav99fFWG9jAcm",
+          "timestamp": 1785508030,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 480226944,
           "details": {
             "Warehouse Name": "TORO-Cold Storage 1",
             "Storage Start": "25/6/2024",
@@ -347,10 +311,10 @@
         {
           "stage": 5,
           "stageName": "Distribution",
-          "txHash": "0x69e6e594ccb4077d7258ff29ac3a02c5966cc3dd652dcfec9b58b61cb5af76c8",
-          "timestamp": 1780032952,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896562,
+          "txHash": "3BxsTfo9GLUzWscpBrn2V62bJMF8c8tHxzrk7vdavX9k7dp4MjWGyk2aGyE2QbXoyTo5Q97AjNpoywVvVHbXAp9S",
+          "timestamp": 1785508031,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 480226947,
           "details": {
             "Shipment Code": "TORO-Shipping 3",
             "Departure Date": "1/7/2024",
@@ -373,10 +337,10 @@
             {
               "stage": 1,
               "stageName": "Source",
-              "txHash": "0x304e087ec4308b5f8d6b960a140b8bcead34de2a15706e94783d4fee69ea8600",
-              "timestamp": 1780032954,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896569,
+              "txHash": "54YMuVCgHnCPw8mk6joRWWkgu6zxEEPNEKxUdsJmD8Nsdm6nEpZK6bytFobbPLYbz9XE1Hf3aySo8wwUwx9dXtUK",
+              "timestamp": 1785508032,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226950,
               "details": {
                 "Source Type": "Vessel",
                 "Fish Species": "Bigeye",
@@ -391,10 +355,10 @@
             {
               "stage": 2,
               "stageName": "Inventory",
-              "txHash": "0xb094aaf6ce51fd52f3b53f70dd636ff7bdea380bc256190012c8a6bb6f875816",
-              "timestamp": 1780032956,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896572,
+              "txHash": "41NTqEgPXtXVjDdkJCr9Jh35acZUMhKm2disBfHohg4sG79tgYcryjF7MYBD5JBKkGNHfvPBcYkYLPLGUSuWtFcX",
+              "timestamp": 1785508033,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226953,
               "details": {
                 "Inventory Received": "23/5/2024",
                 "Inventory Location": "Port Cold Storage"
@@ -403,10 +367,10 @@
             {
               "stage": 3,
               "stageName": "Manufacturing",
-              "txHash": "0x1407d07a96480d4a4a363f867536ab666da0eb7ea54354002ae9036d8cb1a992",
-              "timestamp": 1780032958,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 271896577,
+              "txHash": "4YqLvVdDgBNEHaGd7W3M1Ahj8pJGhbhW6aaCPJakuukjfHjqVCjdB4HJp26g7j6iRWJqgYFKYc1XaiMeQBeWN79b",
+              "timestamp": 1785508034,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226956,
               "details": {
                 "Factory Name": "TORO-Seafood Processing 1",
                 "Production Date": "5/6/2024",
@@ -421,24 +385,12 @@
       ],
       "lotTraces": [
         {
-          "stage": 3,
-          "stageName": "Manufacturing",
-          "txHash": "0xeb64b2e533c970303a3303bda1d669b0359758436684bcf641d35673d15e7c1b",
-          "timestamp": 1780032960,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896580,
-          "details": {
-            "Product Label": "cá ngừ",
-            "Packaging Date": "6/7/2024"
-          }
-        },
-        {
           "stage": 4,
           "stageName": "Warehouse",
-          "txHash": "0x90caf7cb11564812f94ad083419b779cbca65158a12cc47f4fad81ac37f192d3",
-          "timestamp": 1780032962,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896584,
+          "txHash": "5eaXc5Tc9WMPG462McZ8ZPqKz8V5xx5fZ1u1HMK7aQu7ADYwPLZa3aEonFVQp5muB3gRgdeWBA5sekVaC6oMwrNm",
+          "timestamp": 1785508037,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 480226963,
           "details": {
             "Warehouse Name": "TORO-Cold Storage 3",
             "Storage Start": "26/6/2024",
@@ -449,10 +401,10 @@
         {
           "stage": 5,
           "stageName": "Distribution",
-          "txHash": "0xeabbef1f877b85aa893d0298f450ad9f5ae901fe55df28477b53f1aae24e6c5d",
-          "timestamp": 1780032964,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 271896588,
+          "txHash": "32R5y28C4psncmXneU5ik89N8A1tu5Sq3fFSY4GBZJcwbegQvLS48pjFFgqUe5Tv2vKEpjfMu2JUkWhLu8vdwRmU",
+          "timestamp": 1785508038,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 480226966,
           "details": {
             "Shipment Code": "TORO-Shipping 1",
             "Departure Date": "2/7/2024",
@@ -475,10 +427,10 @@
             {
               "stage": 1,
               "stageName": "Source",
-              "txHash": "0x92df5b90a7413101a2e78a6b22aa66ebc1ba0f97f0d27823218c4e464ce6bbf5",
-              "timestamp": 1780103275,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 272091733,
+              "txHash": "5jmL4yuPW1At2jwJjQgMuaLBYoRNXFJnuYGughfBUu5NvRKfGBuY4KjehcKh2f2t1xZiFeynLQTThD2w9djdXfRE",
+              "timestamp": 1785508039,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226970,
               "details": {
                 "Source Type": "Vessel",
                 "Fish Species": "Yellowfin",
@@ -493,10 +445,10 @@
             {
               "stage": 2,
               "stageName": "Inventory",
-              "txHash": "0xa2ac417bce9cab447ff484222c09a5e1409e98481c45e5b9d70214e7cb77356d",
-              "timestamp": 1780103277,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 272091740,
+              "txHash": "MV62wgNy7j6iizJmmgh7bHfj5jwyHfezANpXoKkihKYEUHwXP69Kmkvb1HdTGCoKQpvSL5QH74A8KXX1mYqwegq",
+              "timestamp": 1785508040,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226973,
               "details": {
                 "Inventory Received": "25/5/2024",
                 "Inventory Location": "Port Cold Storage"
@@ -505,10 +457,10 @@
             {
               "stage": 3,
               "stageName": "Manufacturing",
-              "txHash": "0x0b5914f901c1bd3dc50b75fded58222394cd0b4e695c87da7c3b40058740c43a",
-              "timestamp": 1780103278,
-              "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-              "blockNumber": 272091745,
+              "txHash": "2gTpJCqCBy45yUPB6iW6jYePxVhyQSWoZ6sDNaqXdL7bs2sPJUU3zu8NW7Jd8EAWLctPecVLjVovGibxi83KWJoH",
+              "timestamp": 1785508042,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 480226976,
               "details": {
                 "Factory Name": "TORO-Seafood Processing 1",
                 "Production Date": "10/6/2024",
@@ -523,24 +475,12 @@
       ],
       "lotTraces": [
         {
-          "stage": 3,
-          "stageName": "Manufacturing",
-          "txHash": "0xbd7c35a88c5a235f5f04ae0d12dfa0ffc3beee0893eca01bb2ddc56783a9222f",
-          "timestamp": 1780103280,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 272091749,
-          "details": {
-            "Product Label": "cá ngừ đóng hộp",
-            "Packaging Date": "25/6/2024"
-          }
-        },
-        {
           "stage": 4,
           "stageName": "Warehouse",
-          "txHash": "0xe650c3ca1837aa2dc316dd198d4d03cb1e1dc5d866b2ef9fb518cf9785fd6eef",
-          "timestamp": 1780103282,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 272091755,
+          "txHash": "2w4W2TCaXpUBAxp2rT7vELtLZiYBvNZRXVsWwWFncLJ2yJQ88Z9WHCsw7hLVaeRF8ob9zw7Nonps82kY389axgYY",
+          "timestamp": 1785508045,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 480226986,
           "details": {
             "Warehouse Name": "TORO-Cold Storage 2",
             "Storage Start": "20/6/2024",
@@ -551,10 +491,10 @@
         {
           "stage": 5,
           "stageName": "Distribution",
-          "txHash": "0xbdbb6fae69129db8fc9ba6a725d0c5034b5f81d2bdf48071110dfeb42a30121b",
-          "timestamp": 1780103283,
-          "recorder": "0x7ea634e331cf7b503df2e224f77a7c589462f1f2",
-          "blockNumber": 272091760,
+          "txHash": "2bhWKkYGNZALfoGFAZNZJoCwyudng2nnGeYexPbw7g75cvP7v55st9tAiBwm52cngWpWqKrwqct5sVWQxYyxSXrP",
+          "timestamp": 1785508046,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 480226989,
           "details": {
             "Shipment Code": "TORO-Shipping 2",
             "Departure Date": "28/6/2024",
