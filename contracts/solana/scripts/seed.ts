@@ -104,6 +104,34 @@ async function exists(addr: anchor.web3.PublicKey): Promise<boolean> {
   return (await connection.getAccountInfo(addr)) !== null;
 }
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** Retry an RPC call on 429 rate-limit with backoff, then pause to stay under the limit. */
+async function withRetry<T>(fn: () => Promise<T>): Promise<T> {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      const result = await fn();
+      await sleep(400); // pacing between txs
+      return result;
+    } catch (e: any) {
+      if (attempt >= 6 || !String(e).includes("429")) throw e;
+      const wait = 2000 * attempt;
+      console.log(`  rate limited, retrying in ${wait}ms...`);
+      await sleep(wait);
+    }
+  }
+}
+
+async function fetchBatchStage(id: string): Promise<number | null> {
+  const batch = await program.account.batch.fetchNullable(batchPDA(idToBytes32(id)));
+  return batch ? batch.stage : null;
+}
+
+async function fetchLotStage(code: string): Promise<number | null> {
+  const lot = await program.account.lot.fetchNullable(lotPDA(idToBytes32(code)));
+  return lot ? lot.stage : null;
+}
+
 async function initializeIfNeeded() {
   if (await exists(configPDA())) {
     console.log("Config already initialized, skipping");
@@ -129,58 +157,86 @@ async function grantRoleIfNeeded(kind: "factory" | "station") {
 
 async function mintBatch(id: string, data: Buffer) {
   const batchId = idToBytes32(id);
-  await program.methods
-    .mintBatch(Array.from(batchId), data)
-    .accounts({
-      recorder: keypair.publicKey,
-      role: rolePDA("factory", keypair.publicKey),
-      batch: batchPDA(batchId),
-    })
-    .rpc();
+  if ((await fetchBatchStage(id)) !== null) {
+    console.log(`  batch ${id} already exists, skipping mint`);
+    return;
+  }
+  await withRetry(() =>
+    program.methods
+      .mintBatch(Array.from(batchId), data)
+      .accounts({
+        recorder: keypair.publicKey,
+        role: rolePDA("factory", keypair.publicKey),
+        batch: batchPDA(batchId),
+      })
+      .rpc()
+  );
   console.log(`  minted batch ${id}`);
 }
 
 async function recordBatchStage(method: "recordInventory" | "recordManufacturing", id: string, data: Buffer) {
+  const targetStage = method === "recordInventory" ? 2 : 3;
+  const current = await fetchBatchStage(id);
+  if (current !== null && current >= targetStage) {
+    console.log(`  ${method} ${id} already done, skipping`);
+    return;
+  }
   const batchId = idToBytes32(id);
-  await program.methods[method](data)
-    .accounts({
-      recorder: keypair.publicKey,
-      role: rolePDA("station", keypair.publicKey),
-      batch: batchPDA(batchId),
-    })
-    .rpc();
+  await withRetry(() =>
+    program.methods[method](data)
+      .accounts({
+        recorder: keypair.publicKey,
+        role: rolePDA("station", keypair.publicKey),
+        batch: batchPDA(batchId),
+      })
+      .rpc()
+  );
   console.log(`  ${method} ${id}`);
 }
 
 async function createLot(code: string, batchIds: string[], totalCans: number, data: Buffer) {
+  if ((await fetchLotStage(code)) !== null) {
+    console.log(`  lot ${code} already exists, skipping`);
+    return;
+  }
   const lotCode = idToBytes32(code);
-  await program.methods
-    .createProductLot(Array.from(lotCode), new anchor.BN(totalCans), data)
-    .accounts({
-      recorder: keypair.publicKey,
-      role: rolePDA("factory", keypair.publicKey),
-      lot: lotPDA(lotCode),
-    })
-    .remainingAccounts(
-      batchIds.map((id) => ({
-        pubkey: batchPDA(idToBytes32(id)),
-        isSigner: false,
-        isWritable: false,
-      }))
-    )
-    .rpc();
+  await withRetry(() =>
+    program.methods
+      .createProductLot(Array.from(lotCode), new anchor.BN(totalCans), data)
+      .accounts({
+        recorder: keypair.publicKey,
+        role: rolePDA("factory", keypair.publicKey),
+        lot: lotPDA(lotCode),
+      })
+      .remainingAccounts(
+        batchIds.map((id) => ({
+          pubkey: batchPDA(idToBytes32(id)),
+          isSigner: false,
+          isWritable: false,
+        }))
+      )
+      .rpc()
+  );
   console.log(`  created lot ${code} from [${batchIds.join(", ")}]`);
 }
 
 async function recordLotStage(method: "recordWarehouse" | "recordDistribution", code: string, data: Buffer) {
+  const targetStage = method === "recordWarehouse" ? 4 : 5;
+  const current = await fetchLotStage(code);
+  if (current !== null && current >= targetStage) {
+    console.log(`  ${method} ${code} already done, skipping`);
+    return;
+  }
   const lotCode = idToBytes32(code);
-  await program.methods[method](data)
-    .accounts({
-      recorder: keypair.publicKey,
-      role: rolePDA("station", keypair.publicKey),
-      lot: lotPDA(lotCode),
-    })
-    .rpc();
+  await withRetry(() =>
+    program.methods[method](data)
+      .accounts({
+        recorder: keypair.publicKey,
+        role: rolePDA("station", keypair.publicKey),
+        lot: lotPDA(lotCode),
+      })
+      .rpc()
+  );
   console.log(`  ${method} ${code}`);
 }
 

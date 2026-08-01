@@ -8,6 +8,9 @@ skip-lint = false
 [programs.localnet]
 toro = "2cbYretd93guxpURxqhq1UedBtwSHzT2NX6MsrBc4FWc"
 
+[programs.devnet]
+toro = "2cbYretd93guxpURxqhq1UedBtwSHzT2NX6MsrBc4FWc"
+
 [registry]
 url = "https://api.apr.dev"
 
