@@ -181,7 +181,7 @@ export default function LandingPage() {
                   className="px-6 py-3 rounded-xl bg-white/5 border border-white/15 text-white/70 hover:text-white hover:bg-white/10 transition-all text-sm font-medium inline-flex items-center gap-2"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Arbiscan
+                  Solscan
                 </a>
               </motion.div>
             </div>

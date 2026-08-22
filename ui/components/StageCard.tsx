@@ -67,7 +67,7 @@ export default function StageCard({ stage, color, index }: StageCardProps) {
         }}
       >
         <ExternalLink className="w-3 h-3" />
-        View on Arbiscan
+        View on Solscan
       </a>
     </motion.div>
   );
