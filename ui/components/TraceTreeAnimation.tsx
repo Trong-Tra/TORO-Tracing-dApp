@@ -29,6 +29,8 @@ interface BranchNode {
   type: NodeType;
   title: string;
   sub?: string;
+  /** Roadmap node: proposed future off-chain verification step (not on-chain today). */
+  future?: boolean;
 }
 
 interface Branch {
@@ -72,9 +74,9 @@ const branches: Branch[] = [
     y: 0.13,
     nodes: [
       { type: "pill", title: "Catch Yellowfin", sub: "Bình Định" },
-      { type: "circle", title: "humanProcess()" },
-      { type: "pill", title: "graphCheck()" },
-      { type: "circle", title: "mpcSign()" },
+      { type: "circle", title: "humanProcess()", future: true },
+      { type: "pill", title: "graphCheck()", future: true },
+      { type: "circle", title: "mpcSign()", future: true },
       { type: "circle", title: "mintBatch()", sub: "800kg on-chain" },
     ],
   },
@@ -85,7 +87,7 @@ const branches: Branch[] = [
     y: 0.66,
     nodes: [
       { type: "pill", title: "Port Receipt", sub: "Weight · GPS · Time" },
-      { type: "pill", title: "graphCheck()" },
+      { type: "pill", title: "graphCheck()", future: true },
       { type: "circle", title: "recordInventory()" },
     ],
   },
@@ -96,8 +98,9 @@ const branches: Branch[] = [
     y: 0.24,
     nodes: [
       { type: "pill", title: "Processing", sub: "Canning · Labeling" },
-      { type: "pill", title: "graphCheck()" },
+      { type: "pill", title: "graphCheck()", future: true },
       { type: "circle", title: "recordManufacturing()" },
+      { type: "circle", title: "createProductLot()", sub: "merge batches → lot" },
     ],
   },
   {
@@ -107,8 +110,8 @@ const branches: Branch[] = [
     y: 0.82,
     nodes: [
       { type: "pill", title: "Storage", sub: "Temp Monitor" },
-      { type: "pill", title: "graphCheck()" },
-      { type: "circle", title: "mpcSign()" },
+      { type: "pill", title: "graphCheck()", future: true },
+      { type: "circle", title: "mpcSign()", future: true },
       { type: "circle", title: "recordWarehouse()" },
     ],
   },
@@ -119,7 +122,7 @@ const branches: Branch[] = [
     y: 0.38,
     nodes: [
       { type: "pill", title: "Logistics", sub: "Delivery Tracking" },
-      { type: "pill", title: "graphCheck()" },
+      { type: "pill", title: "graphCheck()", future: true },
       { type: "circle", title: "recordDistribution()" },
     ],
   },
@@ -409,15 +412,19 @@ export default function TraceTreeAnimation() {
       ctx.globalAlpha = eased;
 
       // Background
-      ctx.fillStyle = "rgba(15, 30, 54, 0.88)";
+      ctx.fillStyle = node.future
+        ? "rgba(15, 30, 54, 0.45)"
+        : "rgba(15, 30, 54, 0.88)";
       roundRect(ctx, px - w / 2, py - h / 2, w, h, r);
       ctx.fill();
 
-      // Border
-      ctx.strokeStyle = color + "55";
+      // Border (dashed = roadmap node)
+      if (node.future) ctx.setLineDash([4 * scale, 3 * scale]);
+      ctx.strokeStyle = color + (node.future ? "88" : "55");
       ctx.lineWidth = 1 * scale;
       roundRect(ctx, px - w / 2, py - h / 2, w, h, r);
       ctx.stroke();
+      ctx.setLineDash([]);
 
       // Glow
       ctx.shadowBlur = 10 * scale;
@@ -479,6 +486,16 @@ export default function TraceTreeAnimation() {
       const growT = easeOutCubic(clamp01(t / 0.35));
       const discR = Math.max(0.5, (2 + (finalR - 2) * growT) * eased);
 
+      if (node.future) {
+        // Roadmap node: dashed hollow ring, never fills, no checkmark
+        ctx.setLineDash([3 * scale, 3 * scale]);
+        ctx.strokeStyle = color + "99";
+        ctx.lineWidth = 1.5 * scale;
+        ctx.beginPath();
+        ctx.arc(px, py, finalR * eased, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      } else {
       ctx.fillStyle = color;
       ctx.shadowBlur = 10 * scale;
       ctx.shadowColor = color + "60";
@@ -517,13 +534,14 @@ export default function TraceTreeAnimation() {
         }
         ctx.stroke();
       }
+      }
 
       // Label: top branches = above, bottom branches = below.
       // Layout already reserves label width per node, so a single row is enough.
       const isTop = side === "top";
-      const baseOffset = discR + 6 * scale;
+      const baseOffset = (node.future ? finalR : discR) + 6 * scale;
 
-      ctx.fillStyle = color;
+      ctx.fillStyle = node.future ? color + "b3" : color;
       ctx.font = `bold ${Math.max(7, 9 * scale)}px monospace, system-ui, sans-serif`;
       ctx.textAlign = "center";
 
@@ -771,6 +789,16 @@ export default function TraceTreeAnimation() {
             display: "block",
           }}
         />
+      </div>
+      <div className="flex items-center justify-center gap-6 mt-3 text-xs text-white/40">
+        <span className="flex items-center gap-2">
+          <span className="inline-block w-2.5 h-2.5 rounded-full bg-ocean" />
+          On-chain today
+        </span>
+        <span className="flex items-center gap-2">
+          <span className="inline-block w-2.5 h-2.5 rounded-full border border-dashed border-white/50" />
+          Roadmap — off-chain verification
+        </span>
       </div>
     </div>
   );
