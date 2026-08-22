@@ -544,15 +544,12 @@ export default function LandingPage() {
               {/* Frame */}
               <div className="relative rounded-[3rem] border border-white/15 bg-[#0c1f3a] p-2.5 shadow-2xl shadow-black/50">
                 <div className="relative rounded-[2.4rem] overflow-hidden bg-black aspect-[9/19.5]">
-                  {/* Notch */}
-                  <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-full z-10 border border-white/10" />
-                  <video
-                    src="/toro-app-demo.mp4"
-                    className="w-full h-full object-cover"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
+                  <iframe
+                    src="https://www.youtube-nocookie.com/embed/qQQoK-IuPGw?rel=0"
+                    title="TORO field app demo"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
                   />
                 </div>
               </div>
