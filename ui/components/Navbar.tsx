@@ -76,7 +76,7 @@ export default function Navbar() {
                 : "text-white/50 hover:text-white"
             }`}
           >
-            Whitepaper
+            Review Graph
           </Link>
         </div>
 

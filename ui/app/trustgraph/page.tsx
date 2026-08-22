@@ -29,6 +29,9 @@ export default function TrustGraphPage() {
           transition={{ duration: 0.6 }}
           className="relative z-10 max-w-4xl mx-auto"
         >
+          <p className="mb-4 text-sm md:text-base text-gold/90 font-medium tracking-wide uppercase">
+            Whitepaper is under construction and will be updated soon.
+          </p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
             <span className="text-ocean">T</span>rust
             <span className="text-ocean">G</span>raph{" "}
