@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { QrCode, Fish, Factory, ExternalLink, Lock, Network, ShieldCheck } from "lucide-react";
+import { QrCode, Fish, Factory, ExternalLink, Lock, Network, ShieldCheck, Trophy, Medal, Search, Code2, Handshake, ScrollText, TrendingUp, CheckCircle2 } from "lucide-react";
 import Can3D from "@/components/Can3D";
 import traceIndex from "@/src/data/traceIndex.json";
 import TraceTreeAnimation from "@/components/TraceTreeAnimation";
@@ -384,27 +384,27 @@ export default function LandingPage() {
             {[
               {
                 title: "Immutable Origin",
-                body: "Wild catch or farm-raised, every tuna batch is registered as its own on-chain account on Solana from day one. Not a database entry. Not a PDF. A cryptographic proof that survives forever, even if the company disappears.",
+                body: "Every batch gets its own on-chain record from day one. Cryptographic proof that outlasts any company, not a database entry or PDF.",
                 icon: Lock,
                 accent: "ocean",
                 link: { href: "/trace", label: "Trace a product" },
               },
               {
-                title: "Intelligent Graph-based Data Model",
-                body: "Batches and lots form a living graph on-chain. Multiple sources merge into a single verified lot, and every merge permanently links inputs to outputs, so the full journey is one query away.",
+                title: "Living Graph",
+                body: "Batches form a living on-chain graph. Sources merge into verified lots with permanent links, so the full journey is one query away.",
                 icon: Network,
                 accent: "gold",
                 link: { href: "/trustgraph", label: "Explore the graph" },
               },
               {
-                title: "Made Simple for Any Seafood Exportation System",
-                body: "Compact code-based payloads and a ready-made indexer plug into existing export workflows. Stations record with a scan, no blockchain expertise needed on the factory floor.",
+                title: "Zero-Setup Export",
+                body: "Plugs into existing export workflows with compact payloads and a ready-made indexer. Stations scan to record, no blockchain expertise needed.",
                 icon: QrCode,
                 accent: "ocean",
               },
               {
-                title: "Secure with Certificate MPC Signature",
-                body: "Today, role-based station keys sign every step. Tomorrow: threshold MPC signatures bound to HACCP certificates, so no single key can ever forge a step in the chain.",
+                title: "Tamper-Proof Signing",
+                body: "Role-based keys sign every step today. Threshold MPC signatures bound to HACCP certificates ensure no single key can forge the chain.",
                 icon: ShieldCheck,
                 accent: "gold",
               },
@@ -559,7 +559,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── DEBUT ─── */}
-      <section className="relative px-6 md:px-10 py-24 bg-gradient-to-b from-[#0a1628] to-[#0c1f3a] overflow-hidden">
+      <section id="debut" className="relative px-6 md:px-10 py-24 bg-gradient-to-b from-[#0a1628] to-[#0c1f3a] overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-72 bg-ocean/10 rounded-full blur-3xl" />
         </div>
@@ -576,22 +576,12 @@ export default function LandingPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               TORO at <span className="text-gold">THE NEXGEN 2026</span>
             </h2>
-            <p className="text-white/50 text-lg leading-relaxed max-w-2xl mx-auto mb-4">
-              TORO is a Top 5 startup of THE NEXGEN 2026, currently under
-              incubation by the Innovative Entrepreneurship Center VNU-HCM and
-              New Energy Nexus Vietnam, on our way to expand internationally.
-              Watch TORO&apos;s debut on stage, currently sitting at{" "}
+            <p className="text-white/50 text-lg leading-relaxed max-w-2xl mx-auto mb-10">
+              Presented by the Innovative Entrepreneurship Center VNU-HCM in
+              collaboration with New Energy Nexus Vietnam. Watch TORO&apos;s
+              debut on stage, currently sitting at{" "}
               <span className="text-white font-semibold">6,343 views</span>.
             </p>
-            <a
-              href="https://www.facebook.com/iec.vnuhcm/posts/pfbid02kB8sdCS2m82wCKRfg8EzNCVC5zncjvYThGQYDLRJbsQnW9JUamCaDiuzBnEXvGEPl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-ocean hover:text-white transition-colors mb-10"
-            >
-              Read the official announcement
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
 
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -618,6 +608,283 @@ export default function LandingPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* ─── ACHIEVEMENTS ─── */}
+<section className="relative px-6 md:px-10 py-20 bg-[#0a1628] overflow-hidden">
+  <div className="absolute inset-0 pointer-events-none">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[20rem] bg-gold/5 rounded-full blur-[120px]" />
+  </div>
+
+  <div className="relative z-10 max-w-4xl mx-auto">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-10">
+      {/* Left Award */}
+      <motion.div
+        initial={{ opacity: 0, x: -60 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="group flex flex-col items-center text-center"
+      >
+        <div className="relative mb-4">
+          <div className="absolute inset-0 w-24 h-24 rounded-full bg-amber-400/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="relative w-24 h-24 rounded-full bg-[#0f2744] border border-amber-400/20 group-hover:border-amber-400/50 group-hover:shadow-[0_0_30px_-5px_rgba(251,191,36,0.2)] flex items-center justify-center transition-all duration-500 group-hover:scale-105">
+            <Trophy className="w-10 h-10 text-amber-400" />
+          </div>
+        </div>
+        <h3 className="text-lg font-bold text-white mb-0.5">Top 5 Startup</h3>
+        <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-amber-400/80 mb-2">
+          THE NEXGEN 2026
+        </p>
+        <p className="text-white/30 text-xs max-w-[200px] leading-relaxed">
+          Incubated by Innovative Entrepreneurship Center VNU-HCM & New Energy Nexus Vietnam
+        </p>
+      </motion.div>
+
+      {/* Center Title */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="text-center md:px-4 shrink-0"
+      >
+        <p className="text-gold text-xs font-semibold tracking-[0.35em] uppercase mb-3">
+          Recognition
+        </p>
+        <h2 className="text-4xl md:text-5xl font-bold text-white mb-3">
+          Achievements
+        </h2>
+        <div className="w-12 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent mx-auto mb-3" />
+        <p className="text-white/30 text-sm">
+          Milestones on our road<br className="hidden md:block" /> from ocean to shelf.
+        </p>
+      </motion.div>
+
+      {/* Right Award */}
+      <motion.div
+        initial={{ opacity: 0, x: 60 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
+        className="group flex flex-col items-center text-center"
+      >
+        <div className="relative mb-4">
+          <div className="absolute inset-0 w-24 h-24 rounded-full bg-[#e08e45]/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="relative w-24 h-24 rounded-full bg-[#0f2744] border border-[#e08e45]/20 group-hover:border-[#e08e45]/50 group-hover:shadow-[0_0_30px_-5px_rgba(224,142,69,0.2)] flex items-center justify-center transition-all duration-500 group-hover:scale-105">
+            <Medal className="w-10 h-10 text-[#e08e45]" />
+          </div>
+        </div>
+        <h3 className="text-lg font-bold text-white mb-0.5">Bronze Medal</h3>
+        <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#e08e45]/80 mb-2">
+          Design & Fabrication 2026
+        </p>
+        <p className="text-white/30 text-xs max-w-[200px] leading-relaxed">
+          Youth Science & Technology Development Center
+        </p>
+      </motion.div>
+    </div>
+
+    {/* Optional compact link row */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.4, duration: 0.5 }}
+      className="flex justify-center mt-10"
+    >
+    </motion.div>
+  </div>
+</section>
+
+      {/* ─── TIMELINE ─── */}
+<section className="relative px-6 md:px-10 py-24 bg-[#0a1628] overflow-hidden">
+  <div className="absolute inset-0 pointer-events-none">
+    <div className="absolute bottom-0 left-1/3 w-[36rem] h-72 bg-ocean/5 rounded-full blur-3xl" />
+  </div>
+
+  <div className="relative z-10 max-w-7xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="text-center mb-14"
+    >
+      <p className="text-ocean text-sm font-semibold tracking-[0.3em] uppercase mb-4">
+        Roadmap
+      </p>
+      <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        Project <span className="text-gold">Timeline</span>
+      </h2>
+      <p className="text-white/50 text-lg max-w-2xl mx-auto">
+        Our roadmap to transform seafood traceability, from research to
+        international markets.
+      </p>
+    </motion.div>
+
+    <div className="relative">
+      {/* Connecting line (desktop) */}
+      <div className="hidden lg:block absolute top-5 left-[10%] right-[10%] h-px bg-gradient-to-r from-blue-400 via-green-400 to-orange-400 opacity-40" />
+
+      <div className="flex lg:grid lg:grid-cols-5 gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-4 lg:pb-0 -mx-6 px-6 lg:mx-0 lg:px-0">
+        {[
+          {
+            n: 1,
+            title: "Research & Foundation",
+            dates: "Jun – Aug 2026",
+            status: "completed" as const,
+            icon: Search,
+            text: "text-blue-400",
+            dot: "bg-blue-400",
+            node: "bg-blue-400 shadow-blue-400/30",
+            border: "border-blue-400/25 hover:border-blue-400/50",
+            points: [
+              "Market & user research",
+              "System architecture & tech design",
+              "Core technology development",
+              "MVP scope definition",
+            ],
+          },
+          {
+            n: 2,
+            title: "MVP Development",
+            dates: "Jul – Oct 2026",
+            status: "in-progress" as const,
+            icon: Code2,
+            text: "text-teal-400",
+            dot: "bg-teal-400",
+            node: "bg-teal-400 shadow-teal-400/30",
+            border: "border-teal-400/25 hover:border-teal-400/50",
+            points: [
+              "Core module development & integration",
+              "AI document intelligence",
+              "Blockchain traceability engine",
+              "QR verification & dashboard",
+            ],
+          },
+          {
+            n: 3,
+            title: "Validation & Partnerships",
+            dates: "Aug – Dec 2026",
+            status: "upcoming" as const,
+            icon: Handshake,
+            text: "text-green-400",
+            dot: "bg-green-400",
+            node: "bg-green-400 shadow-green-400/30",
+            border: "border-green-400/25 hover:border-green-400/50",
+            points: [
+              "Pilot testing with seafood enterprises",
+              "Feedback collection & refinement",
+              "Product-market fit validation",
+              "Strategic partnership building",
+            ],
+          },
+          {
+            n: 4,
+            title: "Research & Commercial Prep",
+            dates: "Oct 2026 – Mar 2027",
+            status: "upcoming" as const,
+            icon: ScrollText,
+            text: "text-amber-400",
+            dot: "bg-amber-400",
+            node: "bg-amber-400 shadow-amber-400/30",
+            border: "border-amber-400/25 hover:border-amber-400/50",
+            points: [
+              "Research publication & IP protection",
+              "Platform scalability & security",
+              "Compliance & standards preparation",
+              "Go-to-market & pricing strategy",
+            ],
+          },
+          {
+            n: 5,
+            title: "Market Expansion",
+            dates: "Q2 – Q4 2027",
+            status: "upcoming" as const,
+            icon: TrendingUp,
+            text: "text-orange-400",
+            dot: "bg-orange-400",
+            node: "bg-orange-400 shadow-orange-400/30",
+            border: "border-orange-400/25 hover:border-orange-400/50",
+            points: [
+              "Acquire paying customers",
+              "Scale operations & support",
+              "Expand to new markets",
+              "Build strategic alliances",
+            ],
+          },
+        ].map((phase, i) => (
+          <motion.div
+            key={phase.n}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+            className="snap-center min-w-[250px] lg:min-w-0 flex-shrink-0 lg:flex-shrink"
+          >
+            {/* Node (desktop) */}
+            <div className="hidden lg:flex justify-center mb-6">
+              <div
+                className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center shadow-lg ${phase.node} ${
+                  phase.status === "in-progress"
+                    ? "ring-4 ring-teal-400/20 animate-pulse"
+                    : ""
+                }`}
+              >
+                <phase.icon className="w-5 h-5 text-[#0a1628]" />
+              </div>
+            </div>
+
+            <div
+              className={`h-full rounded-2xl border bg-[#0c1f3a]/70 p-5 transition-colors ${phase.border}`}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span
+                  className={`text-xs font-bold tracking-widest ${phase.text}`}
+                >
+                  PHASE {phase.n}
+                </span>
+                {phase.status === "completed" && (
+                  <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-400">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Done
+                  </span>
+                )}
+                {phase.status === "in-progress" && (
+                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-teal-400">
+                    <span className="relative flex w-2 h-2">
+                      <span className="absolute inline-flex w-full h-full rounded-full bg-teal-400 opacity-75 animate-ping" />
+                      <span className="relative inline-flex w-2 h-2 rounded-full bg-teal-400" />
+                    </span>
+                    In Progress
+                  </span>
+                )}
+              </div>
+
+              <h3 className="text-lg font-bold text-white leading-snug mb-1">
+                {phase.title}
+              </h3>
+              <p className={`text-sm mb-4 ${phase.text}`}>{phase.dates}</p>
+
+              <ul className="space-y-2">
+                {phase.points.map((point) => (
+                  <li
+                    key={point}
+                    className="flex gap-2 text-sm text-white/45 leading-snug"
+                  >
+                    <span
+                      className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${phase.dot}`}
+                    />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* ─── TEAM ─── */}
       <section id="team" className="relative px-6 md:px-10 py-20 bg-[#0a1628]">
