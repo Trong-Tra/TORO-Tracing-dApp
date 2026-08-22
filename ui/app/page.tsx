@@ -28,7 +28,7 @@ export default function LandingPage() {
   }, []);
 
   const handleTraceClick = () => {
-    router.push("/trace");
+    router.push("/trace/TORO-01");
   };
 
   // ── Annotation offset — tweak these two values to reposition
