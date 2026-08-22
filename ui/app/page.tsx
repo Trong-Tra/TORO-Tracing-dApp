@@ -175,7 +175,7 @@ export default function LandingPage() {
                   Start Tracing →
                 </button>
                 <a
-                  href="https://sepolia.arbiscan.io/address/0x2119161e3f789e7946f7acae8516c63db8a57077"
+                  href="https://solscan.io/account/2cbYretd93guxpURxqhq1UedBtwSHzT2NX6MsrBc4FWc?cluster=devnet"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 rounded-xl bg-white/5 border border-white/15 text-white/70 hover:text-white hover:bg-white/10 transition-all text-sm font-medium inline-flex items-center gap-2"

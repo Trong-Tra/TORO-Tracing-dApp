@@ -1,6 +1,6 @@
 # TORO Solana Program
 
-Anchor port of `contracts/evm/src/ToroRegistry.sol` — seafood supply-chain
+Anchor port of the original EVM `ToroRegistry` contract — seafood supply-chain
 traceability with a two-level lifecycle:
 
 - **Batches** (raw material): Source → Inventory → Manufacturing
@@ -9,7 +9,7 @@ traceability with a two-level lifecycle:
 
 Rich trace data is event-only (same as EVM): payloads are the familiar
 `abi.encode(uint256[] codes, bytes32[] values)` blobs decoded by
-`contracts/evm/data/CODE_REGISTRY.md`.
+`data/CODE_REGISTRY.md`.
 
 ## Accounts (PDAs)
 

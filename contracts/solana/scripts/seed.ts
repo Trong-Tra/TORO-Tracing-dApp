@@ -1,5 +1,5 @@
 /**
- * Devnet seed script: ports contracts/evm/script/DeployAndDemo.s.sol + SeedLot05.s.sol
+ * Devnet seed script: ports the original EVM DeployAndDemo + SeedLot05 scripts.
  * Initializes the program, grants roles to the deployer, and records the 5 demo
  * traces (TORO-01..TORO-05) with the exact same code/value payloads as EVM.
  *

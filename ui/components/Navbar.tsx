@@ -83,7 +83,7 @@ export default function Navbar() {
         {/* Right CTAs */}
         <div className="flex items-center gap-3">
           <a
-            href="https://sepolia.arbiscan.io/address/0x2119161e3f789e7946f7acae8516c63db8a57077"
+            href="https://solscan.io/account/2cbYretd93guxpURxqhq1UedBtwSHzT2NX6MsrBc4FWc?cluster=devnet"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex px-4 py-2 rounded-lg border border-white/[0.08] text-white/50 hover:text-white hover:border-white/20 transition-all text-sm font-medium no-underline"
