@@ -371,7 +371,7 @@ export default function LandingPage() {
           <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
         </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="relative z-10 max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -419,7 +419,7 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className={`group relative snap-center shrink-0 w-[85%] sm:w-[360px] lg:w-auto rounded-3xl border p-8 flex flex-col min-h-[420px] transition-all duration-300 backdrop-blur-sm ${
+                className={`group relative snap-center shrink-0 w-[85%] sm:w-[400px] lg:w-auto rounded-3xl border p-8 flex flex-col min-h-[420px] transition-all duration-300 backdrop-blur-sm ${
                   card.accent === "ocean"
                     ? "border-ocean/30 hover:border-ocean/60 bg-gradient-to-b from-white/[0.07] to-white/[0.02]"
                     : "border-gold/30 hover:border-gold/60 bg-gradient-to-b from-white/[0.07] to-white/[0.02]"
