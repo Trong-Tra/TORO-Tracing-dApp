@@ -391,14 +391,14 @@ export default function LandingPage() {
               },
               {
                 title: "Intelligent Graph-based Data Model",
-                body: "Batches and lots form a living graph on-chain. Multiple sources merge into a single verified lot, and every merge permanently links inputs to outputs — the full journey is one query away.",
+                body: "Batches and lots form a living graph on-chain. Multiple sources merge into a single verified lot, and every merge permanently links inputs to outputs, so the full journey is one query away.",
                 icon: Network,
                 accent: "gold",
                 link: { href: "/trustgraph", label: "Explore the graph" },
               },
               {
                 title: "Made Simple for Any Seafood Exportation System",
-                body: "Compact code-based payloads and a ready-made indexer plug into existing export workflows. Stations record with a scan — no blockchain expertise needed on the factory floor.",
+                body: "Compact code-based payloads and a ready-made indexer plug into existing export workflows. Stations record with a scan, no blockchain expertise needed on the factory floor.",
                 icon: QrCode,
                 accent: "ocean",
               },
@@ -501,14 +501,14 @@ export default function LandingPage() {
             </h2>
             <p className="text-white/50 text-lg leading-relaxed mb-8">
               When TORO deploys at an exportation facility, employees don't touch
-              a blockchain — they use a simple mobile app. Scan the batch, confirm
+              a blockchain, they use a simple mobile app. Scan the batch, confirm
               the step, done. Every tap becomes a signed, immutable record on Solana.
             </p>
             <ul className="space-y-5">
               {[
                 {
                   title: "Scan & record in seconds",
-                  desc: "Workers scan the batch QR at each station — receiving, processing, packing — and the app records the stage on-chain.",
+                  desc: "Workers scan the batch QR at each station (receiving, processing, packing) and the app records the stage on-chain.",
                 },
                 {
                   title: "Roles enforced by the protocol",
@@ -581,7 +581,7 @@ export default function LandingPage() {
             </h2>
             <p className="text-white/50 text-lg leading-relaxed max-w-2xl mx-auto mb-10">
               Presented by the Innovative Entrepreneurship Center VNU-HCM in
-              collaboration with New Energy Nexus Vietnam — watch TORO&apos;s
+              collaboration with New Energy Nexus Vietnam. Watch TORO&apos;s
               debut on stage, currently sitting at{" "}
               <span className="text-white font-semibold">6,343 views</span>.
             </p>

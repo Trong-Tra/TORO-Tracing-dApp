@@ -797,7 +797,7 @@ export default function TraceTreeAnimation() {
         </span>
         <span className="flex items-center gap-2">
           <span className="inline-block w-2.5 h-2.5 rounded-full border border-dashed border-white/50" />
-          Roadmap — off-chain verification
+          Roadmap: off-chain verification
         </span>
       </div>
     </div>

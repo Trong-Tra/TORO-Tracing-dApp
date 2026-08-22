@@ -153,7 +153,7 @@ export default function TrustGraphPage() {
                     Pair-Risk Evaluation:
                   </span>{" "}
                   Uses the <em>Adamic-Adar</em> index to monitor
-                  &quot;Submitter — Approver&quot; pairs. An overly high ratio of
+                  &quot;Submitter/Approver&quot; pairs. An overly high ratio of
                   internal transactions triggers a red flag.
                 </li>
                 <li>
