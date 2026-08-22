@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { QrCode, Fish, Factory, ExternalLink } from "lucide-react";
+import { QrCode, Fish, Factory, ExternalLink, Lock, Network, ShieldCheck } from "lucide-react";
 import Can3D from "@/components/Can3D";
 import traceIndex from "@/src/data/traceIndex.json";
 import TraceTreeAnimation from "@/components/TraceTreeAnimation";
@@ -384,72 +384,105 @@ export default function LandingPage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0 * 0.15 }}
-              className="group relative"
-            >
-              {/* Glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-ocean/20 to-ocean/0 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
-              
-              {/* Card */}
-              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-ocean/30 hover:border-ocean/60 transition-all duration-300 backdrop-blur-sm h-full">
-                <h3 className="text-2xl font-bold text-white mb-4">Immutable Origin</h3>
-                <p className="text-base text-white/60 leading-relaxed">
-                  Wild catch or farm-raised, every tuna batch is registered as its own on-chain account on Solana from day one. Not a database entry. Not a PDF. A cryptographic proof that survives forever, even if the company disappears.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.15 }}
-              className="group relative"
-            >
-              {/* Glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-gold/20 to-gold/0 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
-              
-              {/* Card */}
-              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-gold/30 hover:border-gold/60 transition-all duration-300 backdrop-blur-sm h-full">
-                <h3 className="text-2xl font-bold text-white mb-4">On-Chain Merge</h3>
-                <p className="text-base text-white/60 leading-relaxed">
-                  TORO runs on Solana for fast, cheap traceability. Every batch is its own on-chain account that evolves through the supply chain. Stations record each step as it moves from catch to can. When batches merge into a product lot, the lot permanently links its inputs — an immutable record.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="group relative"
-            >
-              {/* Glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-gold/20 to-gold/0 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
-              
-              {/* Card */}
-              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-gold/30 hover:border-gold/60 transition-all duration-300 backdrop-blur-sm h-full">
-                <h3 className="text-2xl font-bold text-white mb-4">Zero-Trust Verification</h3>
-                <p className="text-base text-white/60 leading-relaxed">
-                  No central server to hack. No admin panel to fake. Every datum, location, weight, certificate hash, lives on-chain. Reconstruct the full supply chain from any Solana explorer using just the lot code. We can't alter history even if we wanted to.
-                </p>
-              </div>
-              
-              {/* Mascot */}
-              <div className="absolute -bottom-20 -right-20 w-32 h-32 md:w-40 md:h-40 pointer-events-none">
-                <img 
-                  src="/TORO-mascot-about-section.png" 
-                  alt="TORO Mascot" 
-                  className="w-full h-full object-contain"
+          <div className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory lg:grid lg:grid-cols-4 lg:overflow-visible lg:pb-0">
+            {[
+              {
+                title: "Immutable Origin",
+                body: "Wild catch or farm-raised, every tuna batch is registered as its own on-chain account on Solana from day one. Not a database entry. Not a PDF. A cryptographic proof that survives forever, even if the company disappears.",
+                icon: Lock,
+                accent: "ocean",
+                link: { href: "/trace", label: "Trace a product" },
+              },
+              {
+                title: "Intelligent Graph-based Data Model",
+                body: "Batches and lots form a living graph on-chain. Multiple sources merge into a single verified lot, and every merge permanently links inputs to outputs — the full journey is one query away.",
+                icon: Network,
+                accent: "gold",
+                link: { href: "/trustgraph", label: "Explore the graph" },
+              },
+              {
+                title: "Made Simple for Any Seafood Exportation System",
+                body: "Compact code-based payloads and a ready-made indexer plug into existing export workflows. Stations record with a scan — no blockchain expertise needed on the factory floor.",
+                icon: QrCode,
+                accent: "ocean",
+              },
+              {
+                title: "Secure with Certificate MPC Signature",
+                body: "Today, role-based station keys sign every step. Tomorrow: threshold MPC signatures bound to HACCP certificates, so no single key can ever forge a step in the chain.",
+                icon: ShieldCheck,
+                accent: "gold",
+              },
+            ].map((card, i) => (
+              <motion.div
+                key={card.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className={`group relative snap-center shrink-0 w-[85%] sm:w-[360px] lg:w-auto rounded-3xl border p-8 flex flex-col min-h-[420px] transition-all duration-300 backdrop-blur-sm ${
+                  card.accent === "ocean"
+                    ? "border-ocean/30 hover:border-ocean/60 bg-gradient-to-b from-white/[0.07] to-white/[0.02]"
+                    : "border-gold/30 hover:border-gold/60 bg-gradient-to-b from-white/[0.07] to-white/[0.02]"
+                }`}
+              >
+                {/* Hover glow */}
+                <div
+                  className={`absolute inset-0 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none ${
+                    card.accent === "ocean"
+                      ? "bg-gradient-to-r from-ocean/20 to-ocean/0"
+                      : "bg-gradient-to-r from-gold/20 to-gold/0"
+                  }`}
                 />
-              </div>
-            </motion.div>
+
+                <h3 className="relative text-2xl font-bold text-white text-center mb-4 leading-snug">
+                  {card.title}
+                </h3>
+                <p className="relative text-sm text-white/55 text-center leading-relaxed">
+                  {card.body}
+                </p>
+
+                {card.link && (
+                  <div className="relative text-center mt-5">
+                    <a
+                      href={card.link.href}
+                      className={`inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-sm font-semibold transition-all no-underline ${
+                        card.accent === "ocean"
+                          ? "bg-ocean/15 text-ocean hover:bg-ocean/25"
+                          : "bg-gold/15 text-gold hover:bg-gold/25"
+                      }`}
+                    >
+                      {card.link.label} →
+                    </a>
+                  </div>
+                )}
+
+                {/* Bottom visual */}
+                <div className="relative mt-auto pt-10 flex items-end justify-center">
+                  <div
+                    className={`w-20 h-20 rounded-2xl flex items-center justify-center border transition-all duration-300 group-hover:scale-110 ${
+                      card.accent === "ocean"
+                        ? "bg-ocean/10 border-ocean/30 shadow-[0_0_40px_-8px] shadow-ocean/40"
+                        : "bg-gold/10 border-gold/30 shadow-[0_0_40px_-8px] shadow-gold/40"
+                    }`}
+                  >
+                    <card.icon
+                      className={`w-9 h-9 ${card.accent === "ocean" ? "text-ocean" : "text-gold"}`}
+                    />
+                  </div>
+                </div>
+
+                {/* Mascot on the last card */}
+                {i === 3 && (
+                  <div className="absolute -bottom-8 -right-8 w-24 h-24 md:w-28 md:h-28 pointer-events-none">
+                    <img
+                      src="/TORO-mascot-about-section.png"
+                      alt="TORO Mascot"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                )}
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
