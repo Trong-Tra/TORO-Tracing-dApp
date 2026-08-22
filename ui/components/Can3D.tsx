@@ -101,7 +101,7 @@ function CanModel({
       try {
         // Generate QR code from URL
         const qrCanvas = await generateQRCanvas(
-          "https://toro-dapp.vercel.app/trace"
+          "https://toro-dapp.vercel.app/trace/TORO-01"
         );
 
         // Load tuna image
