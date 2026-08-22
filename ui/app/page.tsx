@@ -121,7 +121,7 @@ export default function LandingPage() {
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-ocean text-sm font-medium mb-5"
               >
                 <span className="w-2 h-2 rounded-full bg-green animate-pulse" />
-                Arbitrum Sepolia Testnet
+                Solana Devnet
               </motion.div>
 
               <motion.h1
@@ -159,7 +159,7 @@ export default function LandingPage() {
                 className="text-base text-white/50 max-w-md mb-7 leading-relaxed"
               >
                 The next generation traceability platform. From ocean to shelf,
-                every product is immutably verified on Arbitrum using Soulbound NFTs.
+                every product is immutably verified on Solana.
               </motion.p>
 
               <motion.div
@@ -399,7 +399,7 @@ export default function LandingPage() {
               <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-ocean/30 hover:border-ocean/60 transition-all duration-300 backdrop-blur-sm h-full">
                 <h3 className="text-2xl font-bold text-white mb-4">Immutable Origin</h3>
                 <p className="text-base text-white/60 leading-relaxed">
-                  Wild catch or farm-raised, every tuna batch is minted as a Soulbound NFT on Arbitrum from day one. Not a database entry. Not a PDF. A cryptographic proof that survives forever, even if the company disappears.
+                  Wild catch or farm-raised, every tuna batch is registered as its own on-chain account on Solana from day one. Not a database entry. Not a PDF. A cryptographic proof that survives forever, even if the company disappears.
                 </p>
               </div>
             </motion.div>
@@ -416,9 +416,9 @@ export default function LandingPage() {
               
               {/* Card */}
               <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-gold/30 hover:border-gold/60 transition-all duration-300 backdrop-blur-sm h-full">
-                <h3 className="text-2xl font-bold text-white mb-4">Cardano Deflationary Engine</h3>
+                <h3 className="text-2xl font-bold text-white mb-4">On-Chain Merge</h3>
                 <p className="text-base text-white/60 leading-relaxed">
-                  TORO uses Arbitrum for fast, cheap traceability. Every batch is a Soulbound NFT that evolves through the supply chain. Stations update the NFT as it moves from catch to can. The final merge locks the NFT forever as an immutable record.
+                  TORO runs on Solana for fast, cheap traceability. Every batch is its own on-chain account that evolves through the supply chain. Stations record each step as it moves from catch to can. When batches merge into a product lot, the lot permanently links its inputs — an immutable record.
                 </p>
               </div>
             </motion.div>
@@ -437,7 +437,7 @@ export default function LandingPage() {
               <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-gold/30 hover:border-gold/60 transition-all duration-300 backdrop-blur-sm h-full">
                 <h3 className="text-2xl font-bold text-white mb-4">Zero-Trust Verification</h3>
                 <p className="text-base text-white/60 leading-relaxed">
-                  No central server to hack. No admin panel to fake. Every datum, location, weight, certificate hash, lives on-chain. Reconstruct the full supply chain from any Arbitrum explorer using just the lot code. We can't alter history even if we wanted to.
+                  No central server to hack. No admin panel to fake. Every datum, location, weight, certificate hash, lives on-chain. Reconstruct the full supply chain from any Solana explorer using just the lot code. We can't alter history even if we wanted to.
                 </p>
               </div>
               

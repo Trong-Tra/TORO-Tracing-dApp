@@ -89,9 +89,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/40">
         <p>© {new Date().getFullYear()} TORO. All rights reserved.</p>
         <div className="flex items-center gap-4 text-xs">
-          <span>Arbitrum Sepolia Testnet</span>
+          <span>Solana Devnet</span>
           <span className="text-white/10">•</span>
-          <span>Soulbound NFT Traceability</span>
+          <span>On-Chain Traceability</span>
         </div>
       </div>
     </footer>

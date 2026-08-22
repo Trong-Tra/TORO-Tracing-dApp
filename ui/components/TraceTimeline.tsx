@@ -39,7 +39,7 @@ export default function TraceTimeline({ trace, color, title, onBack }: TraceTime
         )}
         <div className="flex-1">
           <h2 className="text-2xl font-bold text-white">{title}</h2>
-          <p className="text-sm text-white/50">{trace.length} trace points on Arbitrum Sepolia</p>
+          <p className="text-sm text-white/50">{trace.length} trace points on Solana Devnet</p>
         </div>
       </div>
 

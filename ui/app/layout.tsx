@@ -6,7 +6,7 @@ import FooterWrapper from "@/components/FooterWrapper";
 export const metadata: Metadata = {
   title: "TORO — Traceable Ocean Resource Origin",
   description:
-    "From Ocean to Can. Verified on Chain. TORO traces every tuna can from hatchery or catch to your shelf — immutably recorded on Arbitrum.",
+    "From Ocean to Can. Verified on Chain. TORO traces every tuna can from hatchery or catch to your shelf — immutably recorded on Solana.",
 };
 
 export default function RootLayout({
