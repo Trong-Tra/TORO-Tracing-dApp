@@ -487,33 +487,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── HOW TORO WORK ─── */}
-      <section className="relative px-6 md:px-10 py-24 bg-[#0a1628] overflow-visible">
-        <div className="max-w-6xl mx-auto relative">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="w-full rounded-2xl overflow-hidden"
-          >
-            <img 
-              src="/HowTORO.png" 
-              alt="How TORO Works" 
-              className="w-full h-auto object-cover"
-            />
-          </motion.div>
-          
-          {/* Mascot */}
-          <div className="absolute -bottom-24 -right-24 w-40 h-40 md:w-48 md:h-48 pointer-events-none">
-            <img 
-              src="/TORO-mascot-howto-section.png" 
-              alt="TORO Mascot" 
-              className="w-full h-full object-contain"
-            />
-          </div>
-        </div>
-      </section>
-
       {/* ─── TEAM ─── */}
       <section id="team" className="relative px-6 md:px-10 py-20 bg-[#0a1628]">
         <div className="max-w-6xl mx-auto">
