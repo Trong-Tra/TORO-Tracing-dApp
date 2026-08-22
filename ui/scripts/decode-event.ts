@@ -17,7 +17,7 @@ import { decodeAbiParameters, parseAbiParameters } from "viem";
 import * as fs from "fs";
 import * as path from "path";
 
-// ───────── Code registry (mirrors contracts/evm/data/CODE_REGISTRY.md) ─────────
+// ───────── Code registry (mirrors contracts/solana/data/CODE_REGISTRY.md) ─────────
 
 const LOOKUPS: Record<number, Record<number, string>> = {
   0x100: { 1: "Vessel", 2: "Farm" },
@@ -61,7 +61,8 @@ function decodeValue(code: number, hex: string): string {
   if (code === 0x306) {
     const n = BigInt(hex);
     const MAX = BigInt("0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-    return String(Number(n > MAX ? n - (MAX * 2n + 2n) : n));
+    const TWO_POW_256 = BigInt("0x10000000000000000000000000000000000000000000000000000000000000000");
+    return String(Number(n > MAX ? n - TWO_POW_256 : n));
   }
   return Number(BigInt(hex)).toLocaleString("en-US");
 }
