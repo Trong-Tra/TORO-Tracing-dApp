@@ -576,12 +576,22 @@ export default function LandingPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               TORO at <span className="text-gold">THE NEXGEN 2026</span>
             </h2>
-            <p className="text-white/50 text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-              Presented by the Innovative Entrepreneurship Center VNU-HCM in
-              collaboration with New Energy Nexus Vietnam. Watch TORO&apos;s
-              debut on stage, currently sitting at{" "}
+            <p className="text-white/50 text-lg leading-relaxed max-w-2xl mx-auto mb-4">
+              TORO is a Top 5 startup of THE NEXGEN 2026, currently under
+              incubation by the Innovative Entrepreneurship Center VNU-HCM and
+              New Energy Nexus Vietnam, on our way to expand internationally.
+              Watch TORO&apos;s debut on stage, currently sitting at{" "}
               <span className="text-white font-semibold">6,343 views</span>.
             </p>
+            <a
+              href="https://www.facebook.com/iec.vnuhcm/posts/pfbid02kB8sdCS2m82wCKRfg8EzNCVC5zncjvYThGQYDLRJbsQnW9JUamCaDiuzBnEXvGEPl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-ocean hover:text-white transition-colors mb-10"
+            >
+              Read the official announcement
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
 
             <motion.div
               initial={{ opacity: 0, y: 30 }}
