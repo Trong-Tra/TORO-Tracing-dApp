@@ -143,10 +143,6 @@ export default function LandingPage() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="flex items-center gap-2 mb-5"
               >
-                <svg className="w-5 h-4 rounded-sm flex-shrink-0" viewBox="0 0 640 480">
-                  <path fill="#da251d" d="M0 0h640v480H0z" />
-                  <path fill="#ff0" d="m320 90 26.5 81.5h85.8l-69.4 50.4 26.5 81.5-69.4-50.4-69.4 50.4 26.5-81.5-69.4-50.4h85.8z" />
-                </svg>
                 <p className="text-base text-white/40 font-mono tracking-wide">
                   Traceability Platform for Seafood Supply Chains
                 </p>
@@ -561,6 +557,57 @@ export default function LandingPage() {
                 </div>
               </div>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ─── DEBUT ─── */}
+      <section className="relative px-6 md:px-10 py-24 bg-gradient-to-b from-[#0a1628] to-[#0c1f3a] overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-72 bg-ocean/10 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-ocean text-sm font-semibold tracking-[0.3em] uppercase mb-4">
+              Featured Debut
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              TORO at <span className="text-gold">THE NEXGEN 2026</span>
+            </h2>
+            <p className="text-white/50 text-lg leading-relaxed max-w-2xl mx-auto mb-10">
+              Presented by the Innovative Entrepreneurship Center VNU-HCM in
+              collaboration with New Energy Nexus Vietnam — watch TORO&apos;s
+              debut on stage, currently sitting at{" "}
+              <span className="text-white font-semibold">6,343 views</span>.
+            </p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
+              className="relative rounded-2xl border border-white/10 bg-[#0c1f3a] p-2 shadow-2xl shadow-black/50"
+            >
+              <div className="relative rounded-xl overflow-hidden aspect-video">
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/nYXbrbKheQQ"
+                  title="THE NEXGEN 2026 | DỰ ÁN TORO"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                />
+              </div>
+            </motion.div>
+
+            <p className="text-white/35 text-sm mt-6">
+              Innovative Entrepreneurship Center VNU-HCM &middot; New Energy
+              Nexus Vietnam
+            </p>
           </motion.div>
         </div>
       </section>
