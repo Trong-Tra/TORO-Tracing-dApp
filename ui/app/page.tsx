@@ -487,6 +487,84 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ─── FIELD APP ─── */}
+      <section className="relative px-6 md:px-10 py-24 bg-[#0a1628] overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/3 left-0 w-96 h-96 bg-ocean/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* LEFT: Text */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Built for the <span className="text-ocean">Factory Floor</span>
+            </h2>
+            <p className="text-white/50 text-lg leading-relaxed mb-8">
+              When TORO deploys at an exportation facility, employees don't touch
+              a blockchain — they use a simple mobile app. Scan the batch, confirm
+              the step, done. Every tap becomes a signed, immutable record on Solana.
+            </p>
+            <ul className="space-y-5">
+              {[
+                {
+                  title: "Scan & record in seconds",
+                  desc: "Workers scan the batch QR at each station — receiving, processing, packing — and the app records the stage on-chain.",
+                },
+                {
+                  title: "Roles enforced by the protocol",
+                  desc: "Factory signers and stations can only perform their own steps. Permissions live on-chain, not in an admin panel.",
+                },
+                {
+                  title: "Nothing to learn",
+                  desc: "No wallets, no gas, no jargon on screen. The app handles keys and transactions behind the scenes.",
+                },
+              ].map((item) => (
+                <li key={item.title} className="flex gap-4">
+                  <span className="mt-1.5 w-2 h-2 rounded-full bg-ocean flex-shrink-0" />
+                  <div>
+                    <p className="text-white font-semibold mb-1">{item.title}</p>
+                    <p className="text-white/45 text-sm leading-relaxed">{item.desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* RIGHT: Phone frame with demo video */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+            className="flex justify-center"
+          >
+            <div className="relative w-[280px] sm:w-[300px]">
+              {/* Glow */}
+              <div className="absolute inset-0 bg-ocean/20 rounded-[3rem] blur-3xl scale-95 pointer-events-none" />
+              {/* Frame */}
+              <div className="relative rounded-[3rem] border border-white/15 bg-[#0c1f3a] p-2.5 shadow-2xl shadow-black/50">
+                <div className="relative rounded-[2.4rem] overflow-hidden bg-black aspect-[9/19.5]">
+                  {/* Notch */}
+                  <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-full z-10 border border-white/10" />
+                  <video
+                    src="/toro-app-demo.mp4"
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ─── TEAM ─── */}
       <section id="team" className="relative px-6 md:px-10 py-20 bg-[#0a1628]">
         <div className="max-w-6xl mx-auto">
