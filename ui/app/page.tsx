@@ -59,21 +59,11 @@ export default function LandingPage() {
   ];
 
   const partners = [
-    "/partner/Blockyouth.png",
-    "/partner/Cardano.png",
-    "/partner/Ezai.png",
-    "/partner/HIEC.png",
-    "/partner/Hub.png",
-    "/partner/NIIC.png",
-    "/partner/NJEC.png",
-    "/partner/NTT.png",
-    "/partner/NetCorp.png",
-    "/partner/Teen Innovation.png",
-    "/partner/UISC.png",
-    "/partner/UniLab.png",
-    "/partner/Vcioncheck.png",
-    "/partner/bitget.png",
-    "/partner/ihub.png",
+    "/partner/BK START.png",
+    "/partner/IEC.png",
+    "/partner/NExus.png",
+    "/partner/SPT.png",
+    "/partner/superteam-logo-white.svg",
   ];
 
   const team = [
